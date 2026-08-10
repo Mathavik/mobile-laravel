@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useStore } from "../contexts/StoreContext";
@@ -191,18 +191,19 @@ export default function Search() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] pt-28 px-4 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] px-4 md:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto">
     
         <div className="mb-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-semibold">Search Results</h1>
-              <p className="text-gray-600 mt-2">Showing {products.length} result{products.length !== 1 ? "s" : ""} for "{q || ""}"</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Search</p>
+              <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-[#0f172a]">Search Results</h1>
+              <p className="text-gray-500 mt-1.5">Showing {products.length} result{products.length !== 1 ? "s" : ""} for "{q || ""}"</p>
             </div>
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 md:hidden"
+              className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#2563eb]/30 transition hover:opacity-90 md:hidden"
               onClick={() => setShowMobileFilters(true)}
             >
               Filters
@@ -211,12 +212,12 @@ export default function Search() {
 
           {/* Desktop Filters */}
           <div className="hidden md:grid grid-cols-1 gap-3 xl:grid-cols-[minmax(220px,1fr)_minmax(220px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_auto] mt-4">
-            <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3 shadow-sm">
-              <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Category</label>
+            <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+              <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Category</label>
               <select
                 value={selectedCategory}
                 onChange={(e) => updateQuery({ category_id: e.target.value })}
-                className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
               >
                 <option value="">All Categories</option>
                 {categories.map((category) => (
@@ -227,8 +228,8 @@ export default function Search() {
               </select>
             </div>
 
-            <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3 shadow-sm">
-              <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Price</label>
+            <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+              <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Price</label>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <input
                   type="number"
@@ -236,7 +237,7 @@ export default function Search() {
                   onChange={(e) => setPriceRange((prev) => ({ ...prev, min: e.target.value }))}
                   onBlur={() => updateQuery({ min_price: priceRange.min })}
                   placeholder="Min"
-                  className="w-full rounded-xl border border-gray-200 bg-[#fafafa] px-3 py-2 text-sm outline-none"
+                  className="w-full rounded-xl border border-slate-200 bg-[#fafafa] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                 />
                 <input
                   type="number"
@@ -244,17 +245,17 @@ export default function Search() {
                   onChange={(e) => setPriceRange((prev) => ({ ...prev, max: e.target.value }))}
                   onBlur={() => updateQuery({ max_price: priceRange.max })}
                   placeholder="Max"
-                  className="w-full rounded-xl border border-gray-200 bg-[#fafafa] px-3 py-2 text-sm outline-none"
+                  className="w-full rounded-xl border border-slate-200 bg-[#fafafa] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                 />
               </div>
             </div>
 
-            <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3 shadow-sm">
-              <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Availability</label>
+            <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+              <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Availability</label>
               <select
                 value={selectedAvailability}
                 onChange={(e) => updateQuery({ availability: e.target.value })}
-                className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
               >
                 <option value="">All</option>
                 <option value="in_stock">In Stock</option>
@@ -262,12 +263,12 @@ export default function Search() {
               </select>
             </div>
 
-            <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3 shadow-sm">
-              <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Sort By</label>
+            <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+              <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Sort By</label>
               <select
                 value={selectedSort}
                 onChange={(e) => updateQuery({ sort: e.target.value })}
-                className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
               >
                 <option value="">Newest</option>
                 <option value="price_asc">Price: Low to High</option>
@@ -275,11 +276,11 @@ export default function Search() {
               </select>
             </div>
 
-            <div className="flex items-center justify-end rounded-[12px] border border-[#E5E7EB] bg-white p-3 shadow-sm">
+            <div className="flex items-center justify-end rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
               <button
                 type="button"
                 onClick={handleClearAll}
-                className="inline-flex h-11 items-center justify-center rounded-2xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-[#181818] transition hover:bg-gray-50"
+                className="inline-flex h-11 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-[#0f172a] transition hover:bg-slate-50 hover:border-[#2563eb] hover:text-[#2563eb]"
               >
                 Clear All
               </button>
@@ -288,11 +289,11 @@ export default function Search() {
 
           {/* Mobile Filters */}
           {showMobileFilters && (
-            <div className="fixed inset-0 z-50 bg-black/30 p-4 md:hidden">
-              <div className="h-full overflow-y-auto rounded-[20px] bg-white p-5 shadow-2xl">
+            <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm p-4 md:hidden">
+              <div className="h-full overflow-y-auto rounded-[24px] bg-white p-5 shadow-2xl">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-lg font-semibold">Filters</p>
+                    <p className="text-lg font-bold text-[#0f172a]">Filters</p>
                     <p className="text-sm text-gray-500">Adjust your search criteria</p>
                   </div>
                   <button
@@ -305,12 +306,12 @@ export default function Search() {
                 </div>
 
                 <div className="mt-5 space-y-4">
-                  <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3">
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Category</label>
+                  <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Category</label>
                     <select
                       value={selectedCategory}
                       onChange={(e) => updateQuery({ category_id: e.target.value })}
-                      className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+                      className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                     >
                       <option value="">All Categories</option>
                       {categories.map((category) => (
@@ -321,8 +322,8 @@ export default function Search() {
                     </select>
                   </div>
 
-                  <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3">
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Price</label>
+                  <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Price</label>
                     <div className="mt-2 grid grid-cols-2 gap-2">
                       <input
                         type="number"
@@ -330,7 +331,7 @@ export default function Search() {
                         onChange={(e) => setPriceRange((prev) => ({ ...prev, min: e.target.value }))}
                         onBlur={() => updateQuery({ min_price: priceRange.min })}
                         placeholder="Min"
-                        className="w-full rounded-xl border border-gray-200 bg-[#fafafa] px-3 py-2 text-sm outline-none"
+                        className="w-full rounded-xl border border-slate-200 bg-[#fafafa] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                       />
                       <input
                         type="number"
@@ -338,17 +339,17 @@ export default function Search() {
                         onChange={(e) => setPriceRange((prev) => ({ ...prev, max: e.target.value }))}
                         onBlur={() => updateQuery({ max_price: priceRange.max })}
                         placeholder="Max"
-                        className="w-full rounded-xl border border-gray-200 bg-[#fafafa] px-3 py-2 text-sm outline-none"
+                        className="w-full rounded-xl border border-slate-200 bg-[#fafafa] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                       />
                     </div>
                   </div>
 
-                  <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3">
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Availability</label>
+                  <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Availability</label>
                     <select
                       value={selectedAvailability}
                       onChange={(e) => updateQuery({ availability: e.target.value })}
-                      className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+                      className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                     >
                       <option value="">All</option>
                       <option value="in_stock">In Stock</option>
@@ -356,12 +357,12 @@ export default function Search() {
                     </select>
                   </div>
 
-                  <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-3">
-                    <label className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">Sort By</label>
+                  <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Sort By</label>
                     <select
                       value={selectedSort}
                       onChange={(e) => updateQuery({ sort: e.target.value })}
-                      className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none"
+                      className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2563eb]"
                     >
                       <option value="">Newest</option>
                       <option value="price_asc">Price: Low to High</option>
@@ -374,14 +375,14 @@ export default function Search() {
                   <button
                     type="button"
                     onClick={handleClearAll}
-                    className="flex-1 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-[#181818] transition hover:bg-gray-50"
+                    className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-[#0f172a] transition hover:bg-slate-50"
                   >
                     Clear All
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowMobileFilters(false)}
-                    className="flex-1 rounded-2xl bg-[#a97c50] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#8a6540]"
+                    className="flex-1 rounded-2xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2563eb]/30 transition hover:opacity-90"
                   >
                     Done
                   </button>
@@ -394,12 +395,22 @@ export default function Search() {
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 xs:gap-4 sm:gap-6 md:gap-8">
             {Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="h-96 rounded-xl bg-white animate-pulse" />
+              <div key={index} className="h-96 rounded-2xl bg-white animate-pulse ring-1 ring-slate-100" />
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-600">
-            No products found for "{q}"
+          <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center mx-auto mb-4">
+              <Search size={28} className="text-[#2563eb]" />
+            </div>
+            <p className="text-gray-600 font-semibold">No products found for "{q}"</p>
+            <button
+              type="button"
+              onClick={() => navigate("/mobiles")}
+              className="mt-5 px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full text-sm font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition"
+            >
+              Browse All Products
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 xs:gap-4 sm:gap-6 md:gap-8">

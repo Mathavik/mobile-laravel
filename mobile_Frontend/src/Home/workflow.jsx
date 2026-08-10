@@ -2,7 +2,7 @@ import React from "react";
 import {
   Send,
   WalletCards,
-  PackageCheck,
+  ShieldCheck,
 } from "lucide-react";
 
 const workflowItems = [
@@ -15,48 +15,46 @@ const workflowItems = [
   {
     id: 2,
     icon: WalletCards,
-    title: "Pay on",
-    subtitle: "Delivery",
+    title: "No Cost",
+    subtitle: "EMI / COD",
   },
   {
     id: 3,
-    icon: PackageCheck,
-    title: "No Returns",
-    subtitle: "& Exchanges",
+    icon: ShieldCheck,
+    title: "1 Year",
+    subtitle: "Brand Warranty",
   },
 ];
 
 function Workflow() {
   return (
-    <section className="w-full bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3">
+    <section className="w-full bg-[#f8fafc] py-12">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {workflowItems.map((item, index) => {
             const Icon = item.icon;
 
             return (
               <div
                 key={item.id}
-                className={`relative flex flex-col items-center justify-center py-10 px-6
-                ${
+                className={`relative flex items-center gap-4 rounded-2xl bg-white border border-gray-100 shadow-sm px-6 py-6 transition hover:shadow-lg hover:-translate-y-0.5 ${
                   index !== workflowItems.length - 1
-                    ? "md:border-r border-gray-300"
+                    ? ""
                     : ""
                 }`}
               >
-                <Icon
-                  size={36}
-                  strokeWidth={1.5}
-                  className="text-gray-700 mb-4"
-                />
+                <span className="flex items-center justify-center w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br from-[#2563eb] to-[#7c3aed] text-white shadow-lg shadow-[#2563eb]/25">
+                  <Icon size={26} strokeWidth={1.8} />
+                </span>
 
-                <h3 className="text-[17px] font-medium text-gray-900 leading-5 text-center">
-                  {item.title}
-                </h3>
-
-                <p className="text-[17px] font-medium text-gray-900 leading-5 text-center mt-1">
-                  {item.subtitle}
-                </p>
+                <div>
+                  <h3 className="text-[17px] font-bold text-gray-900 leading-5">
+                    {item.title}
+                  </h3>
+                  <p className="text-[14px] font-medium text-gray-500 leading-5 mt-1">
+                    {item.subtitle}
+                  </p>
+                </div>
               </div>
             );
           })}

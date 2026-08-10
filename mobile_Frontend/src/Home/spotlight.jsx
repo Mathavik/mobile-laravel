@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api, { resolveMediaUrl, FALLBACK_IMAGE } from "../services/api";
 import { formatCurrency } from "../utils/formatters";
@@ -7,7 +7,7 @@ import ProductMedia from "../components/ProductMedia";
 /**
  * Spotlight
  * ─────────────────────────────────────────────
- * "IN THE SPOTLIGHT" luxury section for the bridal boutique homepage.
+ * "IN THE SPOTLIGHT" featured section for the MobileKart homepage.
  *
  * LEFT  : the 2 latest products of that category
  * RIGHT : the single admin-selected spotlight category (image + name)
@@ -54,7 +54,7 @@ const Spotlight = () => {
   }, []);
 
   const openCategory = () => {
-    if (data?.id) navigate(`/bridal-lehenga?category_id=${data.id}`);
+    if (data?.id) navigate(`/mobiles?category_id=${data.id}`);
   };
 
   const openProduct = (id) => navigate(`/product-details/${id}`);
@@ -67,10 +67,13 @@ const Spotlight = () => {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
       {/* ── Section Header ─────────────────────────────── */}
       <div className="text-center mb-8 md:mb-10">
-         <h2 className="text-center text-2xl xs:text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[2px] sm:tracking-[4px] md:tracking-[6px] uppercase text-gray-900 mb-8 md:mb-12">
-           IN THE SPOTLIGHT
-          </h2>
-       
+        <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#2563eb] mb-2">
+          Hand-Picked For You
+        </span>
+        <h2 className="text-center text-2xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-3">
+          Featured Phones
+        </h2>
+        <p className="text-sm text-gray-500">Hand-picked smartphones you'll love</p>
       </div>
 
       {!data ? (
@@ -91,7 +94,7 @@ const Spotlight = () => {
                 />
               ))
             ) : (
-              <div className="sm:col-span-2 flex items-center justify-center border border-dashed border-[#d9c7ab] text-gray-400 text-sm p-8">
+              <div className="sm:col-span-2 flex items-center justify-center border border-dashed border-gray-300 text-gray-400 text-sm p-8">
                 New arrivals coming soon.
               </div>
             )}
@@ -100,7 +103,7 @@ const Spotlight = () => {
           {/* ── RIGHT: Category ───────────────────────── */}
           <div
             onClick={openCategory}
-            className="lg:col-span-3 relative overflow-hidden bg-[#f7f3ed] cursor-pointer group/cat min-h-[280px] sm:min-h-[360px] md:min-h-[420px]"
+            className="lg:col-span-3 relative overflow-hidden bg-[#0f172a] cursor-pointer group/cat min-h-[280px] sm:min-h-[360px] md:min-h-[420px] rounded-3xl"
           >
             <img
               src={resolveMediaUrl(data.image_src || data.image) || FALLBACK_IMAGE}
@@ -112,14 +115,14 @@ const Spotlight = () => {
                 e.currentTarget.src = FALLBACK_IMAGE;
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-transparent" />
 
             <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 md:pb-16">
-              {/* "Crafted For Celebration" text */}
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white tracking-wide text-center mb-6 md:mb-8 font-light">
-                Crafted For Celebration
+              {/* Title */}
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white tracking-wide text-center mb-6 md:mb-8 font-bold">
+                Power Meets Performance
               </h2>
-              
+
               {/* SHOP NOW button */}
               <button
                 type="button"
@@ -127,7 +130,7 @@ const Spotlight = () => {
                   e.stopPropagation();
                   openCategory();
                 }}
-                className="inline-block bg-transparent border border-white/80 text-white text-xs md:text-sm font-semibold uppercase tracking-[4px] px-8 py-3 transition-all duration-300 hover:bg-white hover:text-[#181818] active:scale-[0.98] backdrop-blur-sm bg-white/10"
+                className="inline-block bg-white text-[#0f172a] text-xs md:text-sm font-semibold uppercase tracking-[4px] px-8 py-3 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#7c3aed] hover:text-white active:scale-[0.98] rounded-full shadow-lg"
               >
                 SHOP NOW
               </button>
@@ -142,7 +145,7 @@ const Spotlight = () => {
 /* ── Spotlight Product Card ──────────────────────────────────── */
 const SpotlightProductCard = ({ product, onOpen }) => {
   const hasDiscount = Number(product.discount_percentage) > 0;
-  const productName = product.product_name || "Agaphi Lehenga";
+  const productName = product.product_name || "Smartphone";
   
   // Format price to show without decimals (like in image: 3499690)
   const formatPrice = (price) => {
@@ -168,7 +171,7 @@ const SpotlightProductCard = ({ product, onOpen }) => {
         />
 
         {hasDiscount && (
-          <span className="absolute top-3 right-3 bg-[#181818] text-[#e9d7bb] text-[10px] font-semibold tracking-[1px] px-3 py-1">
+          <span className="absolute top-3 right-3 bg-[#0f172a] text-[#e9d7bb] text-[10px] font-semibold tracking-[1px] px-3 py-1">
             {product.discount_percentage}% OFF
           </span>
         )}
@@ -176,12 +179,12 @@ const SpotlightProductCard = ({ product, onOpen }) => {
 
       {/* Details - matching the image style */}
       <div className="p-3 md:p-4 text-center">
-        <h4 className="text-sm md:text-base font-medium text-[#181818] uppercase tracking-[2px]">
+        <h4 className="text-sm md:text-base font-medium text-[#0f172a] uppercase tracking-[2px]">
           {productName}
         </h4>
 
         <div className="mt-1.5 flex items-center justify-center gap-3 flex-wrap">
-          <span className="text-base md:text-lg font-semibold text-[#181818]">
+          <span className="text-base md:text-lg font-semibold text-[#0f172a]">
             {formatPrice(product.offer_price ?? product.price)}
           </span>
           {hasDiscount && (

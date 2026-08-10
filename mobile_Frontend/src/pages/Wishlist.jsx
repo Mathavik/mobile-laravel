@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, ShoppingBag, Trash2, MoveRight, Sparkles, ArrowLeft } from "lucide-react";
 import { formatCurrency } from "../utils/formatters";
@@ -71,12 +71,13 @@ export default function Wishlist() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] pt-28 px-4 md:px-8 lg:px-12 pb-12">
+    <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] px-4 md:px-8 lg:px-12 pb-12">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold uppercase tracking-[2px] sm:tracking-[4px] text-[#1a1a1a]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Favorites</p>
+            <h1 className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0f172a]">
               Wishlist
             </h1>
             <p className="text-gray-500 text-sm mt-1">
@@ -88,13 +89,13 @@ export default function Wishlist() {
             <div className="flex flex-wrap items-center gap-3">
               <Link 
                 to="/" 
-                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition"
+                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-semibold text-gray-600 hover:bg-slate-50 hover:border-[#2563eb]/40 transition"
               >
                 <ArrowLeft size={16} /> Continue Shopping
               </Link>
               <button 
                 onClick={moveAllToCart}
-                className="flex items-center gap-2 px-5 py-2.5 bg-[#a97c50] text-white rounded-full text-sm font-medium hover:bg-[#8a6540] transition shadow-sm"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full text-sm font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30"
               >
                 <ShoppingBag size={16} /> Move All to Cart
               </button>
@@ -103,17 +104,17 @@ export default function Wishlist() {
         </div>
         
         {items.length === 0 ? (
-          <div className="mt-12 rounded-2xl bg-white p-12 text-center shadow-sm">
+          <div className="mt-12 rounded-3xl bg-white p-12 text-center ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
             <div className="flex justify-center mb-4">
-              <div className="w-20 h-20 rounded-full bg-[#f8f7f2] flex items-center justify-center">
-                <Heart size={32} className="text-gray-300" />
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center">
+                <Heart size={32} className="text-[#2563eb]" />
               </div>
             </div>
-            <h3 className="text-xl font-medium text-gray-700">Your wishlist is empty</h3>
+            <h3 className="text-xl font-bold text-gray-700">Your wishlist is empty</h3>
             <p className="text-gray-400 mt-2">Start adding your favorite items to your wishlist</p>
             <Link 
               to="/" 
-              className="mt-6 inline-flex items-center gap-2 px-8 py-3 bg-[#181818] text-white rounded-full hover:bg-[#333] transition"
+              className="mt-6 inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30"
             >
               <ShoppingBag size={18} /> Start Shopping
             </Link>
@@ -122,9 +123,9 @@ export default function Wishlist() {
           <>
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-6">
               {items.map((item) => (
-                <div key={item.id} className="group rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div key={item.id} className="group rounded-2xl bg-white ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] hover:shadow-[0_18px_50px_rgba(37,99,235,0.16)] hover:ring-[#2563eb]/20 transition-all duration-300 overflow-hidden">
                   {/* Image Container */}
-                  <div className="relative overflow-hidden bg-[#f8f7f2] aspect-square">
+                  <div className="relative overflow-hidden bg-[#f8fafc] aspect-square">
                     <ProductMedia
                       product={item}
                       image={item.image}
@@ -135,8 +136,8 @@ export default function Wishlist() {
                     
                     {/* Wishlist badge */}
                     <div className="absolute top-3 right-3">
-                      <span className="bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-medium text-[#a97c50] shadow-sm flex items-center gap-1">
-                        <Heart size={12} fill="#a97c50" className="text-[#a97c50]" /> 
+                      <span className="bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-medium text-[#2563eb] shadow-sm flex items-center gap-1">
+                        <Heart size={12} fill="#2563eb" className="text-[#2563eb]" /> 
                       </span>
                     </div>
                   </div>
@@ -145,13 +146,13 @@ export default function Wishlist() {
                   <div className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-[#1a1a1a] line-clamp-2">
+                        <h3 className="font-bold text-[#0f172a] line-clamp-2">
                           {item.product_name}
                         </h3>
                         {item.size && (
                           <div className="flex items-center gap-1 mt-1">
                             <span className="text-xs text-gray-400">Size</span>
-                            <span className="text-xs font-medium bg-[#f8f7f2] px-2 py-0.5 rounded">
+                            <span className="text-xs font-medium bg-[#2563eb]/5 border border-[#2563eb]/20 text-[#2563eb] px-2 py-0.5 rounded-full">
                               {item.size}
                             </span>
                           </div>
@@ -166,12 +167,12 @@ export default function Wishlist() {
                     </div>
                     
                     <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
-                      <span className="text-base sm:text-lg font-semibold text-[#a97c50]">
+                      <span className="text-base sm:text-lg font-extrabold tracking-tight text-[#2563eb]">
                         {formatCurrency(item.offer_price || item.price)}
                       </span>
                       <button 
                         onClick={() => moveToCart(item)}
-                        className="text-[10px] xs:text-[11px] sm:text-xs bg-[#181818] text-white px-2 xs:px-2.5 sm:px-4 py-1.5 rounded-full hover:bg-[#333] transition flex items-center gap-1"
+                        className="text-[10px] xs:text-[11px] sm:text-xs bg-[#0f172a] text-white px-2 xs:px-2.5 sm:px-4 py-1.5 rounded-full hover:bg-[#1e293b] transition flex items-center gap-1 font-semibold"
                       >
                         <ShoppingBag size={12} /> Move to Cart
                       </button>
@@ -180,13 +181,6 @@ export default function Wishlist() {
                 </div>
               ))}
             </div>
-
-            {/* Bottom Action Bar */}
-            {items.length > 0 && (
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-200">
-                {/* You can add extra actions here if needed */}
-              </div>
-            )}
           </>
         )}
       </div>

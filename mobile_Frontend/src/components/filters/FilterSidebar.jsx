@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, X, SlidersHorizontal } from 'lucide-react';
 
 const FilterSidebar = ({
@@ -16,7 +16,9 @@ const FilterSidebar = ({
   // ---------- Section expand/collapse ----------
   const [expandedSections, setExpandedSections] = useState({
     price: true,
-    sizes: true,
+    rams: true,
+    storages: true,
+    conditions: true,
     availability: true,
     rating: true
   });
@@ -28,8 +30,10 @@ const FilterSidebar = ({
     }));
   };
 
-  // Get available sizes
-  const availableSizes = filters.availableOptions?.sizes || ['S', 'M', 'L', 'XL', 'XXL'];
+  // Get available options
+  const availableRams = filters.availableOptions?.rams || ['4 GB', '6 GB', '8 GB', '12 GB'];
+  const availableStorages = filters.availableOptions?.storages || ['64 GB', '128 GB', '256 GB', '512 GB'];
+  const availableConditions = filters.availableOptions?.conditions || ['New', 'Refurbished', 'Used'];
 
   // ---------- Helper: sync input values when filters change from outside ----------
   useEffect(() => {
@@ -62,7 +66,7 @@ const FilterSidebar = ({
               const num = raw === '' ? 0 : Number(raw);
               setFilters((prev) => ({ ...prev, price_min: num }));
             }}
-            className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#a97c50] focus:border-transparent bg-gray-50"
+            className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent bg-gray-50"
             placeholder="Min"
           />
         </div>
@@ -84,7 +88,7 @@ const FilterSidebar = ({
               const num = raw === '' ? 1000000 : Number(raw);
               setFilters((prev) => ({ ...prev, price_max: num }));
             }}
-            className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#a97c50] focus:border-transparent bg-gray-50"
+            className="w-full pl-7 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent bg-gray-50"
             placeholder="Max"
           />
         </div>
@@ -96,33 +100,33 @@ const FilterSidebar = ({
     </div>
   );
 
-  // ---------- Size chips ----------
-  const renderSizeChips = () => {
-    const sizes = availableSizes;
-    if (!sizes || sizes.length === 0) {
-      return <p className="text-sm text-gray-400">No sizes available</p>;
+  // ---------- Spec chips ----------
+  const renderSpecChips = (options, filterKey) => {
+    const selected = filters[filterKey] || [];
+    if (!options || options.length === 0) {
+      return <p className="text-sm text-gray-400">No options available</p>;
     }
     return (
       <div className="flex flex-wrap gap-2">
-        {sizes.map((size) => (
+        {options.map((opt) => (
           <button
-            key={size}
+            key={opt}
             onClick={() => {
-              const selected = (filters.sizes || []).includes(size);
+              const included = selected.includes(opt);
               setFilters((prev) => ({
                 ...prev,
-                sizes: selected
-                  ? (prev.sizes || []).filter((s) => s !== size)
-                  : [...(prev.sizes || []), size]
+                [filterKey]: included
+                  ? (prev[filterKey] || []).filter((s) => s !== opt)
+                  : [...(prev[filterKey] || []), opt]
               }));
             }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              (filters.sizes || []).includes(size)
-                ? 'bg-[#a97c50] text-white shadow-md scale-105'
+              selected.includes(opt)
+                ? 'bg-[#2563eb] text-white shadow-md scale-105'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
             }`}
           >
-            {size}
+            {opt}
           </button>
         ))}
       </div>
@@ -145,7 +149,7 @@ const FilterSidebar = ({
             onChange={() =>
               setFilters((prev) => ({ ...prev, availability: option }))
             }
-            className="w-4 h-4 text-[#a97c50] focus:ring-[#a97c50] border-gray-300"
+            className="w-4 h-4 text-[#2563eb] focus:ring-[#2563eb] border-gray-300"
           />
           <span className="text-sm text-gray-700 capitalize">
             {option === 'all'
@@ -191,7 +195,7 @@ const FilterSidebar = ({
           </div>
           <span className="text-sm text-gray-600">{star}★ & above</span>
           {filters.rating === star && (
-            <span className="ml-auto text-xs text-[#a97c50] font-semibold">✓</span>
+            <span className="ml-auto text-xs text-[#2563eb] font-semibold">✓</span>
           )}
         </button>
       ))}
@@ -205,13 +209,13 @@ const FilterSidebar = ({
         onClick={() => toggleSection(section)}
         className="flex items-center justify-between w-full text-left group"
       >
-        <span className="font-medium text-gray-800 group-hover:text-[#a97c50] transition-colors">
+        <span className="font-medium text-gray-800 group-hover:text-[#2563eb] transition-colors">
           {title}
         </span>
         {expandedSections[section] ? (
-          <ChevronUp className="w-4 h-4 text-gray-400 group-hover:text-[#a97c50] transition-colors" />
+          <ChevronUp className="w-4 h-4 text-gray-400 group-hover:text-[#2563eb] transition-colors" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-[#a97c50] transition-colors" />
+          <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-[#2563eb] transition-colors" />
         )}
       </button>
       {expandedSections[section] && <div className="mt-3">{children}</div>}
@@ -222,7 +226,9 @@ const FilterSidebar = ({
   const hasActiveFilters = () => {
     return (
       (filters.price_min || 0) > 0 ||
-      (filters.sizes || []).length > 0 ||
+      (filters.rams || []).length > 0 ||
+      (filters.storages || []).length > 0 ||
+      (filters.conditions || []).length > 0 ||
       filters.availability !== 'all' ||
       filters.rating > 0
     );
@@ -231,7 +237,9 @@ const FilterSidebar = ({
   const getActiveFilterCount = () => {
     let count = 0;
     if ((filters.price_min || 0) > 0) count++;
-    if ((filters.sizes || []).length > 0) count++;
+    if ((filters.rams || []).length > 0) count++;
+    if ((filters.storages || []).length > 0) count++;
+    if ((filters.conditions || []).length > 0) count++;
     if (filters.availability !== 'all') count++;
     if (filters.rating > 0) count++;
     return count;
@@ -264,14 +272,16 @@ const FilterSidebar = ({
 
   // ---------- Main render ----------
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 border border-gray-100">
+    <div className="bg-white rounded-2xl shadow-[0_2px_20px_rgba(15,23,42,0.06)] ring-1 ring-slate-100 p-5">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-[#a97c50]" />
-          <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+          <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563eb] to-[#7c3aed] text-white">
+            <SlidersHorizontal className="w-4 h-4" />
+          </span>
+          <h3 className="text-lg font-bold text-[#0f172a]">Filters</h3>
           {getActiveFilterCount() > 0 && (
-            <span className="bg-[#a97c50] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+            <span className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
               {getActiveFilterCount()}
             </span>
           )}
@@ -288,10 +298,10 @@ const FilterSidebar = ({
 
       {/* Active Filters */}
       {hasActiveFilters() && (
-        <div className="mb-4 p-3 bg-gray-50 rounded-xl">
+        <div className="mb-4 p-3 bg-gradient-to-r from-[#f0f7ff] to-[#f5f3ff] rounded-xl">
           <div className="flex flex-wrap gap-2">
             {(filters.price_min || 0) > 0 && (
-              <span className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-gray-200">
+              <span className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-slate-200">
                 ₹{filters.price_min} - ₹{filters.price_max}
                 <button
                   onClick={removePriceFilter}
@@ -301,27 +311,33 @@ const FilterSidebar = ({
                 </button>
               </span>
             )}
-            {(filters.sizes || []).map((size) => (
-              <span
-                key={size}
-                className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-gray-200"
-              >
-                Size {size}
-                <button
-                  onClick={() =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      sizes: (prev.sizes || []).filter((s) => s !== size)
-                    }))
-                  }
-                  className="hover:text-red-500 transition-colors"
+            {[
+              { key: 'rams', label: 'RAM' },
+              { key: 'storages', label: 'Storage' },
+              { key: 'conditions', label: 'Condition' },
+            ].map(({ key, label }) =>
+              (filters[key] || []).map((value) => (
+                <span
+                  key={`${key}-${value}`}
+                  className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-slate-200"
                 >
-                  ×
-                </button>
-              </span>
-            ))}
+                  {label} {value}
+                  <button
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        [key]: (prev[key] || []).filter((s) => s !== value)
+                      }))
+                    }
+                    className="hover:text-red-500 transition-colors"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))
+            )}
             {filters.availability !== 'all' && (
-              <span className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-gray-200">
+              <span className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-slate-200">
                 {filters.availability === 'in_stock' ? 'In Stock' : 'Out of Stock'}
                 <button
                   onClick={() =>
@@ -334,7 +350,7 @@ const FilterSidebar = ({
               </span>
             )}
             {filters.rating > 0 && (
-              <span className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-gray-200">
+              <span className="bg-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-slate-200">
                 {filters.rating}★ & above
                 <button
                   onClick={() => setFilters((prev) => ({ ...prev, rating: 0 }))}
@@ -347,7 +363,7 @@ const FilterSidebar = ({
           </div>
           <button
             onClick={handleClear}
-            className="text-xs text-[#a97c50] hover:text-[#8b6a43] mt-2 font-medium transition-colors"
+            className="text-xs text-[#2563eb] hover:text-[#1d4ed8] mt-2 font-semibold transition-colors"
           >
             Clear All
           </button>
@@ -360,8 +376,16 @@ const FilterSidebar = ({
           {renderPriceRange()}
         </FilterSection>
 
-        <FilterSection title="Sizes" section="sizes">
-          {renderSizeChips()}
+        <FilterSection title="RAM" section="rams">
+          {renderSpecChips(availableRams, 'rams')}
+        </FilterSection>
+
+        <FilterSection title="Storage" section="storages">
+          {renderSpecChips(availableStorages, 'storages')}
+        </FilterSection>
+
+        <FilterSection title="Condition" section="conditions">
+          {renderSpecChips(availableConditions, 'conditions')}
         </FilterSection>
 
         <FilterSection title="Availability" section="availability">
@@ -376,7 +400,7 @@ const FilterSidebar = ({
       {/* Apply Button */}
       <button
         onClick={handleApply}
-        className="w-full mt-4 py-3 bg-[#a97c50] hover:bg-[#8b6a43] text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg active:scale-95"
+        className="w-full mt-4 py-3 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] hover:opacity-95 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#2563eb]/30 active:scale-95"
       >
         Apply Filters
       </button>

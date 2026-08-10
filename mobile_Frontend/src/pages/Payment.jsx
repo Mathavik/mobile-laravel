@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from "../services/api";
@@ -261,14 +261,14 @@ export default function Payment() {
   // If no order data, show error
   if (!orderData || !orderData.items || orderData.items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#f8f7f2] pt-28 px-4 md:px-8 lg:px-12 flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] px-4 md:px-8 lg:px-12 flex items-center justify-center">
+        <div className="rounded-3xl border border-dashed border-red-200 bg-white p-12 text-center max-w-md">
           <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-gray-800">No Order Found</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">No Order Found</h2>
           <p className="text-gray-600 mt-2">Please add items to your cart first.</p>
           <button 
             onClick={() => navigate("/")}
-            className="mt-4 px-6 py-2 bg-[#a97c50] text-white rounded-md hover:bg-[#8a6540] transition"
+            className="mt-5 px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition"
           >
             Go Shopping
           </button>
@@ -278,24 +278,25 @@ export default function Payment() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] pt-28 px-4 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-16 px-4 md:px-8 lg:px-12">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-serif font-bold text-[#181818] mb-8">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Payment</p>
+        <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-[#0f172a] mb-8">
           Payment Details
         </h1>
 
         <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8">
           {/* Payment Form */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="bg-white rounded-2xl ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] p-6 md:p-8">
             {error && (
-              <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-md text-sm border border-red-200 flex items-start gap-3">
+              <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-2xl text-sm border border-red-200 flex items-start gap-3">
                 <AlertCircle size={20} className="flex-shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}
 
             {success && (
-              <div className="mb-4 p-4 bg-green-50 text-green-700 rounded-md text-sm border border-green-200 flex items-start gap-3">
+              <div className="mb-4 p-4 bg-green-50 text-green-700 rounded-2xl text-sm border border-green-200 flex items-start gap-3">
                 <CheckCircle size={20} className="flex-shrink-0 mt-0.5" />
                 <span>Payment successful! Redirecting...</span>
               </div>
@@ -304,21 +305,23 @@ export default function Payment() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Customer Details */}
               <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <User size={20} className="text-[#a97c50]" />
+                <h3 className="text-lg font-bold text-[#0f172a] mb-4 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center">
+                    <User size={18} className="text-[#2563eb]" />
+                  </span>
                   Customer Details
                 </h3>
                 <div className="space-y-4">
-                  <div className="rounded-xl border border-gray-200 p-4 bg-gray-50">
+                  <div className="rounded-2xl border border-slate-100 bg-[#f8fafc] p-4">
                     <div className="text-sm text-gray-500">Order for</div>
-                    <div className="mt-1 font-semibold text-lg">{orderData.customer_name || user?.name}</div>
+                    <div className="mt-1 font-bold text-lg text-[#0f172a]">{orderData.customer_name || user?.name}</div>
                     <div className="text-sm text-gray-500 flex items-center gap-1 mt-1">
                       <Mail size={14} />
                       {orderData.email || user?.email}
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#0f172a] mb-1.5">
                       <Phone size={16} className="inline mr-1" />
                       Mobile Number *
                     </label>
@@ -328,12 +331,12 @@ export default function Payment() {
                       value={form.mobile}
                       onChange={handleChange}
                       disabled={submitting || success}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#a97c50] focus:border-transparent disabled:bg-gray-100"
+                      className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2563eb] focus:border-transparent outline-none disabled:bg-gray-100"
                       placeholder="Enter 10-digit mobile number"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-[#0f172a] mb-1.5">
                       <MapPin size={16} className="inline mr-1" />
                       Shipping Address *
                     </label>
@@ -343,7 +346,7 @@ export default function Payment() {
                       onChange={handleChange}
                       disabled={submitting || success}
                       rows={3}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#a97c50] focus:border-transparent disabled:bg-gray-100 resize-none"
+                      className="w-full px-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2563eb] focus:border-transparent outline-none disabled:bg-gray-100 resize-none"
                       placeholder="Enter shipping address"
                     />
                   </div>
@@ -351,9 +354,11 @@ export default function Payment() {
               </div>
 
               {/* Payment Method */}
-              <div className="border-t pt-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Wallet size={20} className="text-[#a97c50]" />
+              <div className="border-t border-slate-100 pt-6">
+                <h3 className="text-lg font-bold text-[#0f172a] mb-4 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center">
+                    <Wallet size={18} className="text-[#2563eb]" />
+                  </span>
                   Payment Method
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -363,14 +368,14 @@ export default function Payment() {
                       type="button"
                       onClick={() => setForm(prev => ({ ...prev, payment_method: method.value }))}
                       disabled={submitting || success}
-                      className={`p-3 border-2 rounded-lg text-center transition ${
+                      className={`p-3.5 rounded-2xl border-2 text-center transition ${
                         form.payment_method === method.value
-                          ? "border-[#a97c50] bg-[#f8f7f2]"
-                          : "border-gray-200 hover:border-gray-300"
+                          ? "border-transparent bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white shadow-lg shadow-[#2563eb]/25"
+                          : "border-slate-200 bg-white hover:border-[#2563eb]/40"
                       } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
-                      <method.icon className="mx-auto h-6 w-6 mb-1" />
-                      <span className="text-xs font-medium">{method.label}</span>
+                      <method.icon className={`mx-auto h-6 w-6 mb-1 ${form.payment_method === method.value ? "text-white" : "text-[#2563eb]"}`} />
+                      <span className="text-xs font-semibold">{method.label}</span>
                     </button>
                   ))}
                 </div>
@@ -381,7 +386,7 @@ export default function Payment() {
               <button
                 type="submit"
                 disabled={submitting || success}
-                className="w-full bg-[#181818] text-white py-3.5 rounded-md hover:bg-[#333] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg font-medium"
+                className="w-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white py-3.5 rounded-2xl hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg font-bold shadow-lg shadow-[#2563eb]/30 active:scale-95"
               >
                 {submitting ? (
                   <>
@@ -402,33 +407,33 @@ export default function Payment() {
           </div>
 
           {/* Order Summary */}
-          <div className="bg-white rounded-xl shadow-sm p-6 h-fit sticky top-28">
-            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+          <div className="bg-white rounded-2xl ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] p-6 h-fit sticky top-28">
+            <h2 className="text-xl font-extrabold tracking-tight text-[#0f172a] mb-4">Order Summary</h2>
             
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium">{formatCurrency(subtotal)}</span>
+                <span className="font-semibold">{formatCurrency(subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">GST</span>
-                <span className="font-medium">{formatCurrency(gstTotal)}</span>
+                <span className="font-semibold">{formatCurrency(gstTotal)}</span>
               </div>
-              <div className="border-t pt-3 flex justify-between font-semibold text-lg">
+              <div className="border-t border-slate-100 pt-3 flex justify-between font-bold text-lg text-[#0f172a]">
                 <span>Total</span>
-                <span className="text-[#a97c50]">{formatCurrency(totalWithGst)}</span>
+                <span className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] bg-clip-text text-transparent">{formatCurrency(totalWithGst)}</span>
               </div>
             </div>
 
-            <div className="mt-6 border-t pt-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Items</h4>
+            <div className="mt-6 border-t border-slate-100 pt-4">
+              <h4 className="text-sm font-bold text-[#0f172a] mb-2">Items</h4>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {items.map((item, index) => (
-                  <div key={index} className="flex justify-between text-sm py-1 border-b border-gray-50 gap-3">
+                  <div key={index} className="flex justify-between text-sm py-1 border-b border-slate-50 gap-3">
                     <span className="text-gray-600 min-w-0 break-words">
                       {item.product_name} × {item.quantity}
                     </span>
-                    <span className="font-medium whitespace-nowrap shrink-0">
+                    <span className="font-semibold whitespace-nowrap shrink-0 text-[#0f172a]">
                       {formatCurrency(item.price * item.quantity)}
                     </span>
                   </div>
@@ -437,7 +442,7 @@ export default function Payment() {
             </div>
 
             {user && (
-              <div className="mt-4 pt-4 border-t text-xs text-gray-500">
+              <div className="mt-4 pt-4 border-t border-slate-100 text-xs text-gray-500">
                 <p className="flex items-center gap-1">✓ Order will be linked to your account</p>
                 <p className="mt-1">You can view your orders in your profile</p>
               </div>

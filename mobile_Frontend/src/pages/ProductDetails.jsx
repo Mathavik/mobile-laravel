@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Heart, ShoppingBag, Truck, ChevronLeft, ChevronRight, Play, AlertTriangle, X, Expand } from "lucide-react";
 import { formatCurrency, getDiscountPercent } from "../utils/formatters";
@@ -66,6 +66,30 @@ export default function ProductDetails() {
       .split(/[,;|]/)
       .map((size) => size.trim())
       .filter(Boolean);
+  }, [product]);
+
+  const mobileSpecs = useMemo(() => {
+    if (!product) return [];
+    const items = [
+      ["Model", product.model_name],
+      ["RAM", product.ram],
+      ["Storage", product.internal_storage],
+      ["Display", product.display_size],
+      ["Display Type", product.display_type],
+      ["Processor", product.processor],
+      ["Battery", product.battery_capacity],
+      ["Rear Camera", product.rear_camera],
+      ["Front Camera", product.front_camera],
+      ["Operating System", product.operating_system],
+      ["Network", product.network_type],
+      ["SIM Slots", product.sim_slots],
+      ["Warranty", product.warranty],
+      ["Condition", product.condition],
+      ["Color", product.color],
+      ["MRP", product.mrp],
+      ["GST", product.gst_percentage],
+    ];
+    return items.filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== "");
   }, [product]);
 
   useEffect(() => {
@@ -321,19 +345,68 @@ export default function ProductDetails() {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center pt-28">Loading product...</div>;
+    return (
+      <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-16 px-4 md:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10">
+          <div>
+            <div className="rounded-3xl bg-white animate-pulse h-[320px] xs:h-[380px] sm:h-[460px] md:h-[520px] ring-1 ring-slate-100" />
+            <div className="mt-4 grid grid-cols-6 gap-2">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-20 rounded-lg bg-white animate-pulse ring-1 ring-slate-100" />
+              ))}
+            </div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-3 w-24 bg-white animate-pulse rounded-full ring-1 ring-slate-100" />
+            <div className="h-8 w-3/4 bg-white animate-pulse rounded-full ring-1 ring-slate-100" />
+            <div className="h-4 w-full bg-white animate-pulse rounded-full ring-1 ring-slate-100" />
+            <div className="h-4 w-2/3 bg-white animate-pulse rounded-full ring-1 ring-slate-100" />
+            <div className="h-10 w-48 bg-white animate-pulse rounded-2xl ring-1 ring-slate-100" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center pt-28 text-center px-4 text-red-600">{error}</div>;
+    return (
+      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center pt-[116px] lg:pt-[156px] px-4">
+        <div className="rounded-3xl border border-dashed border-red-200 bg-white p-12 text-center max-w-md">
+          <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+            <AlertTriangle size={28} className="text-red-500" />
+          </div>
+          <p className="text-red-600 font-semibold">{error}</p>
+          <button
+            type="button"
+            onClick={() => navigate("/mobiles")}
+            className="mt-5 px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full text-sm font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition"
+          >
+            Browse All Products
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (!product) {
-    return <div className="min-h-screen flex items-center justify-center pt-28">Product not found.</div>;
+    return (
+      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center pt-[116px] lg:pt-[156px] px-4">
+        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center max-w-md">
+          <p className="text-gray-600 font-semibold">Product not found.</p>
+          <button
+            type="button"
+            onClick={() => navigate("/mobiles")}
+            className="mt-5 px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full text-sm font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition"
+          >
+            Browse All Products
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] pt-28 pb-16 px-4 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-16 px-4 md:px-8 lg:px-12">
       {/* Fullscreen Modal */}
       {isFullscreen && (
         <div 
@@ -398,7 +471,7 @@ export default function ProductDetails() {
         <div>
           {/* Main Media Display - No black background */}
           <div 
-            className="relative rounded-xl overflow-hidden cursor-pointer bg-[#f8f7f2]"
+            className="relative rounded-3xl overflow-hidden cursor-pointer bg-white ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)]"
             onClick={openFullscreen}
           >
             {currentMedia?.type === 'video' ? (
@@ -481,7 +554,7 @@ export default function ProductDetails() {
                   onClick={() => setCurrentMediaIndex(index)}
                   className={`relative rounded-lg overflow-hidden border-2 transition ${
                     currentMediaIndex === index 
-                      ? 'border-[#a97c50]' 
+                      ? 'border-[#2563eb]' 
                       : 'border-transparent hover:border-gray-300'
                   }`}
                 >
@@ -507,7 +580,7 @@ export default function ProductDetails() {
                     />
                   )}
                   {currentMediaIndex === index && (
-                    <div className="absolute inset-0 bg-[#a97c50]/10"></div>
+                    <div className="absolute inset-0 bg-[#2563eb]/10"></div>
                   )}
                 </button>
               ))}
@@ -517,8 +590,8 @@ export default function ProductDetails() {
 
         {/* Right Column - Product Info */}
         <div>
-          <p className="text-sm uppercase tracking-[3px] text-[#a97c50]">{product.category_name}</p>
-          <h1 className="text-2xl xs:text-2xl sm:text-3xl font-semibold mt-2">{product.product_name}</h1>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">{product.category_name}</p>
+          <h1 className="text-2xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0f172a] mt-2">{product.product_name}</h1>
           <p className="text-gray-600 mt-3">{product.short_description || product.full_description}</p>
 
           {/* Stock Badges Status Display */}
@@ -535,34 +608,34 @@ export default function ProductDetails() {
           </div>
 
           <div className="mt-4 flex items-center gap-3">
-            <span className="text-2xl font-semibold">{formatCurrency(product.price)}</span>
-            {product.original_price && (
+            <span className="text-2xl xs:text-3xl font-extrabold tracking-tight text-[#0f172a]">{formatCurrency(product.offer_price || product.price)}</span>
+            {product.mrp && Number(product.mrp) > Number(product.offer_price || product.price) && (
               <>
-                <span className="line-through text-gray-400">{formatCurrency(product.original_price)}</span>
-                <span className="text-[#a97c50]">{getDiscountPercent(product.original_price, product.price)}% off</span>
+                <span className="line-through text-gray-400">{formatCurrency(product.mrp)}</span>
+                <span className="px-2 py-1 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white text-xs font-semibold">{getDiscountPercent(product.mrp, product.offer_price || product.price)}% off</span>
               </>
             )}
           </div>
 
           {!isOutOfStock && (
             <div className="mt-2 text-sm text-gray-600">
-              Total: <span className="font-semibold">{formatCurrency(product.price * quantity)}</span>
+              Total: <span className="font-semibold text-[#2563eb]">{formatCurrency(product.price * quantity)}</span>
             </div>
           )}
 
           {availableSizes.length > 0 && (
             <div className="mt-4">
-              <span className="text-sm font-medium text-gray-700">Select Size:</span>
+              <span className="text-sm font-semibold text-[#0f172a]">Select Size:</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 {availableSizes.map((size) => (
                   <button
                     key={size}
                     type="button"
                     onClick={() => setSelectedSize(size)}
-                    className={`rounded-full border px-4 py-2 text-sm transition ${
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                       selectedSize === size 
-                        ? "border-[#a97c50] bg-[#a97c50] text-white" 
-                        : "border-gray-300 bg-white text-gray-700 hover:border-gray-400"
+                        ? "border-transparent bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white shadow-md shadow-[#2563eb]/30" 
+                        : "border-slate-200 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]"
                     }`}
                   >
                     {size}
@@ -572,22 +645,42 @@ export default function ProductDetails() {
             </div>
           )}
 
+          {mobileSpecs.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["model_name", "ram", "internal_storage"].map((key) =>
+                product[key] ? (
+                  <span
+                    key={key}
+                    className="rounded-full border border-[#2563eb]/30 bg-[#2563eb]/5 px-3 py-1 text-xs font-semibold text-[#2563eb]"
+                  >
+                    {product[key]}
+                  </span>
+                ) : null
+              )}
+              {product.condition && (
+                <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-gray-600">
+                  {product.condition}
+                </span>
+              )}
+            </div>
+          )}
+
           {/* Quantity Selector - Hides if out of stock */}
           {!isOutOfStock && (
             <div className="mt-4 flex items-center gap-4">
-              <span className="text-sm font-medium text-gray-700">Quantity:</span>
-              <div className="flex items-center border border-gray-300 rounded-md bg-white">
+              <span className="text-sm font-semibold text-[#0f172a]">Quantity:</span>
+              <div className="flex items-center border border-slate-200 rounded-xl bg-white shadow-sm">
                 <button 
                   onClick={decrementQuantity} 
-                  className="px-3 py-1 hover:bg-gray-100 transition" 
+                  className="px-4 py-2 rounded-l-xl hover:bg-slate-50 transition text-[#2563eb] font-bold" 
                   disabled={quantity <= 1}
                 >
                   -
                 </button>
-                <span className="px-4 py-1 min-w-[40px] text-center">{quantity}</span>
+                <span className="px-4 py-2 min-w-[40px] text-center font-semibold">{quantity}</span>
                 <button 
                   onClick={incrementQuantity} 
-                  className="px-3 py-1 hover:bg-gray-100 transition"
+                  className="px-4 py-2 rounded-r-xl hover:bg-slate-50 transition text-[#2563eb] font-bold"
                   disabled={product.stock && quantity >= Number(product.stock)}
                 >
                   +
@@ -604,20 +697,20 @@ export default function ProductDetails() {
           {/* Action Buttons with Conditional Rendering */}
           <div className="mt-6 flex flex-wrap gap-3">
             {isOutOfStock ? (
-              <div className="w-full flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-md font-medium text-center justify-center">
+              <div className="w-full flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-2xl font-semibold text-center justify-center">
                 <AlertTriangle size={18} /> Product is Out of Stock
               </div>
             ) : (
               <>
                 <button 
                   onClick={addToCart} 
-                  className="flex items-center gap-2 rounded-md bg-[#181818] px-4 py-3 text-white hover:bg-[#333] transition"
+                  className="flex items-center gap-2 rounded-2xl bg-[#0f172a] px-6 py-3 text-white font-semibold hover:bg-[#1e293b] transition shadow-lg shadow-[#0f172a]/20"
                 >
                   <ShoppingBag size={16} /> Add to Cart
                 </button>
                 <button 
                   onClick={handleBuyNow} 
-                  className="flex items-center gap-2 rounded-md bg-[#a97c50] px-4 py-3 text-white hover:bg-[#8a6540] transition"
+                  className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-6 py-3 text-white font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30"
                 >
                   Buy Now
                 </button>
@@ -625,10 +718,10 @@ export default function ProductDetails() {
             )}
             <button
               onClick={addToWishlist}
-              className={`flex items-center gap-2 rounded-md border px-4 py-3 transition ${
+              className={`flex items-center gap-2 rounded-2xl border px-5 py-3 font-semibold transition ${
                 isWishlisted
-                  ? "bg-red-500 text-white border-red-500 hover:bg-red-600"
-                  : "bg-white border-gray-300 hover:bg-gray-50"
+                  ? "bg-gradient-to-r from-[#ef4444] to-[#f43f5e] text-white border-transparent shadow-lg shadow-[#ef4444]/30"
+                  : "bg-white border-slate-200 text-[#0f172a] hover:border-[#ef4444] hover:text-[#ef4444]"
               }`}
             >
               <Heart
@@ -639,30 +732,28 @@ export default function ProductDetails() {
             </button>
           </div>
 
-          <div className="mt-8 rounded-xl border border-gray-200 bg-white p-5">
-            <h2 className="font-semibold text-lg">Product Details</h2>
-            <div className="mt-4 grid md:grid-cols-2 gap-3 text-sm text-gray-700">
-              {product.fabric && <div><span className="font-medium">Fabric:</span> {product.fabric}</div>}
-              {product.material && <div><span className="font-medium">Material:</span> {product.material}</div>}
-              {product.embroidery && <div><span className="font-medium">Embroidery:</span> {product.embroidery}</div>}
-              {product.color && <div><span className="font-medium">Color:</span> {product.color}</div>}
-              {product.available_sizes && <div><span className="font-medium">Sizes:</span> {product.available_sizes}</div>}
-              {product.occasion && <div><span className="font-medium">Occasion:</span> {product.occasion}</div>}
-              {product.unit && <div><span className="font-medium">Unit:</span> {product.unit}</div>}
-              {product.gst_percentage && <div><span className="font-medium">GST:</span> {product.gst_percentage}%</div>}
+          <div className="mt-8 rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
+            <h2 className="font-bold text-lg text-[#0f172a]">Specifications</h2>
+            <div className="mt-4 grid md:grid-cols-2 gap-3 text-sm">
+              {mobileSpecs.map(([label, value]) => (
+                <div key={label} className="flex justify-between gap-2 border-b border-slate-100 pb-2">
+                  <span className="font-medium text-gray-500">{label}:</span>
+                  <span className="font-semibold text-[#0f172a] text-right">{value}</span>
+                </div>
+              ))}
             </div>
           </div>
 
           {buildTagList(product).length > 0 && (
-            <div className="mt-6 rounded-xl border border-gray-200 bg-white p-5">
-              <h2 className="font-semibold text-lg mb-3">Search Tags</h2>
+            <div className="mt-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
+              <h2 className="font-bold text-lg text-[#0f172a] mb-3">Search Tags</h2>
               <div className="flex flex-wrap gap-2">
                 {buildTagList(product).map((tag) => (
                   <button
                     key={tag}
                     type="button"
                     onClick={() => navigate(`/search?q=${encodeURIComponent(tag)}`)}
-                    className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600 transition hover:border-[#a97c50] hover:text-[#a97c50]"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-gray-600 transition hover:border-[#2563eb] hover:bg-[#2563eb]/5 hover:text-[#2563eb]"
                   >
                     {tag}
                   </button>
@@ -672,10 +763,12 @@ export default function ProductDetails() {
           )}
 
           <div className="mt-6 grid md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-gray-200 bg-white p-4 flex items-start gap-3">
-              <Truck className="mt-1" />
+            <div className="rounded-2xl border border-slate-100 bg-white p-4 flex items-start gap-3 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center shrink-0">
+                <Truck size={18} className="text-[#2563eb]" />
+              </div>
               <div>
-                <h3 className="font-semibold">Shipping</h3>
+                <h3 className="font-bold text-[#0f172a]">Shipping</h3>
                 <p className="text-sm text-gray-600">Fast delivery across India.</p>
               </div>
             </div>

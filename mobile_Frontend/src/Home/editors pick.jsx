@@ -1,4 +1,4 @@
-// EditorsPick.jsx
+﻿// EditorsPick.jsx
 // "EDITOR'S PICK" luxury homepage section.
 // Banners are loaded dynamically from the `home_page_banners` backend module.
 // Only ACTIVE banners are fetched, then purely rendered in the server's
@@ -44,9 +44,9 @@ function EditorsPick() {
 
   const openCollection = (banner) => {
     if (banner?.collection_id) {
-      navigate(`/bridal-lehenga?category_id=${banner.collection_id}`);
+      navigate(`/mobiles?category_id=${banner.collection_id}`);
     } else {
-      navigate("/bridal-lehenga");
+      navigate("/mobiles");
     }
   };
 
@@ -63,26 +63,32 @@ function EditorsPick() {
   }
 
   if (banners.length === 0) {
-    return (
-      <section className="bg-white py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center text-gray-400 py-10">
-          <p className="text-lg mb-1">Editor's Picks coming soon</p>
-          <p className="text-sm">Add banners from the Home Page Banners section.</p>
-        </div>
-      </section>
-    );
+    return null;
   }
 
   return (
-    <section className="bg-white py-14">
+    <section className="bg-[#f8fafc] py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-end justify-between mb-8 flex-wrap gap-3">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#2563eb]">
+              Our Experts Recommend
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">
+              Editor's Picks
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Top deals our experts recommend
+            </p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {banners.map((banner) => {
             const image = resolveMediaUrl(banner.image_url) || FALLBACK_IMAGE;
             return (
               <div
                 key={banner.id}
-                className="relative overflow-hidden group cursor-pointer rounded-lg bg-[#f7f3ed]"
+                className="relative overflow-hidden group cursor-pointer rounded-3xl bg-[#0f172a]"
                 onClick={() => openCollection(banner)}
               >
                 {/* Banner image with zoom on hover */}
@@ -100,11 +106,11 @@ function EditorsPick() {
                 </div>
 
                 {/* Soft dark overlay for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
 
                 {/* Title + SHOP NOW (bottom-left) */}
                 <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col items-start">
-                  <h2 className="text-white font-serif text-3xl md:text-4xl lg:text-[42px] leading-tight mb-5 tracking-wide drop-shadow-lg">
+                  <h2 className="text-white font-bold text-3xl md:text-4xl lg:text-[42px] leading-tight mb-5 tracking-wide drop-shadow-lg">
                     {banner.banner_name || "Editor's Pick"}
                   </h2>
 
@@ -114,7 +120,7 @@ function EditorsPick() {
                       e.stopPropagation();
                       openCollection(banner);
                     }}
-                    className="bg-white text-[#181818] font-semibold uppercase tracking-[3px] text-xs md:text-sm px-8 py-3 transition-all duration-300 hover:bg-black hover:text-white hover:scale-[1.03] active:scale-[0.98] shadow-md"
+                    className="bg-white text-[#0f172a] font-semibold uppercase tracking-[3px] text-xs md:text-sm px-8 py-3 transition-all duration-300 hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#7c3aed] hover:text-white hover:scale-[1.03] active:scale-[0.98] rounded-full shadow-md"
                   >
                     SHOP NOW
                   </button>

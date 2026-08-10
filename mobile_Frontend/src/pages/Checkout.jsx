@@ -1,4 +1,4 @@
-
+﻿
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -137,12 +137,12 @@ export default function Checkout() {
   // If no items, show loading or redirect
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#f8f7f2] pt-28 px-4 md:px-8 lg:px-12 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">No items to checkout.</p>
+      <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] px-4 md:px-8 lg:px-12 flex items-center justify-center">
+        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center max-w-md">
+          <p className="text-gray-600 font-semibold">No items to checkout.</p>
           <button 
             onClick={() => navigate("/")}
-            className="mt-4 px-6 py-2 bg-[#a97c50] text-white rounded-md hover:bg-[#8a6540] transition"
+            className="mt-5 px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition"
           >
             Continue Shopping
           </button>
@@ -152,10 +152,13 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] pt-28 pb-12 px-4 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-12 px-4 md:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.2fr_0.8fr] gap-8">
-        <form onSubmit={handleSubmit} className="rounded-xl bg-white p-6 shadow-sm">
-          <h1 className="text-2xl font-semibold">
+        <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-6 md:p-8 ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">
+            {fromProduct ? "Confirm Order" : "Checkout"}
+          </p>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-[#0f172a]">
             {fromProduct ? "Confirm Order" : "Checkout"}
           </h1>
           <p className="mt-2 text-sm text-gray-600">
@@ -165,19 +168,19 @@ export default function Checkout() {
           </p>
           
           {error && (
-            <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-md text-sm border border-red-200">
+            <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-2xl text-sm border border-red-200">
               <strong>Error:</strong> {error}
             </div>
           )}
 
           <div className="mt-5 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-[#0f172a] mb-1.5">
                 Full Name *
               </label>
               <input 
                 required 
-                className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-[#a97c50] focus:border-transparent" 
+                className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb] focus:border-transparent outline-none" 
                 placeholder="Full Name" 
                 value={form.customer_name} 
                 onChange={(e) => setForm({ ...form, customer_name: e.target.value })} 
@@ -185,13 +188,13 @@ export default function Checkout() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-[#0f172a] mb-1.5">
                 Email *
               </label>
               <input 
                 required 
                 type="email"
-                className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-[#a97c50] focus:border-transparent" 
+                className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb] focus:border-transparent outline-none" 
                 placeholder="Email" 
                 value={form.email} 
                 onChange={(e) => setForm({ ...form, email: e.target.value })} 
@@ -199,13 +202,13 @@ export default function Checkout() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-[#0f172a] mb-1.5">
                 Mobile Number *
               </label>
               <input 
                 required 
                 type="tel"
-                className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-[#a97c50] focus:border-transparent" 
+                className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb] focus:border-transparent outline-none" 
                 placeholder="Mobile Number" 
                 value={form.mobile} 
                 onChange={(e) => setForm({ ...form, mobile: e.target.value })} 
@@ -213,12 +216,12 @@ export default function Checkout() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-[#0f172a] mb-1.5">
                 Shipping Address *
               </label>
               <textarea 
                 required 
-                className="min-h-24 w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-[#a97c50] focus:border-transparent" 
+                className="min-h-24 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 focus:ring-2 focus:ring-[#2563eb] focus:border-transparent outline-none" 
                 placeholder="Shipping Address" 
                 value={form.shipping_address} 
                 onChange={(e) => setForm({ ...form, shipping_address: e.target.value })} 
@@ -229,7 +232,7 @@ export default function Checkout() {
           <button 
             type="submit" 
             disabled={loading || items.length === 0}
-            className="mt-6 w-full rounded-md bg-[#181818] px-4 py-3 text-white hover:bg-[#333] transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full rounded-2xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-4 py-3.5 text-white font-semibold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#2563eb]/30 active:scale-95"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -245,8 +248,8 @@ export default function Checkout() {
           </button>
         </form>
 
-        <div className="rounded-xl bg-white p-6 shadow-sm h-fit">
-          <h2 className="text-xl font-semibold">Order Summary</h2>
+        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] h-fit sticky top-28">
+          <h2 className="text-xl font-extrabold tracking-tight text-[#0f172a]">Order Summary</h2>
           
           <div className="mt-4 space-y-2 text-sm text-gray-600">
             {items.map((item, index) => (
@@ -254,20 +257,32 @@ export default function Checkout() {
                 <span className="min-w-0 break-words">
                   {item.product_name} × {item.quantity}
                 </span>
-                <span className="whitespace-nowrap shrink-0">
+                <span className="whitespace-nowrap shrink-0 font-medium text-[#0f172a]">
                   {formatCurrency(item.price * item.quantity)}
                 </span>
               </div>
             ))}
           </div>
           
-          <div className="mt-4 border-t pt-4 flex justify-between font-semibold text-black">
-            <span>Total</span>
+          <div className="mt-4 border-t border-slate-100 pt-4 flex justify-between font-bold text-[#0f172a]">
+            <span>Subtotal</span>
             <span>{formatCurrency(subtotal)}</span>
+          </div>
+
+          {gstTotal > 0 && (
+            <div className="mt-2 flex justify-between text-sm text-gray-600">
+              <span>GST</span>
+              <span className="font-medium">{formatCurrency(gstTotal)}</span>
+            </div>
+          )}
+
+          <div className="mt-2 flex justify-between font-bold text-lg text-[#0f172a]">
+            <span>Total</span>
+            <span className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] bg-clip-text text-transparent">{formatCurrency(total)}</span>
           </div>
           
           {user && (
-            <div className="mt-4 pt-4 border-t text-xs text-gray-500">
+            <div className="mt-4 pt-4 border-t border-slate-100 text-xs text-gray-500">
               <p>✓ Order will be linked to your account</p>
               <p className="mt-1">You can view your orders in your profile</p>
             </div>

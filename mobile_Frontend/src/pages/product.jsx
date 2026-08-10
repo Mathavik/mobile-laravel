@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "../contexts/StoreContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -17,7 +17,9 @@ export default function Product() {
     const [filters, setFilters] = useState({
         price_min: 0,
         price_max: 1000000,
-        sizes: [],
+        rams: [],
+        storages: [],
+        conditions: [],
         availability: 'all',
         rating: 0,
         sort_by: 'newest',
@@ -42,7 +44,7 @@ export default function Product() {
     // clicks a category link), rehydrate the filter state from the query string.
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const sizes = (params.get("sizes") || "")
+        const parseList = (key) => (params.get(key) || "")
             .split(",")
             .map((s) => s.trim())
             .filter(Boolean);
@@ -52,7 +54,9 @@ export default function Product() {
             price_max: params.get("max_price")
                 ? Number(params.get("max_price"))
                 : prev.availableOptions?.price_range?.max || 1000000,
-            sizes,
+            rams: parseList("rams"),
+            storages: parseList("storages"),
+            conditions: parseList("conditions"),
             availability: params.get("availability") || "all",
             rating: params.get("rating") ? Number(params.get("rating")) : 0,
             sort_by: params.get("sort") || "newest",
@@ -96,7 +100,9 @@ export default function Product() {
                     search: filters.search || '',
                     min_price: filters.price_min > 0 ? filters.price_min : undefined,
                     max_price: filters.price_max < 1000000 ? filters.price_max : undefined,
-                    sizes: (filters.sizes || []).join(','),
+                    rams: (filters.rams || []).join(','),
+                    storages: (filters.storages || []).join(','),
+                    conditions: (filters.conditions || []).join(','),
                     availability: filters.availability !== 'all' ? filters.availability : undefined,
                     sort: filters.sort_by || 'newest',
                     per_page: filters.limit || 20,
@@ -129,12 +135,16 @@ export default function Product() {
     };
 
     // Debounced real-time fetch whenever any filter / pagination / category changes.
-    const sizesKey = (filters.sizes || []).slice().sort().join(",");
+    const ramsKey = (filters.rams || []).slice().sort().join(",");
+    const storagesKey = (filters.storages || []).slice().sort().join(",");
+    const conditionsKey = (filters.conditions || []).slice().sort().join(",");
     const filterKey = [
         categoryId,
         filters.price_min,
         filters.price_max,
-        sizesKey,
+        ramsKey,
+        storagesKey,
+        conditionsKey,
         filters.availability,
         filters.rating,
         filters.sort_by,
@@ -158,7 +168,9 @@ export default function Product() {
         if (categoryId) params.set("category_id", String(categoryId));
         if (filters.price_min > 0) params.set("min_price", String(filters.price_min));
         if (filters.price_max < 1000000) params.set("max_price", String(filters.price_max));
-        if (sizesKey) params.set("sizes", sizesKey);
+        if (ramsKey) params.set("rams", ramsKey);
+        if (storagesKey) params.set("storages", storagesKey);
+        if (conditionsKey) params.set("conditions", conditionsKey);
         if (filters.availability !== "all") params.set("availability", filters.availability);
         if (filters.rating > 0) params.set("rating", String(filters.rating));
         if (filters.sort_by && filters.sort_by !== "newest") params.set("sort", filters.sort_by);
@@ -168,7 +180,7 @@ export default function Product() {
             window.history.replaceState({}, "", next);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categoryId, filters.price_min, filters.price_max, sizesKey, filters.availability, filters.rating, filters.sort_by]);
+    }, [categoryId, filters.price_min, filters.price_max, ramsKey, storagesKey, conditionsKey, filters.availability, filters.rating, filters.sort_by]);
 
     const applyFilters = () => {
         setFilters(prev => ({ ...prev, offset: 0 }));
@@ -181,7 +193,9 @@ export default function Product() {
         setFilters({
             price_min: 0,
             price_max: filterOptions?.price_range?.max || 1000000,
-            sizes: [],
+            rams: [],
+            storages: [],
+            conditions: [],
             availability: 'all',
             rating: 0,
             sort_by: 'newest',
@@ -192,12 +206,7 @@ export default function Product() {
     };
 
     const getDefaultSize = (product) => {
-        if (!product?.available_sizes) return "";
-        const sizes = product.available_sizes
-            .split(/[,;|]/)
-            .map((size) => size.trim())
-            .filter(Boolean);
-        return sizes.length > 0 ? sizes[0] : "";
+        return "";
     };
 
     const addToCart = async (product, size = "") => {
@@ -287,18 +296,21 @@ export default function Product() {
     };
 
     const activeFilterCount =
-        (filters.sizes || []).length +
+        (filters.rams || []).length +
+        (filters.storages || []).length +
+        (filters.conditions || []).length +
         (filters.availability !== 'all' ? 1 : 0) +
         (filters.rating > 0 ? 1 : 0) +
         (filters.price_min > 0 ? 1 : 0);
 
     return (
-        <div className="min-h-screen bg-[#f8f7f2] pt-28 pb-16 px-4 md:px-8 lg:px-12">
+        <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-16 px-4 md:px-8 lg:px-12">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-900">Products</h1>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Smartphones</p>
+                        <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-[#0f172a]">Mobile Phones</h1>
                         <p className="text-sm text-gray-500 mt-1">
                             {totalProducts} products found
                         </p>
@@ -306,27 +318,34 @@ export default function Product() {
 
                     <div className="flex items-center gap-3 flex-wrap">
                         {/* Sort */}
-                        <select
-                            value={filters.sort_by}
-                            onChange={handleSortChange}
-                            className="px-4 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="newest">Newest First</option>
-                            <option value="price_low">Price: Low to High</option>
-                            <option value="price_high">Price: High to Low</option>
-                            <option value="popular">Most Popular</option>
-                            <option value="rating">Top Rated</option>
-                        </select>
+                        <div className="relative">
+                            <select
+                                value={filters.sort_by}
+                                onChange={handleSortChange}
+                                className="appearance-none pl-4 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#2563eb] cursor-pointer font-medium text-[#0f172a] shadow-sm"
+                            >
+                                <option value="newest">Newest First</option>
+                                <option value="price_low">Price: Low to High</option>
+                                <option value="price_high">Price: High to Low</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="rating">Top Rated</option>
+                            </select>
+                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </div>
 
                         {/* Filter Button - Mobile */}
                         <button
                             onClick={() => setShowMobileFilter(true)}
-                            className="md:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                            className="md:hidden flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-xl shadow-lg shadow-[#2563eb]/30 transition hover:opacity-90 font-medium"
                         >
                             <Filter className="w-4 h-4" />
                             Filters
                             {activeFilterCount > 0 && (
-                                <span className="bg-blue-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                                <span className="bg-white text-[#2563eb] text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
                                     {activeFilterCount}
                                 </span>
                             )}
@@ -351,19 +370,21 @@ export default function Product() {
                         {loading ? (
                             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-3 xs:gap-4 sm:gap-6">
                                 {Array.from({ length: 6 }).map((_, index) => (
-                                    <div key={index} className="h-96 rounded-xl bg-white animate-pulse" />
+                                    <div key={index} className="h-96 rounded-2xl bg-white animate-pulse ring-1 ring-slate-100" />
                                 ))}
                             </div>
                         ) : products.length === 0 ? (
-                            <div className="text-center py-20">
-                                <svg className="w-20 h-20 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                </svg>
-                                <p className="text-lg text-gray-500">No products found</p>
+                            <div className="text-center py-20 rounded-3xl bg-white ring-1 ring-slate-100">
+                                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center mx-auto mb-5">
+                                    <svg className="w-10 h-10 text-[#2563eb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                    </svg>
+                                </div>
+                                <p className="text-lg font-semibold text-gray-600">No products found</p>
                                 <p className="text-sm text-gray-400">Try adjusting your filters</p>
                                 <button
                                     onClick={clearFilters}
-                                    className="mt-4 text-blue-500 hover:text-blue-700"
+                                    className="mt-5 px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full text-sm font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition"
                                 >
                                     Clear all filters
                                 </button>
@@ -390,10 +411,10 @@ export default function Product() {
             {showMobileFilter && (
                 <div className="fixed inset-0 z-50 md:hidden">
                     <div
-                        className="absolute inset-0 bg-black/50"
+                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                         onClick={() => setShowMobileFilter(false)}
                     />
-                    <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white overflow-y-auto p-4 animate-slide-in">
+                    <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-[#f8fafc] overflow-y-auto p-4 animate-slide-in">
                         <FilterSidebar
                             filters={filters}
                             setFilters={setFilters}

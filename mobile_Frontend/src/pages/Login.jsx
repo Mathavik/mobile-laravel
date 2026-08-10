@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import LoginBanner from "../assets/LoginBanner.png";
@@ -75,11 +75,11 @@ const response = await login(email, password);
             {/* Right Section - Form */}
             <div className="w-full md:w-3/5 p-6 md:p-8 bg-white">
               <div className="max-w-sm mx-auto">
-                <h2 className="text-xl font-semibold text-[#181818]">Welcome Back</h2>
+                <h2 className="text-xl font-extrabold tracking-tight text-[#0f172a]">Welcome Back</h2>
                 <p className="mt-0.5 text-xs text-gray-500">Login to your account</p>
                 
                 {error && (
-                  <div className="mt-3 rounded-lg bg-red-50 p-2 text-xs text-red-700 border border-red-200">
+                  <div className="mt-3 rounded-xl bg-red-50 p-2.5 text-xs text-red-700 border border-red-200">
                     {error}
                   </div>
                 )}
@@ -96,7 +96,7 @@ const response = await login(email, password);
     required
     type="email"
     placeholder="Enter your email"
-    className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
+    className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
   />
 </div>
 
@@ -110,13 +110,13 @@ const response = await login(email, password);
                       required 
                       type="password" 
                       placeholder="Enter your password" 
-                      className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white" 
+                      className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white" 
                     />
                   </div>
                   <div className="text-right mt-1">
   <Link
     to={`/forgot-password?redirect=${encodeURIComponent(redirect)}`}
-    className="text-xs text-[#a97c50] hover:underline"
+    className="text-xs text-[#2563eb] hover:underline"
   >
     Forgot password?
   </Link>
@@ -125,7 +125,7 @@ const response = await login(email, password);
                   <button 
                     type="submit" 
                     disabled={loading} 
-                    className="w-full rounded-lg bg-[#a97c50] px-4 py-2.5 text-white text-sm font-medium hover:bg-[#8a6b40] transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 mt-2 shadow-md hover:shadow-lg"
+                    className="w-full rounded-xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-4 py-3 text-white text-sm font-bold hover:opacity-90 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 mt-2 shadow-lg shadow-[#2563eb]/30"
                   >
                     {loading ? "Logging in..." : "Login"}
                   </button>
@@ -135,15 +135,15 @@ const response = await login(email, password);
                 <div className="mt-4 pt-3 border-t border-gray-100">
                   <p className="text-[10px] text-gray-400 text-center leading-relaxed">
                     By continuing, you agree to our{" "}
-                    <a href="#" className="text-[#a97c50] hover:underline font-medium">Privacy Policy</a> &{" "}
-                    <a href="#" className="text-[#a97c50] hover:underline font-medium">T&C's</a>
+                    <a href="#" className="text-[#2563eb] hover:underline font-medium">Privacy Policy</a> &{" "}
+                    <a href="#" className="text-[#2563eb] hover:underline font-medium">T&C's</a>
                   </p>
                 </div>
                 
                 <p className="mt-3 text-sm text-gray-600 text-center">
                   New customer?{" "}
                   <Link 
-                    className="text-[#a97c50] font-semibold hover:underline" 
+                    className="text-[#2563eb] font-semibold hover:underline" 
                     to={`/register?redirect=${encodeURIComponent(redirect)}`}
                   >
                     Create Account

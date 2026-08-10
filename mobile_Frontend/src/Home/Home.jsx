@@ -1,20 +1,20 @@
 import React from "react";
 import Banner from "./banner";
-import Celebration from "./celebration";
-import NewArrivals from "./newarrivals";
-import Workflow from "./workflow";
+import Categories from "./categories";
 import SpotlightSection from "./spotlight";
+import NewArrivals from "./newarrivals";
 import EditorsPick from "./editors pick";
-// import ForEveryOccasion from "./ForEveryOccasion";
+import Celebration from "./celebration";
+import Workflow from "./workflow";
 
 function Home() {
   return (
     <>
       <Banner />
-      <SpotlightSection />
-      {/* <ForEveryOccasion/> */}
+      <Categories />
       <NewArrivals />
-      <EditorsPick/>
+      <SpotlightSection />
+      <EditorsPick />
       <Celebration />
       <Workflow />
     </>

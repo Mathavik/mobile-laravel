@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import LoginBanner from "../assets/LoginBanner.png";
@@ -99,17 +99,17 @@ export default function Register() {
 
             <div className="w-full md:w-3/5 p-6 md:p-8 bg-white">
               <div className="max-w-sm mx-auto">
-                <h2 className="text-xl font-semibold text-[#181818]">Create Account</h2>
+                <h2 className="text-xl font-extrabold tracking-tight text-[#0f172a]">Create Account</h2>
                 <p className="mt-0.5 text-xs text-gray-500">
                   Create an account to place orders and receive shipment notifications.
                 </p>
 
                 <div className="mt-4 flex items-center gap-2">
                   <div className="flex-1">
-                    <div className={`h-1.5 rounded-full ${step >= 1 ? "bg-[#a97c50]" : "bg-gray-200"}`} />
+                    <div className={`h-1.5 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] ${step < 1 ? "opacity-20" : ""}`} />
                   </div>
                   <div className="flex-1">
-                    <div className={`h-1.5 rounded-full ${step >= 2 ? "bg-[#a97c50]" : "bg-gray-200"}`} />
+                    <div className={`h-1.5 rounded-full ${step >= 2 ? "bg-gradient-to-r from-[#2563eb] to-[#7c3aed]" : "bg-gray-200"}`} />
                   </div>
                 </div>
 
@@ -118,7 +118,7 @@ export default function Register() {
                 </p>
 
                 {error && (
-                  <div className="mt-3 rounded-lg bg-red-50 p-2 text-xs text-red-700 border border-red-200">
+                  <div className="mt-3 rounded-xl bg-red-50 p-2.5 text-xs text-red-700 border border-red-200">
                     {error}
                   </div>
                 )}
@@ -135,7 +135,7 @@ export default function Register() {
                           onChange={(e) => setName(e.target.value)}
                           required
                           placeholder="Enter your full name"
-                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
+                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
                         />
                       </div>
 
@@ -149,7 +149,7 @@ export default function Register() {
                           required
                           type="email"
                           placeholder="Enter your email"
-                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
+                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
                         />
                       </div>
 
@@ -163,14 +163,14 @@ export default function Register() {
                           required
                           type="tel"
                           placeholder="Enter your 10-digit phone number"
-                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
+                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
                         />
                       </div>
 
                       <button
                         type="button"
                         onClick={handleNext}
-                        className="w-full rounded-lg bg-[#a97c50] px-4 py-2.5 text-white text-sm font-medium hover:bg-[#8a6b40] transition-all transform hover:scale-[1.02] mt-2 shadow-md hover:shadow-lg"
+                        className="w-full rounded-xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-4 py-3 text-white text-sm font-bold hover:opacity-90 transition-all transform hover:scale-[1.02] mt-2 shadow-lg shadow-[#2563eb]/30"
                       >
                         Next
                       </button>
@@ -189,7 +189,7 @@ export default function Register() {
                           required
                           rows="2"
                           placeholder="Enter your complete address"
-                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition resize-none outline-none bg-gray-50 hover:bg-white"
+                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition resize-none outline-none bg-gray-50 hover:bg-white"
                         />
                       </div>
 
@@ -203,7 +203,7 @@ export default function Register() {
                           required
                           type="password"
                           placeholder="Create a password (min 6 characters)"
-                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
+                          className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition outline-none bg-gray-50 hover:bg-white"
                         />
                         <p className="text-[10px] text-gray-400 mt-1">
                           Password must be at least 6 characters
@@ -214,7 +214,7 @@ export default function Register() {
                         <button
                           type="button"
                           onClick={handleBack}
-                          className="w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-gray-700 text-sm font-medium hover:bg-gray-50 transition"
+                          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-gray-700 text-sm font-semibold hover:bg-slate-50 transition"
                         >
                           Back
                         </button>
@@ -222,7 +222,7 @@ export default function Register() {
                         <button
                           type="submit"
                           disabled={loading}
-                          className="w-full rounded-lg bg-[#a97c50] px-4 py-2.5 text-white text-sm font-medium hover:bg-[#8a6b40] transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md hover:shadow-lg"
+                          className="w-full rounded-xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-4 py-3 text-white text-sm font-bold hover:opacity-90 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg shadow-[#2563eb]/30"
                         >
                           {loading ? "Creating account..." : "Register"}
                         </button>
@@ -234,11 +234,11 @@ export default function Register() {
                 <div className="mt-4 pt-3 border-t border-gray-100">
                   <p className="text-[10px] text-gray-400 text-center leading-relaxed">
                     By continuing, you agree to our{" "}
-                    <a href="#" className="text-[#a97c50] hover:underline font-medium">
+                    <a href="#" className="text-[#2563eb] hover:underline font-medium">
                       Privacy Policy
                     </a>{" "}
                     &{" "}
-                    <a href="#" className="text-[#a97c50] hover:underline font-medium">
+                    <a href="#" className="text-[#2563eb] hover:underline font-medium">
                       T&C's
                     </a>
                   </p>
@@ -247,7 +247,7 @@ export default function Register() {
                 <p className="mt-3 text-sm text-gray-600 text-center">
                   Already have an account?{" "}
                   <Link
-                    className="text-[#a97c50] font-semibold hover:underline"
+                    className="text-[#2563eb] font-semibold hover:underline"
                     to={`/login?redirect=${encodeURIComponent(redirect)}`}
                   >
                     Login

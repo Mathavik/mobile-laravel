@@ -1,36 +1,37 @@
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Smartphone } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   FaFacebookF,
   FaInstagram,
   FaYoutube,
 } from "react-icons/fa";
 
-import botikLogo from "../assets/Botik.png";
-
 function Footer() {
   const currentYear = new Date().getFullYear(); // Dynamic year
 
   return (
-    <footer className="w-full bg-white ">
+    <footer className="w-full bg-white">
       <div className="max-w-[1220px] mx-auto px-6 lg:px-8">
-        {/* Top Border */}
-        <div className="border-t border-[#E5E5E5]"></div>
+        {/* Top Gradient Border */}
+        <div className="h-[3px] bg-gradient-to-r from-[#2563eb] via-[#7c3aed] to-[#06b6d4]"></div>
 
         {/* Main Footer - Added 'text-center md:text-left' here */}
         <div className="grid grid-cols-1 md:grid-cols-[250px_150px_150px_170px_210px] justify-center text-center md:text-left gap-x-12 gap-y-10 py-[60px]">
 
           {/* Logo */}
           <div>
-            <img
-              src={botikLogo}
-              alt="BOTIK"
-              className="w-[185px] mx-auto md:mx-0"
-            />
+            <div className="flex items-center gap-1.5 justify-center md:justify-start">
+              <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#7c3aed] text-white shadow-lg shadow-[#2563eb]/30">
+                <Smartphone size={18} />
+              </span>
+              <span className="text-xl font-bold tracking-tight text-[#0f172a]">
+                Mobile<span className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] bg-clip-text text-transparent">Kart</span>
+              </span>
+            </div>
             <p className="mt-8 max-w-[215px] text-[12px] leading-[18px] text-[#111111] mx-auto md:mx-0">
-              A Social Impact Enterprise run by ex-servicemen.
-              100 acres of organic farmland in Hyderabad,
-              working towards dignified livelihoods through
-              natural precision farming.
+              Your trusted destination for the latest smartphones,
+              feature phones and accessories at unbeatable prices.
+              Shop smart, stay connected.
             </p>
           </div>
 
@@ -66,10 +67,10 @@ function Footer() {
               EXPLORE
             </h3>
             <ul className="space-y-[10px] text-[12px] text-[#111111]">
-              <li><a href="#">Lehenga</a></li>
-              <li><a href="#">Gowns</a></li>
-              <li><a href="#">Bridal Collections</a></li>
-              <li><a href="#">Dress Materials</a></li>
+              <li><Link to="/mobiles">Smartphones</Link></li>
+              <li><Link to="/mobiles">Accessories</Link></li>
+              <li><Link to="/mobiles">Latest Arrivals</Link></li>
+              <li><Link to="/mobiles">All Products</Link></li>
             </ul>
           </div>
 
@@ -85,7 +86,7 @@ function Footer() {
               </div>
               <div className="flex items-center gap-3 text-[12px] max-w-full">
                 <Mail size={15} strokeWidth={2} className="shrink-0" />
-                <span className="break-all">info@padmavathicollections.in</span>
+                <span className="break-all">support@mobilekart.in</span>
               </div>
             </div>
 
@@ -124,7 +125,7 @@ function Footer() {
         {/* Bottom */}
         <div className="border-t border-[#E5E5E5] py-5 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
           <p className="text-[12px] text-[#222222]">
-            © {currentYear} Pathavathi Collections Fashion. All rights reserved.
+            © {currentYear} MobileKart. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[12px] text-[#222222] mt-3 md:mt-0">
             <a href="#">Privacy Policy</a>

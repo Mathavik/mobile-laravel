@@ -8,6 +8,9 @@ export default {
       screens: {
         xs: "320px",
       },
+      animation: {
+        "bounce-slow": "bounce 3s infinite",
+      },
     },
   },
   plugins: [],

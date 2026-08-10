@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
@@ -130,7 +130,7 @@ export default function AdminBannerPage() {
         });
         setPreviewUrl("");
         // refresh list
-        const res = await axios.get(`${API_BASE}/banner/get_banners.php`);
+        const res = await api.get("banner/get_banners.php");
         setBanners(res?.data?.data || []);
       } else {
         setError(response?.data?.message || "Unable to save banner.");
@@ -173,17 +173,17 @@ export default function AdminBannerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] px-4 py-28 text-gray-700 md:px-8 lg:px-12">
-      <div className="mx-auto max-w-5xl rounded-3xl border border-[#e8dcc8] bg-white p-8 shadow-sm">
+    <div className="min-h-screen bg-[#f8fafc] px-4 py-28 text-gray-700 md:px-8 lg:px-12">
+      <div className="mx-auto max-w-5xl rounded-3xl border border-slate-100 bg-white p-8 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[4px] text-[#a97c50]">Banner Management</p>
-            <h1 className="mt-2 text-3xl font-semibold text-gray-900">Create Spotlight Banner</h1>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Banner Management</p>
+            <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-[#0f172a]">Create Spotlight Banner</h1>
           </div>
           <button
             type="button"
             onClick={() => navigate("/")}
-            className="rounded-full border border-[#a97c50] px-5 py-2 text-sm font-semibold text-[#a97c50] transition hover:bg-[#a97c50] hover:text-white"
+            className="rounded-full border-2 border-[#2563eb] px-5 py-2 text-sm font-semibold text-[#2563eb] transition hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#7c3aed] hover:text-white hover:border-transparent"
           >
             Back to Home
           </button>
@@ -192,24 +192,24 @@ export default function AdminBannerPage() {
         <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-medium">Banner Title</label>
+              <label className="mb-2 block text-sm font-semibold text-[#0f172a]">Banner Title</label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(event) => setFormData((prev) => ({ ...prev, title: event.target.value }))}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#a97c50]"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[#2563eb]"
                 placeholder="Crafted For Celebration"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">Banner Description</label>
+              <label className="mb-2 block text-sm font-semibold text-[#0f172a]">Banner Description</label>
               <textarea
                 rows="4"
                 value={formData.description}
                 onChange={(event) => setFormData((prev) => ({ ...prev, description: event.target.value }))}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#a97c50]"
-                placeholder="Beautiful bridal styles inspired by our latest collection."
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[#2563eb]"
+                placeholder="Latest smartphones and accessories from our collection."
               />
             </div>
 
@@ -217,7 +217,7 @@ export default function AdminBannerPage() {
 
           <div className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-medium">Banner Image</label>
+              <label className="mb-2 block text-sm font-semibold text-[#0f172a]">Banner Image</label>
               <input
                 type="file"
                 accept="image/*"
@@ -227,11 +227,11 @@ export default function AdminBannerPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">Category Dropdown</label>
+              <label className="mb-2 block text-sm font-semibold text-[#0f172a]">Category Dropdown</label>
               <select
                 value={formData.category_id}
                 onChange={(event) => setFormData((prev) => ({ ...prev, category_id: event.target.value, category_name: event.target.selectedOptions[0]?.text || "" }))}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-[#a97c50]"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[#2563eb]"
               >
                 <option value="" disabled>
                   {categoryLoading ? "Loading categories..." : "Select a category"}
@@ -245,8 +245,8 @@ export default function AdminBannerPage() {
               {categoryError ? <p className="mt-2 text-sm text-red-600">{categoryError}</p> : null}
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-[#eee4d4] bg-[#fcfaf5] p-4">
-              <p className="mb-3 text-sm font-medium">Image Preview</p>
+            <div className="overflow-hidden rounded-2xl border border-slate-100 bg-[#f8fafc] p-4">
+              <p className="mb-3 text-sm font-semibold text-[#0f172a]">Image Preview</p>
               {previewUrl ? (
                 <img src={previewUrl} alt="Preview" className="h-64 w-full rounded-xl object-cover" />
               ) : (
@@ -258,13 +258,13 @@ export default function AdminBannerPage() {
           </div>
 
           <div className="lg:col-span-2">
-            {error ? <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p> : null}
-            {success ? <p className="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-600">{success}</p> : null}
+            {error ? <p className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p> : null}
+            {success ? <p className="mb-4 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-600">{success}</p> : null}
 
             <button
               type="submit"
               disabled={loading}
-              className="rounded-full bg-[#a97c50] px-8 py-3 text-sm font-semibold uppercase tracking-[2px] text-white transition hover:bg-[#8c6539] disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-8 py-3 text-sm font-bold uppercase tracking-[2px] text-white shadow-lg shadow-[#2563eb]/30 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? "Saving..." : "Save Banner"}
             </button>
@@ -272,39 +272,45 @@ export default function AdminBannerPage() {
         </form>
 
         <div className="mt-10">
-          <h2 className="mb-4 text-xl font-semibold">Existing Banners</h2>
+          <h2 className="mb-4 text-xl font-extrabold tracking-tight text-[#0f172a]">Existing Banners</h2>
           {bannersLoading ? (
-            <div>Loading banners...</div>
+            <div className="flex justify-center py-10">
+              <div className="animate-spin rounded-full h-8 w-8 border-4 border-[#2563eb]/20 border-t-[#2563eb]" />
+            </div>
           ) : (
-            <div className="overflow-x-auto rounded-lg border">
+            <div className="overflow-x-auto rounded-2xl border border-slate-100">
               <table className="w-full table-auto text-left">
-                <thead className="bg-gray-50 text-sm">
+                <thead className="bg-[#f8fafc] text-sm">
                   <tr>
-                    <th className="px-4 py-3">Preview</th>
-                    <th className="px-4 py-3">Banner Title</th>
-                    <th className="px-4 py-3">Title</th>
-                    <th className="px-4 py-3">Category</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Actions</th>
+                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">Preview</th>
+                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">Banner Title</th>
+                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">Title</th>
+                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">Category</th>
+                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">Status</th>
+                    <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
                   {banners.length === 0 ? (
-                    <tr><td colSpan="6" className="px-4 py-6 text-center">No banners found</td></tr>
+                    <tr><td colSpan="6" className="px-4 py-6 text-center text-gray-500">No banners found</td></tr>
                   ) : (
                     banners.map((b) => (
-                      <tr key={b.id} className="border-t">
+                      <tr key={b.id} className="border-t border-slate-100 hover:bg-slate-50/50 transition">
                         <td className="px-4 py-3 align-top w-36">
-                          {b.image ? <img src={b.image} alt={b.title} className="h-20 w-full object-cover rounded" /> : <div className="h-20 w-full rounded bg-gray-100"></div>}
+                          {b.image ? <img src={b.image} alt={b.title} className="h-20 w-full object-cover rounded-xl" /> : <div className="h-20 w-full rounded-xl bg-gray-100"></div>}
                         </td>
-                        <td className="px-4 py-3 align-top">{b.banner_title}</td>
+                        <td className="px-4 py-3 align-top font-medium text-[#0f172a]">{b.banner_title}</td>
                         <td className="px-4 py-3 align-top">{b.title}</td>
-                        <td className="px-4 py-3 align-top">{b.category_name}</td>
-                        <td className="px-4 py-3 align-top">{b.status}</td>
+                        <td className="px-4 py-3 align-top">
+                          <span className="inline-flex rounded-full bg-[#2563eb]/5 border border-[#2563eb]/20 px-3 py-1 text-xs font-medium text-[#2563eb]">{b.category_name}</span>
+                        </td>
+                        <td className="px-4 py-3 align-top">
+                          <span className="inline-flex rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1 text-xs font-medium text-emerald-700">{b.status}</span>
+                        </td>
                         <td className="px-4 py-3 align-top">
                           <div className="flex gap-2">
-                            <button onClick={() => handleEdit(b)} className="rounded-md bg-blue-600 px-3 py-1 text-white">Edit</button>
-                            <button onClick={() => handleDelete(b.id)} className="rounded-md bg-red-600 px-3 py-1 text-white">Delete</button>
+                            <button onClick={() => handleEdit(b)} className="rounded-xl bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 transition">Edit</button>
+                            <button onClick={() => handleDelete(b.id)} className="rounded-xl bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700 transition">Delete</button>
                           </div>
                         </td>
                       </tr>

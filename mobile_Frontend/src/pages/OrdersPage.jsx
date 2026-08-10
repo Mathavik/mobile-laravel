@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../services/api";
@@ -182,13 +182,13 @@ function OrdersPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f8f7f2] to-[#f0ede6]">
-        <div className="text-center">
-          <div className="w-20 h-20 rounded-full bg-[#a97c50]/10 flex items-center justify-center mx-auto mb-4">
-            <Package size={32} className="text-[#a97c50]" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f8fafc] to-[#f0ede6]">
+        <div className="rounded-3xl bg-white/80 backdrop-blur-sm ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] p-12 text-center max-w-md">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center mx-auto mb-4">
+            <Package size={32} className="text-[#2563eb]" />
           </div>
-          <p className="text-gray-600 text-lg">Please login to view your orders</p>
-          <Link to="/login" className="mt-4 inline-block px-6 py-2 bg-[#a97c50] text-white rounded-full hover:bg-[#8a6540] transition">
+          <p className="text-gray-600 text-lg font-semibold">Please login to view your orders</p>
+          <Link to="/login" className="mt-5 inline-block px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30">
             Login
           </Link>
         </div>
@@ -197,12 +197,13 @@ function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f7f2] to-[#f0ede6] pt-28 pb-16">
+    <div className="min-h-screen bg-gradient-to-b from-[#f8fafc] to-[#f0ede6] pt-[116px] lg:pt-[156px] pb-16">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#1a1a1a] tracking-wide">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Orders</p>
+            <h1 className="mt-1 text-3xl md:text-4xl font-extrabold tracking-tight text-[#0f172a]">
               My Orders
             </h1>
             <p className="text-gray-500 mt-1 text-sm">
@@ -211,7 +212,7 @@ function OrdersPage() {
           </div>
           <div className="mt-4 md:mt-0 flex items-center gap-3">
             <span className="text-sm text-gray-500">
-              Total Orders: <span className="font-semibold text-[#1a1a1a]">{orders.length}</span>
+              Total Orders: <span className="font-semibold text-[#0f172a]">{orders.length}</span>
             </span>
           </div>
         </div>
@@ -235,9 +236,9 @@ function OrdersPage() {
             <button
               key={status.key}
               onClick={() => setActiveFilter(status.key)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
                 activeFilter === status.key
-                  ? "bg-[#a97c50] text-white shadow-lg shadow-[#a97c50]/20"
+                  ? "bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white shadow-lg shadow-[#2563eb]/30"
                   : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
               }`}
             >
@@ -259,18 +260,18 @@ function OrdersPage() {
         {loading ? (
           <div className="flex justify-center py-20">
             <div className="relative">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#a97c50]/20 border-t-[#a97c50]"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#2563eb]/20 border-t-[#2563eb]"></div>
               <p className="text-gray-400 text-sm mt-4 text-center">Loading your orders...</p>
             </div>
           </div>
         ) : filteredOrders.length === 0 ? (
           <div className="text-center py-20 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-white/50">
-            <div className="w-24 h-24 rounded-full bg-[#f8f7f2] flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 rounded-full bg-[#f8fafc] flex items-center justify-center mx-auto mb-6">
               <ShoppingBag size={40} className="text-gray-300" />
             </div>
-            <p className="text-gray-600 text-lg font-medium">No orders yet</p>
+            <p className="text-gray-600 text-lg font-semibold">No orders yet</p>
             <p className="text-gray-400 text-sm mt-1">Start shopping to see your orders here</p>
-            <Link to="/" className="mt-6 inline-block px-8 py-3 bg-[#a97c50] text-white rounded-full hover:bg-[#8a6540] transition shadow-lg shadow-[#a97c50]/20">
+            <Link to="/" className="mt-6 inline-block px-8 py-3 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30">
               Start Shopping
             </Link>
           </div>
@@ -283,7 +284,7 @@ function OrdersPage() {
               return (
                 <div
                   key={order.id}
-                  className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100/50 hover:border-[#a97c50]/20 overflow-hidden"
+                  className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100/50 hover:border-[#2563eb]/20 overflow-hidden"
                 >
                   <div className="p-6">
                     {/* Order Header */}
@@ -326,7 +327,7 @@ function OrdersPage() {
                             <span>{order.tracking_id ? 'Shipped' : 'Not shipped'}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-[#a97c50] text-base">
+                            <span className="font-semibold text-[#2563eb] text-base">
                               ₹{parseFloat(order.total || 0).toLocaleString()}
                             </span>
                           </div>
@@ -355,7 +356,7 @@ function OrdersPage() {
                       <div className="flex flex-wrap gap-2">
                         <button
                           onClick={() => viewOrderDetails(order)}
-                          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#a97c50] bg-[#a97c50]/10 rounded-xl hover:bg-[#a97c50] hover:text-white transition-all duration-200"
+                          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#2563eb] bg-[#2563eb]/10 rounded-xl hover:bg-[#2563eb] hover:text-white transition-all duration-200"
                         >
                           <Eye size={16} />
                           View Details
@@ -414,7 +415,7 @@ function OrdersPage() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
             {/* Modal Header */}
-            <div className="sticky top-0 z-10 bg-gradient-to-r from-[#a97c50]/10 to-[#a97c50]/5 px-6 py-5 border-b border-gray-100">
+            <div className="sticky top-0 z-10 bg-gradient-to-r from-[#2563eb]/10 to-[#2563eb]/5 px-6 py-5 border-b border-gray-100">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-xl font-bold text-[#1a1a1a]">
@@ -513,7 +514,7 @@ function OrdersPage() {
               {/* Order Items */}
               <div className="mb-6">
                 <h4 className="font-bold text-[#1a1a1a] mb-4 flex items-center gap-2">
-                  <Package size={16} className="text-[#a97c50]" />
+                  <Package size={16} className="text-[#2563eb]" />
                   Order Items ({selectedOrder.items?.length || 0})
                 </h4>
                 <div className="space-y-3">
@@ -534,7 +535,7 @@ function OrdersPage() {
                           <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
                             <span>Qty: {item.quantity}</span>
                             {item.size && <span>• Size: {item.size}</span>}
-                            <span className="text-[#a97c50] font-semibold">
+                            <span className="text-[#2563eb] font-semibold">
                               ₹{parseFloat(item.total || item.price * item.quantity || 0).toLocaleString()}
                             </span>
                           </div>
@@ -545,10 +546,10 @@ function OrdersPage() {
               </div>
 
               {/* Total */}
-              <div className="bg-gradient-to-r from-[#a97c50]/10 to-[#a97c50]/5 rounded-2xl p-5 border border-[#a97c50]/20">
+              <div className="bg-gradient-to-r from-[#2563eb]/10 to-[#2563eb]/5 rounded-2xl p-5 border border-[#2563eb]/20">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600 font-medium">Total Amount</span>
-                  <span className="text-2xl font-bold text-[#a97c50]">
+                  <span className="text-2xl font-bold text-[#2563eb]">
                     ₹{parseFloat(selectedOrder.total || 0).toLocaleString()}
                   </span>
                 </div>
@@ -571,7 +572,7 @@ function OrdersPage() {
                 )}
                 <button
                   onClick={() => viewInvoice(selectedOrder.id)}
-                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2.5 bg-[#a97c50] text-white rounded-xl hover:bg-[#8a6540] transition font-medium"
+                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white rounded-xl hover:bg-[#1d4ed8] transition font-medium"
                 >
                   <FileText size={16} />
                   View Invoice

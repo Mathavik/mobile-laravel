@@ -1146,6 +1146,7 @@ const loadCompanies = async(admin_id) => {
     name: "",
     product_code: "",
     price: "",
+    mrp: "",
     brand_id: "",
     subcategory_id: "",
     stock: "",
@@ -1156,11 +1157,21 @@ const loadCompanies = async(admin_id) => {
     supplier_id: "",
     short_description: "",
     full_description: "",
-    fabric: "",
-    embroidery: "",
+    model_name: "",
     color: "",
-    available_sizes: "",
-    occasion: "",
+    condition: "",
+    ram: "",
+    internal_storage: "",
+    display_size: "",
+    display_type: "",
+    processor: "",
+    battery_capacity: "",
+    rear_camera: "",
+    front_camera: "",
+    operating_system: "",
+    network_type: "",
+    sim_slots: "",
+    warranty: "",
     image: "",
     image_gallery_json: "",
     video_url: "",
@@ -1425,11 +1436,22 @@ if (
         unit: form.unit,
         short_description: form.short_description,
         full_description: form.full_description,
-        fabric: form.fabric,
-        embroidery: form.embroidery,
+        model_name: form.model_name,
         color: form.color,
-        available_sizes: form.available_sizes,
-        occasion: form.occasion,
+        condition: form.condition,
+        ram: form.ram,
+        internal_storage: form.internal_storage,
+        display_size: form.display_size,
+        display_type: form.display_type,
+        processor: form.processor,
+        battery_capacity: form.battery_capacity,
+        rear_camera: form.rear_camera,
+        front_camera: form.front_camera,
+        operating_system: form.operating_system,
+        network_type: form.network_type,
+        sim_slots: form.sim_slots,
+        warranty: form.warranty,
+        mrp: form.mrp,
         image: form.image,
         image_gallery_json: form.image_gallery_json,
         video_url: form.video_url,
@@ -1716,9 +1738,9 @@ if (
 
           {/* Header */}
           <div className="pf-header">
-            <div className="pf-header-icon">📦</div>
+            <div className="pf-header-icon">📱</div>
             <div className="pf-header-text">
-              <h1>Add Product</h1>
+              <h1>Add Mobile Product</h1>
               <p>Fill in the details to create a new product</p>
             </div>
           </div>
@@ -1803,7 +1825,7 @@ if (
               <label className="pf-label">Product Name <span style={{color:"#ef4444"}}>*</span></label>
               <div className="pf-input-wrap">
                 <span className="pf-input-icon">🏷️</span>
-                <input className="pf-input" placeholder="e.g. Bisleri Water 1L"
+                <input className="pf-input" placeholder="e.g. Samsung Galaxy A54 5G"
                   value={form.name}
                   onChange={e => set("name", e.target.value)} />
               </div>
@@ -2080,7 +2102,7 @@ if (
 
             {/* ── Shop / Product Details ── */}
             <div className="pf-divider" />
-            <p className="pf-section">Shop Details</p>
+            <p className="pf-section">Images & Media</p>
 
             <div className="pf-grid-2">
               <div className="pf-field">
@@ -2113,23 +2135,156 @@ if (
               </div>
             </div>
 
+            <div className="pf-divider" />
+            <p className="pf-section">Mobile Details</p>
+
             <div className="pf-grid-2">
               <div className="pf-field">
-                <label className="pf-label">Fabric</label>
+                <label className="pf-label">Model Name</label>
                 <div className="pf-input-wrap">
-                  <span className="pf-input-icon">🧵</span>
-                  <input className="pf-input" placeholder="Silk"
-                    value={form.fabric}
-                    onChange={e => set("fabric", e.target.value)} />
+                  <span className="pf-input-icon">📱</span>
+                  <input className="pf-input" placeholder="e.g. Galaxy A54 5G"
+                    value={form.model_name}
+                    onChange={e => set("model_name", e.target.value)} />
                 </div>
               </div>
               <div className="pf-field">
-                <label className="pf-label">Embroidery</label>
+                <label className="pf-label">RAM</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">🧠</span>
+                  <input className="pf-input" placeholder="e.g. 8 GB"
+                    value={form.ram}
+                    onChange={e => set("ram", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-grid-2">
+              <div className="pf-field">
+                <label className="pf-label">Internal Storage</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">💾</span>
+                  <input className="pf-input" placeholder="e.g. 128 GB"
+                    value={form.internal_storage}
+                    onChange={e => set("internal_storage", e.target.value)} />
+                </div>
+              </div>
+              <div className="pf-field">
+                <label className="pf-label">Display Size</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">🖥️</span>
+                  <input className="pf-input" placeholder="e.g. 6.4 inch"
+                    value={form.display_size}
+                    onChange={e => set("display_size", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-grid-2">
+              <div className="pf-field">
+                <label className="pf-label">Display Type</label>
                 <div className="pf-input-wrap">
                   <span className="pf-input-icon">✨</span>
-                  <input className="pf-input" placeholder="Zari"
-                    value={form.embroidery}
-                    onChange={e => set("embroidery", e.target.value)} />
+                  <input className="pf-input" placeholder="e.g. AMOLED, 120Hz"
+                    value={form.display_type}
+                    onChange={e => set("display_type", e.target.value)} />
+                </div>
+              </div>
+              <div className="pf-field">
+                <label className="pf-label">Processor</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">⚙️</span>
+                  <input className="pf-input" placeholder="e.g. Snapdragon 695"
+                    value={form.processor}
+                    onChange={e => set("processor", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-grid-2">
+              <div className="pf-field">
+                <label className="pf-label">Battery Capacity</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">🔋</span>
+                  <input className="pf-input" placeholder="e.g. 5000 mAh"
+                    value={form.battery_capacity}
+                    onChange={e => set("battery_capacity", e.target.value)} />
+                </div>
+              </div>
+              <div className="pf-field">
+                <label className="pf-label">Rear Camera</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">📷</span>
+                  <input className="pf-input" placeholder="e.g. 50 MP + 8 MP"
+                    value={form.rear_camera}
+                    onChange={e => set("rear_camera", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-grid-2">
+              <div className="pf-field">
+                <label className="pf-label">Front Camera</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">🤳</span>
+                  <input className="pf-input" placeholder="e.g. 16 MP"
+                    value={form.front_camera}
+                    onChange={e => set("front_camera", e.target.value)} />
+                </div>
+              </div>
+              <div className="pf-field">
+                <label className="pf-label">Operating System</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">🖥️</span>
+                  <input className="pf-input" placeholder="e.g. Android 14"
+                    value={form.operating_system}
+                    onChange={e => set("operating_system", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-grid-2">
+              <div className="pf-field">
+                <label className="pf-label">Network Type</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">📶</span>
+                  <input className="pf-input" placeholder="e.g. 5G, 4G VoLTE"
+                    value={form.network_type}
+                    onChange={e => set("network_type", e.target.value)} />
+                </div>
+              </div>
+              <div className="pf-field">
+                <label className="pf-label">SIM Slots</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">💳</span>
+                  <input className="pf-input" placeholder="e.g. Dual SIM"
+                    value={form.sim_slots}
+                    onChange={e => set("sim_slots", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pf-grid-2">
+              <div className="pf-field">
+                <label className="pf-label">Warranty</label>
+                <div className="pf-input-wrap">
+                  <span className="pf-input-icon">🛡️</span>
+                  <input className="pf-input" placeholder="e.g. 1 Year Brand Warranty"
+                    value={form.warranty}
+                    onChange={e => set("warranty", e.target.value)} />
+                </div>
+              </div>
+              <div className="pf-field">
+                <label className="pf-label">Condition</label>
+                <div className="pf-select-wrap pf-input-wrap">
+                  <span className="pf-input-icon">🏷️</span>
+                  <select className="pf-select" value={form.condition} onChange={e => set("condition", e.target.value)}>
+                    <option value="">Select Condition</option>
+                    <option value="New">New</option>
+                    <option value="Refurbished">Refurbished</option>
+                    <option value="Used">Used</option>
+                  </select>
+                  <span className="pf-select-arrow">▾</span>
                 </div>
               </div>
             </div>
@@ -2139,32 +2294,23 @@ if (
                 <label className="pf-label">Color</label>
                 <div className="pf-input-wrap">
                   <span className="pf-input-icon">🎨</span>
-                  <input className="pf-input" placeholder="Red"
+                  <input className="pf-input" placeholder="e.g. Midnight Black"
                     value={form.color}
                     onChange={e => set("color", e.target.value)} />
                 </div>
               </div>
               <div className="pf-field">
-                <label className="pf-label">Available Sizes</label>
+                <label className="pf-label">MRP (₹)</label>
                 <div className="pf-input-wrap">
-                  <span className="pf-input-icon">📏</span>
-                  <input className="pf-input" placeholder="S, M, L"
-                    value={form.available_sizes}
-                    onChange={e => set("available_sizes", e.target.value)} />
+                  <span className="pf-input-icon">🏷️</span>
+                  <input type="number" className="pf-input" placeholder="Original price"
+                    value={form.mrp}
+                    onChange={e => set("mrp", e.target.value)} />
                 </div>
               </div>
             </div>
 
             <div className="pf-grid-2">
-              <div className="pf-field">
-                <label className="pf-label">Occasion</label>
-                <div className="pf-input-wrap">
-                  <span className="pf-input-icon">🎉</span>
-                  <input className="pf-input" placeholder="Wedding"
-                    value={form.occasion}
-                    onChange={e => set("occasion", e.target.value)} />
-                </div>
-              </div>
               <div className="pf-field">
                 <label className="pf-label">Active Status</label>
                 <div className="pf-select-wrap pf-input-wrap">
@@ -2176,9 +2322,6 @@ if (
                   <span className="pf-select-arrow">▾</span>
                 </div>
               </div>
-            </div>
-
-            <div className="pf-grid-2">
               <div className="pf-field">
                 <label className="pf-label">View Count</label>
                 <div className="pf-input-wrap">
@@ -2186,17 +2329,6 @@ if (
                   <input type="number" className="pf-input" placeholder="0"
                     value={form.view_count}
                     onChange={e => set("view_count", e.target.value)} />
-                </div>
-              </div>
-              <div className="pf-field">
-                <label className="pf-label">Deleted</label>
-                <div className="pf-select-wrap pf-input-wrap">
-                  <span className="pf-input-icon">🗑️</span>
-                  <select className="pf-select" value={form.is_deleted} onChange={e => set("is_deleted", e.target.value)}>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                  </select>
-                  <span className="pf-select-arrow">▾</span>
                 </div>
               </div>
             </div>
@@ -2226,7 +2358,7 @@ if (
               <KeywordTagInput
                 value={keywordTags}
                 onChange={setKeywordTags}
-                placeholder="e.g. red lehenga, silk lehenga, bridal lehenga, under 10000"
+                placeholder="e.g. galaxy a54, samsung 5g, android phone, under 20000"
               />
             </div>
 

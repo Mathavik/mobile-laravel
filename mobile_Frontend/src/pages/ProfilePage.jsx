@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import {
@@ -143,9 +143,11 @@ function ProfilePage() {
         }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative text-center bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-2xl max-w-md">
-          <User size={64} className="mx-auto text-[#a97c50] mb-4" />
-          <h2 className="text-2xl font-serif font-bold text-[#181818]">
+        <div className="relative text-center bg-white/90 backdrop-blur-sm p-12 rounded-3xl ring-1 ring-slate-100 shadow-2xl max-w-md">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center mx-auto mb-4">
+            <User size={32} className="text-[#2563eb]" />
+          </div>
+          <h2 className="text-2xl font-extrabold tracking-tight text-[#0f172a]">
             Welcome Back
           </h2>
           <p className="text-gray-600 mt-2">
@@ -153,7 +155,7 @@ function ProfilePage() {
           </p>
           <Link
             to="/login"
-            className="mt-6 inline-block px-8 py-3 bg-[#a97c50] text-white rounded-md hover:bg-[#8a6540] transition"
+            className="mt-6 inline-block px-8 py-3 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30"
           >
             Login Now
           </Link>
@@ -175,7 +177,7 @@ function ProfilePage() {
 
       <div className="relative max-w-5xl mx-auto px-4 py-8 mt-20">
         {/* Header Section with Gradient */}
-        <div className="bg-gradient-to-r from-[#a97c50] to-[#8a6540] rounded-2xl p-8 mb-8 shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl p-8 mb-8 shadow-xl relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2"></div>
@@ -184,14 +186,14 @@ function ProfilePage() {
           <div className="relative flex flex-col md:flex-row items-center gap-6">
             <div className="relative">
               <div className="w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/50 flex items-center justify-center">
-                <span className="text-4xl font-serif text-white font-bold">
+                <span className="text-4xl text-white font-bold">
                   {user.name?.charAt(0).toUpperCase() || "U"}
                 </span>
               </div>
             </div>
 
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-serif font-bold text-white">
+              <h1 className="text-3xl font-extrabold tracking-tight text-white">
                 {user.name}
               </h1>
               <p className="text-white/80">{user.email}</p>
@@ -241,13 +243,13 @@ function ProfilePage() {
           )}
 
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-serif font-bold text-[#181818]">
+            <h2 className="text-xl font-extrabold tracking-tight text-[#0f172a]">
               Profile Information
             </h2>
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="px-6 py-2 text-sm text-[#a97c50] border-2 border-[#a97c50] rounded-lg hover:bg-[#a97c50] hover:text-white transition font-medium"
+                className="px-6 py-2 text-sm text-[#2563eb] border-2 border-[#2563eb] rounded-xl hover:bg-gradient-to-r hover:from-[#2563eb] hover:to-[#7c3aed] hover:text-white hover:border-transparent transition-all duration-300 font-semibold"
               >
                 Edit Profile
               </button>
@@ -268,7 +270,7 @@ function ProfilePage() {
                   onChange={handleChange}
                   required
                   disabled={!isEditing}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition ${isEditing
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition ${isEditing
                       ? "border-gray-300 bg-white"
                       : "border-gray-200 bg-gray-50 text-gray-600 cursor-not-allowed"
                     }`}
@@ -304,7 +306,7 @@ function ProfilePage() {
                 value={formData.phone}
                 onChange={handleChange}
                 disabled={!isEditing}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition ${isEditing
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition ${isEditing
                     ? "border-gray-300 bg-white"
                     : "border-gray-200 bg-gray-50 text-gray-600 cursor-not-allowed"
                   }`}
@@ -328,7 +330,7 @@ function ProfilePage() {
                 onChange={handleChange}
                 rows={3}
                 disabled={!isEditing}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#a97c50] focus:border-transparent transition ${isEditing
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition ${isEditing
                     ? "border-gray-300 bg-white"
                     : "border-gray-200 bg-gray-50 text-gray-600 cursor-not-allowed"
                   }`}
@@ -341,7 +343,7 @@ function ProfilePage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex items-center justify-center gap-2 bg-[#a97c50] text-white px-8 py-3 rounded-xl hover:bg-[#8a6540] transition disabled:opacity-50 font-medium"
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white px-8 py-3 rounded-xl hover:opacity-90 transition disabled:opacity-50 font-semibold shadow-lg shadow-[#2563eb]/30"
                 >
                   <Save size={18} />
                   {loading ? "Updating..." : "Update Profile"}
@@ -371,19 +373,19 @@ function ProfilePage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-500">Full Name</p>
-                  <p className="font-medium text-[#181818]">
+                  <p className="font-medium text-[#0f172a]">
                     {user.name || "Not set"}
                   </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-500">Phone Number</p>
-                  <p className="font-medium text-[#181818]">
+                  <p className="font-medium text-[#0f172a]">
                     {user.phone || "Not set"}
                   </p>
                 </div>
                 <div className="md:col-span-2 bg-gray-50 p-4 rounded-xl">
                   <p className="text-sm text-gray-500">Shipping Address</p>
-                  <p className="font-medium text-[#181818]">
+                  <p className="font-medium text-[#0f172a]">
                     {user.address || "Not set"}
                   </p>
                 </div>
@@ -398,7 +400,7 @@ function ProfilePage() {
                 setShowChangePassword(!showChangePassword);
                 setPasswordMessage({ type: "", text: "" });
               }}
-              className="flex items-center gap-2 text-[#a97c50] hover:text-[#8a6540] font-medium transition"
+              className="flex items-center gap-2 text-[#2563eb] hover:text-[#1d4ed8] font-medium transition"
             >
               <Lock size={18} />
               {showChangePassword ? "Cancel" : "Change Password"}
@@ -434,7 +436,7 @@ function ProfilePage() {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a97c50] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2563eb] focus:border-transparent"
                     placeholder="Enter your current password"
                   />
                 </div>
@@ -447,7 +449,7 @@ function ProfilePage() {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a97c50] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2563eb] focus:border-transparent"
                     placeholder="Enter new password (min 6 characters)"
                   />
                 </div>
@@ -460,14 +462,14 @@ function ProfilePage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a97c50] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2563eb] focus:border-transparent"
                     placeholder="Re-enter new password"
                   />
                 </div>
                 <div className="text-right mt-2">
                   <Link
                     to="/forgot-password"
-                    className="text-sm text-[#a97c50] hover:underline"
+                    className="text-sm text-[#2563eb] hover:underline"
                   >
                     Forgot your password?
                   </Link>
@@ -475,7 +477,7 @@ function ProfilePage() {
                 <button
                   type="submit"
                   disabled={passwordLoading}
-                  className="w-full bg-[#a97c50] text-white py-2 rounded-lg hover:bg-[#8a6540] transition disabled:opacity-50 font-medium"
+                  className="w-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white py-2.5 rounded-xl hover:opacity-90 transition disabled:opacity-50 font-semibold shadow-lg shadow-[#2563eb]/30"
                 >
                   {passwordLoading ? "Updating..." : "Update Password"}
                 </button>
@@ -486,7 +488,7 @@ function ProfilePage() {
 
         {/* Decorative Footer */}
         <div className="mt-8 text-center text-white/60 text-sm">
-          <p>✨ Bridal Boutique - Where Dreams Meet Elegance ✨</p>
+          <p>📱 MobileKart - Your Smartphone Store</p>
         </div>
       </div>
     </div>

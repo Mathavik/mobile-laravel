@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import ProductMedia from "../components/ProductMedia";
@@ -9,22 +9,22 @@ import { showToast } from "../utils/toast";
 
 // ─── Helper Component: Loading Spinner ──────────────────────────────────────
 const LoadingSpinner = () => (
-  <div className="min-h-screen bg-[#f8f7f2] pt-28 pb-12 px-4 flex items-center justify-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#a97c50]/20 border-t-[#a97c50]" />
+  <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-12 px-4 flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#2563eb]/20 border-t-[#2563eb]" />
   </div>
 );
 
 // ─── Helper Component: Empty Cart ──────────────────────────────────────────
 const EmptyCart = () => (
-  <div className="rounded-xl bg-white p-6 shadow text-center">
-    <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-      <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div className="rounded-3xl bg-white p-12 ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] text-center">
+    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2563eb]/10 to-[#7c3aed]/10 flex items-center justify-center mx-auto mb-4">
+      <svg className="w-10 h-10 text-[#2563eb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
       </svg>
     </div>
-    <p className="text-gray-500 text-lg">Your cart is empty.</p>
+    <p className="text-gray-500 text-lg font-semibold">Your cart is empty.</p>
     <p className="text-gray-400 text-sm mt-1">Start shopping to add items to your cart</p>
-    <Link to="/" className="mt-6 inline-block px-6 py-2 bg-[#a97c50] text-white rounded-full hover:bg-[#8a6540] transition">
+    <Link to="/" className="mt-6 inline-block px-6 py-2.5 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white rounded-full font-semibold shadow-lg shadow-[#2563eb]/30 hover:opacity-90 transition">
       Continue Shopping →
     </Link>
   </div>
@@ -33,10 +33,10 @@ const EmptyCart = () => (
 // ─── Helper Component: Single Cart Item ────────────────────────────────────
 const CartItem = ({ item, onUpdate, onRemove }) => {
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-white p-4 shadow-sm hover:shadow-md transition">
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-2xl bg-white p-4 ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] hover:shadow-[0_18px_50px_rgba(37,99,235,0.16)] transition-all duration-300">
       {/* Left: Image + Details */}
       <div className="flex items-center gap-4 w-full md:w-auto">
-        <div className="h-20 w-20 md:h-24 md:w-24 rounded-lg overflow-hidden bg-[#f8f7f2] flex items-center justify-center flex-shrink-0">
+        <div className="h-20 w-20 md:h-24 md:w-24 rounded-xl overflow-hidden bg-[#f8fafc] flex items-center justify-center flex-shrink-0 ring-1 ring-slate-100">
           <ProductMedia
             product={item}
             image={item.image}
@@ -46,17 +46,17 @@ const CartItem = ({ item, onUpdate, onRemove }) => {
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold truncate">{item.product_name}</h3>
-          <p className="text-sm font-medium text-[#a97c50]">
+          <h3 className="font-bold text-[#0f172a] truncate">{item.product_name}</h3>
+          <p className="text-sm font-bold text-[#2563eb]">
             {formatCurrency(Number(item.price))}
             {Number(item.gst_percentage) > 0 && (
-              <span className="text-xs text-gray-400 ml-1">
+              <span className="text-xs text-gray-400 font-medium ml-1">
                 (GST: {item.gst_percentage}%)
               </span>
             )}
           </p>
           {item.size && (
-            <span className="inline-flex items-center rounded-full bg-[#f0f0f0] px-3 py-1 text-xs font-medium text-gray-700 mt-1">
+            <span className="inline-flex items-center rounded-full bg-[#2563eb]/5 border border-[#2563eb]/20 px-3 py-1 text-xs font-medium text-[#2563eb] mt-1">
               Size: {item.size}
             </span>
           )}
@@ -68,15 +68,15 @@ const CartItem = ({ item, onUpdate, onRemove }) => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => onUpdate(item.id, Number(item.quantity) - 1)}
-            className="h-8 w-8 rounded-full border hover:bg-gray-50 transition flex items-center justify-center disabled:opacity-40"
+            className="h-8 w-8 rounded-full border border-slate-200 text-[#2563eb] font-bold hover:bg-slate-50 transition flex items-center justify-center disabled:opacity-40"
             disabled={Number(item.quantity) <= 1}
           >
             −
           </button>
-          <span className="w-6 text-center font-medium">{item.quantity}</span>
+          <span className="w-6 text-center font-bold">{item.quantity}</span>
           <button
             onClick={() => onUpdate(item.id, Number(item.quantity) + 1)}
-            className="h-8 w-8 rounded-full border hover:bg-gray-50 transition flex items-center justify-center"
+            className="h-8 w-8 rounded-full border border-slate-200 text-[#2563eb] font-bold hover:bg-slate-50 transition flex items-center justify-center"
           >
             +
           </button>
@@ -84,7 +84,7 @@ const CartItem = ({ item, onUpdate, onRemove }) => {
 
         <button
           onClick={() => onRemove(item.id)}
-          className="text-red-500 text-sm hover:text-red-700 transition ml-2"
+          className="text-red-500 text-sm font-medium hover:text-red-700 transition ml-2"
         >
           Remove
         </button>
@@ -100,32 +100,32 @@ const OrderSummary = ({ subtotal, gst, total, onCheckout, itemCount }) => {
     : 0;
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm h-fit sticky top-28">
-      <h2 className="text-xl font-semibold">Order Summary</h2>
+    <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)] h-fit sticky top-28">
+      <h2 className="text-xl font-extrabold tracking-tight text-[#0f172a]">Order Summary</h2>
 
       <div className="mt-5 space-y-3">
         <div className="flex justify-between">
           <span className="text-gray-600">Subtotal</span>
-          <span className="font-medium">{formatCurrency(subtotal)}</span>
+          <span className="font-semibold">{formatCurrency(subtotal)}</span>
         </div>
 
         {gst > 0 && (
           <div className="flex justify-between">
             <span className="text-gray-600">GST ({avgGst}%)</span>
-            <span className="font-medium">{formatCurrency(gst)}</span>
+            <span className="font-semibold">{formatCurrency(gst)}</span>
           </div>
         )}
 
         <div className="flex justify-between">
           <span className="text-gray-600">Shipping</span>
-          <span className="text-green-600">Free</span>
+          <span className="text-green-600 font-semibold">Free</span>
         </div>
 
-        <hr className="my-2" />
+        <hr className="my-2 border-slate-100" />
 
-        <div className="flex justify-between font-bold text-lg">
+        <div className="flex justify-between font-bold text-lg text-[#0f172a]">
           <span>Total</span>
-          <span>{formatCurrency(total)}</span>
+          <span className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] bg-clip-text text-transparent">{formatCurrency(total)}</span>
         </div>
 
         {gst > 0 && (
@@ -135,13 +135,13 @@ const OrderSummary = ({ subtotal, gst, total, onCheckout, itemCount }) => {
         )}
       </div>
 
-      <Link to="/" className="block text-center mt-5 text-[#a97c50] hover:underline">
+      <Link to="/" className="block text-center mt-5 text-[#2563eb] font-medium hover:underline">
         Continue Shopping
       </Link>
 
       <button
         onClick={onCheckout}
-        className="w-full mt-4 bg-[#181818] text-white py-3 rounded-md hover:bg-[#333] transition"
+        className="w-full mt-4 bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white py-3.5 rounded-2xl font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30 active:scale-95"
       >
         Proceed to Checkout
       </button>
@@ -241,11 +241,12 @@ export default function Cart() {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="min-h-screen bg-[#f8f7f2] pt-28 pb-12 px-4 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-[#f8fafc] pt-[116px] lg:pt-[156px] pb-12 px-4 md:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-[2fr_1fr] gap-8">
         {/* ─── Left Column: Cart Items ────────────────────────────────── */}
         <div>
-          <h1 className="text-3xl font-semibold uppercase tracking-wider lg:tracking-[4px]">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563eb]">Your Cart</p>
+          <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-[#0f172a]">
             Cart ({cartItems?.length || 0})
           </h1>
 

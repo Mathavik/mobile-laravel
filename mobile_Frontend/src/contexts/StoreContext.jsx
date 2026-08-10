@@ -1,4 +1,4 @@
-// StoreContext.js
+﻿// StoreContext.js
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import api from "../services/api";
 import { useAuth } from "./AuthContext";
@@ -6,10 +6,10 @@ import { useAuth } from "./AuthContext";
 const StoreContext = createContext();
 
 const createGuestId = () => {
-  let id = localStorage.getItem("bridal_guest_id");
+  let id = localStorage.getItem("mobilekart_guest_id");
   if (!id) {
     id = `guest-${Date.now()}`;
-    localStorage.setItem("bridal_guest_id", id);
+    localStorage.setItem("mobilekart_guest_id", id);
   }
   return id;
 };
@@ -37,12 +37,12 @@ export function StoreProvider({ children }) {
     setCartCount(0);
     setWishlistCount(0);
     setLoading(false);
-    localStorage.removeItem("bridal_cart");
-    localStorage.removeItem("bridal_wishlist");
+    localStorage.removeItem("mobilekart_cart");
+    localStorage.removeItem("mobilekart_wishlist");
 
     const newId = `guest-${Date.now()}`;
     setGuestIdValue(newId);
-    localStorage.setItem("bridal_guest_id", newId);
+    localStorage.setItem("mobilekart_guest_id", newId);
   }, []);
 
   useEffect(() => {
@@ -92,14 +92,14 @@ export function StoreProvider({ children }) {
       await api.delete('/shop/cart', { params: { user_id: id } });
       setCartItems([]);
       setCartCount(0);
-      localStorage.removeItem("bridal_cart");
+      localStorage.removeItem("mobilekart_cart");
       return { status: true, message: "Cart cleared successfully" };
     } catch (error) {
       console.error("Error clearing cart:", error);
       // Fallback: clear local state anyway
       setCartItems([]);
       setCartCount(0);
-      localStorage.removeItem("bridal_cart");
+      localStorage.removeItem("mobilekart_cart");
       return { status: false, message: "Failed to clear cart" };
     } finally {
       setLoading(false);

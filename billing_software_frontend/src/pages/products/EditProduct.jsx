@@ -747,6 +747,7 @@ export default function EditProduct() {
     name: "",
     product_code: "",
     price: "",
+    mrp: "",
     stock: "",
     gst: "",
     barcode: "",
@@ -757,11 +758,21 @@ export default function EditProduct() {
     unit: "",
     short_description: "",
     full_description: "",
-    fabric: "",
-    embroidery: "",
+    model_name: "",
     color: "",
-    available_sizes: "",
-    occasion: "",
+    condition: "",
+    ram: "",
+    internal_storage: "",
+    display_size: "",
+    display_type: "",
+    processor: "",
+    battery_capacity: "",
+    rear_camera: "",
+    front_camera: "",
+    operating_system: "",
+    network_type: "",
+    sim_slots: "",
+    warranty: "",
     image: "",
     image_gallery_json: "",
     video_url: "",
@@ -977,11 +988,22 @@ export default function EditProduct() {
           unit: p.unit || "",
           short_description: p.short_description || "",
           full_description: p.full_description || "",
-          fabric: p.fabric || "",
-          embroidery: p.embroidery || "",
+          model_name: p.model_name || "",
           color: p.color || "",
-          available_sizes: p.available_sizes || "",
-          occasion: p.occasion || "",
+          condition: p.condition || "",
+          ram: p.ram || "",
+          internal_storage: p.internal_storage || "",
+          display_size: p.display_size || "",
+          display_type: p.display_type || "",
+          processor: p.processor || "",
+          battery_capacity: p.battery_capacity || "",
+          rear_camera: p.rear_camera || "",
+          front_camera: p.front_camera || "",
+          operating_system: p.operating_system || "",
+          network_type: p.network_type || "",
+          sim_slots: p.sim_slots || "",
+          warranty: p.warranty || "",
+          mrp: p.mrp || "",
           image: p.image || "",
           image_gallery_json: p.image_gallery_json || "",
           video_url: p.video_url || "",
@@ -1072,11 +1094,22 @@ export default function EditProduct() {
         unit: form.unit,
         short_description: form.short_description,
         full_description: form.full_description,
-        fabric: form.fabric,
-        embroidery: form.embroidery,
+        model_name: form.model_name,
         color: form.color,
-        available_sizes: form.available_sizes,
-        occasion: form.occasion,
+        condition: form.condition,
+        ram: form.ram,
+        internal_storage: form.internal_storage,
+        display_size: form.display_size,
+        display_type: form.display_type,
+        processor: form.processor,
+        battery_capacity: form.battery_capacity,
+        rear_camera: form.rear_camera,
+        front_camera: form.front_camera,
+        operating_system: form.operating_system,
+        network_type: form.network_type,
+        sim_slots: form.sim_slots,
+        warranty: form.warranty,
+        mrp: form.mrp,
         image: form.image,
         image_gallery_json: form.image_gallery_json,
         video_url: form.video_url,
@@ -1351,10 +1384,10 @@ export default function EditProduct() {
 
           {/* Header */}
           <div className="ep-header">
-            <div className="ep-header-icon">✏️</div>
+            <div className="ep-header-icon">📱</div>
             <div className="ep-header-text">
-              <h1>Edit Product</h1>
-              <p>Update product details below</p>
+              <h1>Edit Mobile Product</h1>
+              <p>Update mobile product details below</p>
               <div className="ep-id-chip">
                 <span className="ep-id-dot" />
                 Product ID: #{id}
@@ -1446,7 +1479,7 @@ export default function EditProduct() {
                 ? <div className="ep-skel" />
                 : <div className="ep-input-wrap">
                     <span className="ep-input-icon">🏷️</span>
-                    <input className="ep-input" placeholder="Product name"
+                    <input className="ep-input" placeholder="e.g. Samsung Galaxy A54 5G"
                       value={form.name}
                       onChange={e => set("name", e.target.value)} />
                   </div>
@@ -1654,7 +1687,7 @@ export default function EditProduct() {
 
             {/* ── Shop / Product Details ── */}
             <div className="ep-divider" />
-            <p className="ep-section">Shop Details</p>
+            <p className="ep-section">Images & Media</p>
 
             <div className="ep-grid-2">
               <div className="ep-field">
@@ -1687,23 +1720,156 @@ export default function EditProduct() {
               </div>
             </div>
 
+            <div className="ep-divider" />
+            <p className="ep-section">Mobile Details</p>
+
             <div className="ep-grid-2">
               <div className="ep-field">
-                <label className="ep-label">Fabric</label>
+                <label className="ep-label">Model Name</label>
                 <div className="ep-input-wrap">
-                  <span className="ep-input-icon">🧵</span>
-                  <input className="ep-input" placeholder="Silk"
-                    value={form.fabric}
-                    onChange={e => set("fabric", e.target.value)} />
+                  <span className="ep-input-icon">📱</span>
+                  <input className="ep-input" placeholder="e.g. Galaxy A54 5G"
+                    value={form.model_name}
+                    onChange={e => set("model_name", e.target.value)} />
                 </div>
               </div>
               <div className="ep-field">
-                <label className="ep-label">Embroidery</label>
+                <label className="ep-label">RAM</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">🧠</span>
+                  <input className="ep-input" placeholder="e.g. 8 GB"
+                    value={form.ram}
+                    onChange={e => set("ram", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="ep-grid-2">
+              <div className="ep-field">
+                <label className="ep-label">Internal Storage</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">💾</span>
+                  <input className="ep-input" placeholder="e.g. 128 GB"
+                    value={form.internal_storage}
+                    onChange={e => set("internal_storage", e.target.value)} />
+                </div>
+              </div>
+              <div className="ep-field">
+                <label className="ep-label">Display Size</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">🖥️</span>
+                  <input className="ep-input" placeholder="e.g. 6.4 inch"
+                    value={form.display_size}
+                    onChange={e => set("display_size", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="ep-grid-2">
+              <div className="ep-field">
+                <label className="ep-label">Display Type</label>
                 <div className="ep-input-wrap">
                   <span className="ep-input-icon">✨</span>
-                  <input className="ep-input" placeholder="Zari"
-                    value={form.embroidery}
-                    onChange={e => set("embroidery", e.target.value)} />
+                  <input className="ep-input" placeholder="e.g. AMOLED, 120Hz"
+                    value={form.display_type}
+                    onChange={e => set("display_type", e.target.value)} />
+                </div>
+              </div>
+              <div className="ep-field">
+                <label className="ep-label">Processor</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">⚙️</span>
+                  <input className="ep-input" placeholder="e.g. Snapdragon 695"
+                    value={form.processor}
+                    onChange={e => set("processor", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="ep-grid-2">
+              <div className="ep-field">
+                <label className="ep-label">Battery Capacity</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">🔋</span>
+                  <input className="ep-input" placeholder="e.g. 5000 mAh"
+                    value={form.battery_capacity}
+                    onChange={e => set("battery_capacity", e.target.value)} />
+                </div>
+              </div>
+              <div className="ep-field">
+                <label className="ep-label">Rear Camera</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">📷</span>
+                  <input className="ep-input" placeholder="e.g. 50 MP + 8 MP"
+                    value={form.rear_camera}
+                    onChange={e => set("rear_camera", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="ep-grid-2">
+              <div className="ep-field">
+                <label className="ep-label">Front Camera</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">🤳</span>
+                  <input className="ep-input" placeholder="e.g. 16 MP"
+                    value={form.front_camera}
+                    onChange={e => set("front_camera", e.target.value)} />
+                </div>
+              </div>
+              <div className="ep-field">
+                <label className="ep-label">Operating System</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">🖥️</span>
+                  <input className="ep-input" placeholder="e.g. Android 14"
+                    value={form.operating_system}
+                    onChange={e => set("operating_system", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="ep-grid-2">
+              <div className="ep-field">
+                <label className="ep-label">Network Type</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">📶</span>
+                  <input className="ep-input" placeholder="e.g. 5G, 4G VoLTE"
+                    value={form.network_type}
+                    onChange={e => set("network_type", e.target.value)} />
+                </div>
+              </div>
+              <div className="ep-field">
+                <label className="ep-label">SIM Slots</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">💳</span>
+                  <input className="ep-input" placeholder="e.g. Dual SIM"
+                    value={form.sim_slots}
+                    onChange={e => set("sim_slots", e.target.value)} />
+                </div>
+              </div>
+            </div>
+
+            <div className="ep-grid-2">
+              <div className="ep-field">
+                <label className="ep-label">Warranty</label>
+                <div className="ep-input-wrap">
+                  <span className="ep-input-icon">🛡️</span>
+                  <input className="ep-input" placeholder="e.g. 1 Year Brand Warranty"
+                    value={form.warranty}
+                    onChange={e => set("warranty", e.target.value)} />
+                </div>
+              </div>
+              <div className="ep-field">
+                <label className="ep-label">Condition</label>
+                <div className="ep-select-wrap ep-input-wrap">
+                  <span className="ep-input-icon">🏷️</span>
+                  <select className="ep-select" value={form.condition} onChange={e => set("condition", e.target.value)}>
+                    <option value="">Select Condition</option>
+                    <option value="New">New</option>
+                    <option value="Refurbished">Refurbished</option>
+                    <option value="Used">Used</option>
+                  </select>
+                  <span className="ep-select-arrow">▾</span>
                 </div>
               </div>
             </div>
@@ -1713,32 +1879,23 @@ export default function EditProduct() {
                 <label className="ep-label">Color</label>
                 <div className="ep-input-wrap">
                   <span className="ep-input-icon">🎨</span>
-                  <input className="ep-input" placeholder="Red"
+                  <input className="ep-input" placeholder="e.g. Midnight Black"
                     value={form.color}
                     onChange={e => set("color", e.target.value)} />
                 </div>
               </div>
               <div className="ep-field">
-                <label className="ep-label">Available Sizes</label>
+                <label className="ep-label">MRP (₹)</label>
                 <div className="ep-input-wrap">
-                  <span className="ep-input-icon">📏</span>
-                  <input className="ep-input" placeholder="S, M, L"
-                    value={form.available_sizes}
-                    onChange={e => set("available_sizes", e.target.value)} />
+                  <span className="ep-input-icon">🏷️</span>
+                  <input type="number" className="ep-input" placeholder="Original price"
+                    value={form.mrp}
+                    onChange={e => set("mrp", e.target.value)} />
                 </div>
               </div>
             </div>
 
             <div className="ep-grid-2">
-              <div className="ep-field">
-                <label className="ep-label">Occasion</label>
-                <div className="ep-input-wrap">
-                  <span className="ep-input-icon">🎉</span>
-                  <input className="ep-input" placeholder="Wedding"
-                    value={form.occasion}
-                    onChange={e => set("occasion", e.target.value)} />
-                </div>
-              </div>
               <div className="ep-field">
                 <label className="ep-label">Active Status</label>
                 <div className="ep-select-wrap ep-input-wrap">
@@ -1750,9 +1907,6 @@ export default function EditProduct() {
                   <span className="ep-select-arrow">▾</span>
                 </div>
               </div>
-            </div>
-
-            <div className="ep-grid-2">
               <div className="ep-field">
                 <label className="ep-label">View Count</label>
                 <div className="ep-input-wrap">
@@ -1760,17 +1914,6 @@ export default function EditProduct() {
                   <input type="number" className="ep-input" placeholder="0"
                     value={form.view_count}
                     onChange={e => set("view_count", e.target.value)} />
-                </div>
-              </div>
-              <div className="ep-field">
-                <label className="ep-label">Deleted</label>
-                <div className="ep-select-wrap ep-input-wrap">
-                  <span className="ep-input-icon">🗑️</span>
-                  <select className="ep-select" value={form.is_deleted} onChange={e => set("is_deleted", e.target.value)}>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                  </select>
-                  <span className="ep-select-arrow">▾</span>
                 </div>
               </div>
             </div>
@@ -1800,7 +1943,7 @@ export default function EditProduct() {
               <KeywordTagInput
                 value={keywordTags}
                 onChange={setKeywordTags}
-                placeholder="e.g. red lehenga, silk lehenga, bridal lehenga, under 10000"
+                placeholder="e.g. galaxy a54, samsung 5g, android phone, under 20000"
               />
             </div>
 

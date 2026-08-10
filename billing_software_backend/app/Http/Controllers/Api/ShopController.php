@@ -45,6 +45,42 @@ class ShopController extends Controller
             $query->where('color', 'like', "%{$color}%");
         }
 
+        $rams = $this->normalizeList($request->input('rams'));
+        if (count($rams) === 0 && $request->filled('ram')) {
+            $rams = $this->normalizeList($request->input('ram'));
+        }
+        if (count($rams) > 0) {
+            $query->where(function ($q) use ($rams) {
+                foreach ($rams as $value) {
+                    $q->orWhere('ram', 'like', "%{$value}%");
+                }
+            });
+        }
+
+        $storages = $this->normalizeList($request->input('storages'));
+        if (count($storages) === 0 && $request->filled('storage')) {
+            $storages = $this->normalizeList($request->input('storage'));
+        }
+        if (count($storages) > 0) {
+            $query->where(function ($q) use ($storages) {
+                foreach ($storages as $value) {
+                    $q->orWhere('internal_storage', 'like', "%{$value}%");
+                }
+            });
+        }
+
+        $conditions = $this->normalizeList($request->input('conditions'));
+        if (count($conditions) === 0 && $request->filled('condition')) {
+            $conditions = $this->normalizeList($request->input('condition'));
+        }
+        if (count($conditions) > 0) {
+            $query->where(function ($q) use ($conditions) {
+                foreach ($conditions as $value) {
+                    $q->orWhere('condition', '=', $value);
+                }
+            });
+        }
+
         if ($request->filled('min_price')) {
             $query->where('price', '>=', floatval($request->min_price));
         }
@@ -283,13 +319,16 @@ class ShopController extends Controller
             }
         }
 
-        $products = $query->select('category_id', 'occasion', 'fabric', 'color', 'price')->get();
+        $products = $query->select('category_id', 'brand_id', 'occasion', 'color', 'ram', 'internal_storage', 'condition', 'price')->get();
 
         $filters = [
             'categories' => $products->pluck('category_id')->filter()->unique()->values(),
+            'brands' => $products->pluck('brand_id')->filter()->unique()->values(),
             'occasions' => $products->pluck('occasion')->filter()->unique()->values(),
-            'fabrics' => $products->pluck('fabric')->filter()->unique()->values(),
             'colors' => $products->pluck('color')->filter()->unique()->values(),
+            'rams' => $products->pluck('ram')->filter()->unique()->values(),
+            'storages' => $products->pluck('internal_storage')->filter()->unique()->values(),
+            'conditions' => $products->pluck('condition')->filter()->unique()->values(),
             'price_range' => [
                 'min' => (int) $products->min('price'),
                 'max' => (int) $products->max('price'),
@@ -318,6 +357,21 @@ class ShopController extends Controller
             'color' => 'nullable|string',
             'available_sizes' => 'nullable|string',
             'occasion' => 'nullable|string',
+            'mrp' => 'nullable|numeric|min:0',
+            'model_name' => 'nullable|string|max:150',
+            'ram' => 'nullable|string|max:40',
+            'internal_storage' => 'nullable|string|max:40',
+            'display_size' => 'nullable|string|max:40',
+            'display_type' => 'nullable|string|max:40',
+            'processor' => 'nullable|string|max:100',
+            'battery_capacity' => 'nullable|string|max:40',
+            'rear_camera' => 'nullable|string|max:120',
+            'front_camera' => 'nullable|string|max:120',
+            'operating_system' => 'nullable|string|max:60',
+            'network_type' => 'nullable|string|max:80',
+            'sim_slots' => 'nullable|string|max:40',
+            'warranty' => 'nullable|string|max:100',
+            'condition' => 'nullable|string|max:40',
             'active_status' => 'nullable|in:active,inactive',
             'keywords' => 'nullable|string',
             'video_url' => 'nullable|url',
