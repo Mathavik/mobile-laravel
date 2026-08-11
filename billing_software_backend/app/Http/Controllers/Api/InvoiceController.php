@@ -555,9 +555,37 @@ class InvoiceController extends Controller
     }
 
     $data = (array) $invoice;
-    if (is_string($data['products'])) {
-        $data['products'] = json_decode($data['products']);
+
+    // Normalize the products column (JSON string or null).
+    $products = null;
+    if (is_string($data['products'] ?? null)) {
+        $products = json_decode($data['products'], true);
+    } elseif (!empty($data['products'])) {
+        $products = (array) $data['products'];
     }
+
+    // Invoices created via the shop checkout store their items in the
+    // order_items table (linked by order_id) instead of the products column.
+    if (empty($products) && !empty($data['order_id'])) {
+        $products = DB::table('order_items as oi')
+            ->leftJoin('products as p', 'oi.product_id', '=', 'p.id')
+            ->where('oi.order_id', $data['order_id'])
+            ->select('p.product_name', 'p.product_code', 'p.gst_percentage', 'oi.quantity', 'oi.price')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name'         => $item->product_name ?? 'Item',
+                    'product_code' => $item->product_code ?? '',
+                    'qty'          => (int) ($item->quantity ?? 1),
+                    'price'        => (float) ($item->price ?? 0),
+                    'gst'          => (float) ($item->gst_percentage ?? 0),
+                ];
+            })
+            ->values()
+            ->toArray();
+    }
+
+    $data['products'] = $products ?: [];
 
     return response()->json(["status" => true, "data" => $data]);
 }
