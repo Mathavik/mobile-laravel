@@ -415,11 +415,13 @@ export default function CategoryForm() {
           overflow: hidden;
         }
         .cf-preview-image {
-          width: 100%;
-          max-height: 150px;
-          object-fit: contain;
-          border-radius: 12px;
+          width: 120px;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 50%;
           background: #f1f5f9;
+          display: block;
+          margin: 0 auto;
         }
         .cf-preview-video {
           width: 100%;

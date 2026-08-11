@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Search, Smartphone, ShieldCheck, Zap, BadgeCheck, ArrowRight, Star, Cpu } from "lucide-react";
 import api from "../services/api";
 
@@ -43,7 +44,12 @@ function Banner() {
         <div className="relative max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* LEFT — copy + search */}
-            <div className="text-white">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="text-white"
+            >
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-4 py-1.5 text-xs font-medium tracking-wide backdrop-blur-sm">
                 <BadgeCheck size={14} className="text-[#38bdf8]" />
                 Authorized Mobile Store · 100% Genuine
@@ -120,10 +126,14 @@ function Banner() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* RIGHT — floating phone + stat cards */}
-            <div className="relative hidden lg:flex items-center justify-center py-6">
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="relative hidden lg:flex items-center justify-center py-6">
               {/* Glow behind phone */}
               <div className="absolute w-[380px] h-[380px] rounded-full bg-gradient-to-tr from-[#2563eb]/40 to-[#7c3aed]/40 blur-3xl" />
 
@@ -188,7 +198,7 @@ function Banner() {
               >
                 Shop Now <ArrowRight size={15} />
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

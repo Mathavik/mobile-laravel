@@ -331,7 +331,7 @@ export default function CategoryList() {
         .cl-media-thumb {
           width: 40px;
           height: 40px;
-          border-radius: 8px;
+          border-radius: 50%;
           object-fit: cover;
           border: 1px solid #e2e8f0;
           cursor: pointer;

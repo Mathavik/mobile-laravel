@@ -30,6 +30,8 @@ use App\Http\Controllers\Api\CelebrationBannerController;
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('update_profile', [AuthController::class, 'updateProfile']);
+    Route::post('change_password', [AuthController::class, 'changePassword']);
     Route::post('forgot_password', [AuthController::class, 'forgotPassword']);
     Route::post('send_otp', [AuthController::class, 'sendOtp']);
     Route::post('send_otp_for_credit', [AuthController::class, 'sendOtpForCredit']);

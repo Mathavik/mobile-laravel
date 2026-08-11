@@ -43,6 +43,8 @@ export function AuthProvider({ children }) {
       const response = await api.post('/auth/register', {
         name,
         email,
+        phone,
+        address,
         password,
         role: 'user',
       });
