@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, ShieldCheck } from "lucide-react";
 import api from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -35,18 +36,19 @@ export default function Login() {
       if (res.data.status === true) {
         const role = res.data.role;
         const userData = res.data.data;
-        const user = {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-          role: role,
-          company_id: userData.company_id || null,
-          admin_id: userData.admin_id || null,
-          active_token: res.data.active_token || null,
-        };
 
-        localStorage.setItem("user", JSON.stringify(user));
-        console.log("LOGIN USER 👉", user);
+        // Store ONLY the minimal session reference — no full user details.
+        // The complete user is always fetched fresh from the backend.
+        localStorage.setItem("user", JSON.stringify({
+          id: userData.id,
+          role: role,
+          active_token: res.data.active_token || null,
+        }));
+
+        // Fetch the fresh user details from the backend into the store
+        await useAuthStore.getState().fetchUser();
+
+        console.log("LOGIN USER 👉", { id: userData.id, role });
         if (role === "superadmin") navigate("/admin");
         else navigate("/dashboard");
       } else {

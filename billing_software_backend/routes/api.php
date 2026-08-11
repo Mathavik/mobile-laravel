@@ -34,6 +34,9 @@ Route::prefix('auth')->group(function () {
     Route::post('send_otp', [AuthController::class, 'sendOtp']);
     Route::post('send_otp_for_credit', [AuthController::class, 'sendOtpForCredit']);
     Route::post('verify_otp', [AuthController::class, 'verifyOtp']);
+    Route::get('get_user', [AuthController::class, 'getUser']);
+    Route::post('update_profile', [AuthController::class, 'updateProfile']);
+    Route::post('change_password', [AuthController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
 

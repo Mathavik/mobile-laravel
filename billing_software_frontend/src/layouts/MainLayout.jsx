@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import { useAuthStore } from "../store/useAuthStore";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -30,27 +31,30 @@ export default function MainLayout() {
   const location = useLocation();
   const [hoveredPath, setHoveredPath] = useState(null);
 
-  // 🔥 GET USER
-  const user = JSON.parse(localStorage.getItem("user"));
+  // 🔥 GET USER — fresh from the backend (store only keeps the minimal session ref)
+  const { user, fetchUser } = useAuthStore();
   const role = user?.role;
 
   useEffect(() => {
-    if (!user) {
+    if (!user?.id) {
       navigate("/", { replace: true });
+      return;
     }
-  }, [user, navigate]);
+    // Pull the full user details from the backend
+    fetchUser();
+  }, [user?.id, navigate, fetchUser]);
 
   // 🔥 LOGOUT
   const handleLogout = async () => {
     try {
-      const userObj = JSON.parse(localStorage.getItem("user") || "{}");
+      const userObj = user && user.id ? user : JSON.parse(localStorage.getItem("user") || "{}");
       if (userObj && userObj.id) {
         await api.post("/auth/logout", { id: userObj.id, role: userObj.role });
       }
     } catch (err) {
       console.error(err);
     }
-    localStorage.clear();
+    useAuthStore.getState().logout();
     navigate("/");
   };
 

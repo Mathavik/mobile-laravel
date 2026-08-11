@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 import {
   User,
   Mail,
@@ -85,10 +86,13 @@ export default function AdminForm() {
   };
 
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  // 🔥 Full user fetched fresh from the backend by the auth store
+  const { user, fetchUser } = useAuthStore();
 
-console.log("USER =>", user);
-console.log("COMPANY ID =>", user?.company_id);
+  useEffect(() => {
+    if (!user?.company_id) fetchUser();
+  }, [user?.company_id, fetchUser]);
+
   const handleSubmit = async () => {
 
     if (!form.name.trim()) {
@@ -114,10 +118,6 @@ console.log("COMPANY ID =>", user?.company_id);
     try {
 
       setLoading(true);
-
-      const user = JSON.parse(
-        localStorage.getItem("user")
-      );
 
       const res = await api.post(
         "/admin/create_admin",

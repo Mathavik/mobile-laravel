@@ -809,6 +809,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Cell
@@ -920,7 +921,8 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
 
-const user = JSON.parse(localStorage.getItem("user") || "{}");
+// 🔥 Full user is fetched fresh from the backend by the auth store
+const { user, fetchUser } = useAuthStore();
 
 const [showProfile, setShowProfile] = useState(false);
 
@@ -958,9 +960,13 @@ const [notifPos, setNotifPos] = useState({
   useEffect(() => {
     const loadCompanies = async () => {
       try {
-        // const user = JSON.parse(localStorage.getItem("user"));
-        const adminId = user.role === "cashier" ? user.admin_id : user.id;
-        const res = await api.get(`/company/get_companies_by_admin?admin_id=${adminId}&role=${user.role}`);
+        // Ensure the full user (with company_id / admin_id) is loaded from the backend
+        let currentUser = user;
+        if (!currentUser.company_id) {
+          currentUser = (await fetchUser()) || currentUser;
+        }
+        const adminId = currentUser.role === "cashier" ? currentUser.admin_id : currentUser.id;
+        const res = await api.get(`/company/get_companies_by_admin?admin_id=${adminId}&role=${currentUser.role}`);
         if (res.data.status) {
           setCompanies(res.data.data || []);
           /* Auto-select first company if none saved */
@@ -1061,12 +1067,16 @@ const fetchCreditDashboard = async (companyId) => {
 
 const fetchNotifications = async () => {
 
-    // const user = JSON.parse(localStorage.getItem("user"));
+    // Ensure the full user is loaded from the backend first
+    let currentUser = user;
+    if (!currentUser.company_id) {
+      currentUser = (await fetchUser()) || currentUser;
+    }
 
     const adminId =
-        user.role === "cashier"
-            ? user.admin_id
-            : user.id;
+        currentUser.role === "cashier"
+            ? currentUser.admin_id
+            : currentUser.id;
 
     const res = await api.get(
         `/dashboard/get_admin_overdue_notifications?admin_id=${adminId}`
@@ -1174,7 +1184,7 @@ useEffect(()=>{
             gap: 5
         }}
     >
-        {user.name}
+        {user?.name || "User"}
         <ChevronDown size={16} />
     </button>
 
@@ -1238,7 +1248,7 @@ useEffect(()=>{
             borderBottom: "1px solid #f1f1f8",
         }}>
             <div style={{ fontSize: 13, fontWeight: 800, color: "#1e1b4b", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                {user.name}
+                {user?.name || "User"}
             </div>
             <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, textTransform: "capitalize", marginTop: 2 }}>
                 {user.role}
@@ -1286,13 +1296,13 @@ useEffect(()=>{
                 borderTop: "1px solid #f4f4fa",
             }}
           onClick={async () => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userObj = useAuthStore.getState().user;
   try {
-    await api.post("/auth/logout", { id: user.id, role: user.role });
+    await api.post("/auth/logout", { id: userObj.id, role: userObj.role });
   } catch (err) {
     console.error(err);
   }
-  localStorage.clear();
+  useAuthStore.getState().logout();
   navigate("/");
 }}
         >

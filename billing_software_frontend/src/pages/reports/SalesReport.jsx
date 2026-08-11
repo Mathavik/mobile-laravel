@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 
 import {
   FileText, Search, ChevronLeft, ChevronRight,
@@ -275,11 +276,19 @@ export default function Reports() {
   useStyles();
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  // 🔥 Full user fetched fresh from the backend by the auth store
+  const { user, fetchUser } = useAuthStore();
   // Works for both admin and cashier:
   // admin  → user.id is the admin_id
   // cashier→ user.admin_id is the admin_id
   const adminId = user.role === "admin" ? user.id : (user.admin_id || null);
+
+  // Make sure the full user (with admin_id for cashiers) is loaded from the backend
+  useEffect(() => {
+    if (!user.company_id && user.role === "cashier") {
+      fetchUser();
+    }
+  }, [user.company_id, user.role, fetchUser]);
 
   /* ── state ── */
   const [companies,     setCompanies]     = useState([]);
