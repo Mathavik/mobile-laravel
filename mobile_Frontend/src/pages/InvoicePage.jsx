@@ -66,26 +66,22 @@ export default function InvoicePage() {
     const element = document.getElementById('invoice-content');
     if (!element) return;
 
-    const width = element.scrollWidth;
-    const height = element.scrollHeight;
     const opt = {
-      margin: 10,
+      margin: [8, 8, 8, 8],
       filename: `invoice-${invoice?.invoice_no || 'download'}.pdf`,
-      image: { type: 'jpeg', quality: 1 },
+      image: { type: 'jpeg', quality: 0.98 },
       html2canvas: {
         scale: 2,
         useCORS: true,
-        windowWidth: width,
-        width,
-        height,
         backgroundColor: '#ffffff',
+        windowWidth: element.scrollWidth,
       },
       jsPDF: {
-        unit: 'px',
-        format: [width, height],
+        unit: 'mm',
+        format: 'a4',
         orientation: 'portrait',
       },
-      pagebreak: { mode: ['css', 'legacy'] },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
     };
 
     html2pdf().set(opt).from(element).save();
