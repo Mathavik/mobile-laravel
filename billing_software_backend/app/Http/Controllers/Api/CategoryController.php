@@ -376,7 +376,7 @@ class CategoryController extends Controller
                 ->where('category_id', $category->id)
                 ->orderBy('created_at', 'desc')
                 ->limit(2)
-                ->get(['id', 'product_name', 'image', 'video_url', 'price']);
+                ->get(['id', 'product_name', 'image', 'video_url', 'price', 'mrp', 'ram', 'internal_storage', 'display_size', 'display_type', 'processor', 'battery_capacity', 'rear_camera', 'front_camera', 'stock', 'condition', 'warranty', 'color']);
 
             return [
                 'id' => $category->id,
@@ -424,8 +424,10 @@ class CategoryController extends Controller
     private function mapProduct($p): array
     {
         $offer = (float) $p->price;
-        $original = (float) $p->price;
-        $discount = 0;
+        $original = ($p->mrp !== null && (float) $p->mrp > 0) ? (float) $p->mrp : $offer;
+        $discount = $original > 0 && $offer < $original
+            ? (int) round((1 - $offer / $original) * 100)
+            : 0;
 
         return [
             'id' => $p->id,
@@ -437,6 +439,19 @@ class CategoryController extends Controller
             'offer_price' => $offer,
             'original_price' => $original,
             'discount_percentage' => $discount,
+            'mrp' => $original,
+            'ram' => $p->ram,
+            'internal_storage' => $p->internal_storage,
+            'display_size' => $p->display_size,
+            'display_type' => $p->display_type,
+            'processor' => $p->processor,
+            'battery_capacity' => $p->battery_capacity,
+            'rear_camera' => $p->rear_camera,
+            'front_camera' => $p->front_camera,
+            'stock' => $p->stock,
+            'condition' => $p->condition,
+            'warranty' => $p->warranty,
+            'color' => $p->color,
         ];
     }
 }

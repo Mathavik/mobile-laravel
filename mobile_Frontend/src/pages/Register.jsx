@@ -89,7 +89,7 @@ export default function Register() {
           </button>
 
           <div className="flex flex-col md:flex-row min-h-[420px]">
-            <div className="w-full md:w-2/5 overflow-hidden">
+            <div className="w-full md:w-2/5 overflow-hidden h-48 sm:h-56 md:h-auto">
               <img
                 src={LoginBanner}
                 alt="Login banner"

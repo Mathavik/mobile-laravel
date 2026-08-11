@@ -166,7 +166,7 @@ function ProfilePage() {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-fixed"
+      className="relative min-h-screen bg-cover bg-center"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
@@ -175,7 +175,7 @@ function ProfilePage() {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
-      <div className="relative max-w-5xl mx-auto px-4 py-8 mt-20">
+      <div className="relative max-w-5xl mx-auto px-4 pt-[116px] lg:pt-[156px] pb-8">
         {/* Header Section with Gradient */}
         <div className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl p-8 mb-8 shadow-xl relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
