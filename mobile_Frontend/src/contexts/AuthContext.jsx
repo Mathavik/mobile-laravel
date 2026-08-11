@@ -1,23 +1,39 @@
 // AuthContext.js
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import api, { API_BASE_URL } from "../services/api";
+import api from "../services/api";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
+// 🔥 Minimal session reference only — the full user is ALWAYS fetched fresh
+// from the backend (`/auth/get_user`), never read from localStorage.
+const getSession = () => {
+  try {
     const raw = localStorage.getItem("botik_user");
     return raw ? JSON.parse(raw) : null;
-  });
+  } catch {
+    return null;
+  }
+};
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(getSession);
   const [loading, setLoading] = useState(false);
 
+  // 🔥 On app load: pull the logged-in user's details from the backend
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("botik_user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("botik_user");
-    }
-  }, [user]);
+    const session = getSession();
+    if (!session || !session.id || !session.role) return;
+
+    setLoading(true);
+    api.get("/auth/get_user", { params: { id: session.id, role: session.role } })
+      .then((res) => {
+        if (res.data.status) {
+          setUser({ ...res.data.data, role: res.data.role });
+        }
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const login = async (email, password) => {
     setLoading(true);
@@ -27,7 +43,12 @@ export function AuthProvider({ children }) {
       if (payload?.status) {
         const userData = payload.data || payload.user || null;
         if (userData) {
-          setUser(userData);
+          setUser({ ...userData, role: payload.role || userData.role });
+          // Store ONLY the minimal session reference — no full user details
+          localStorage.setItem('botik_user', JSON.stringify({
+            id: userData.id,
+            role: payload.role || userData.role || '',
+          }));
           localStorage.setItem('token', payload.active_token || '');
         }
       }
@@ -54,7 +75,16 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      // 🔥 Clear the active_token in the users table on the backend
+      const session = user && user.id ? user : getSession();
+      if (session && session.id && session.role) {
+        await api.post('/auth/logout', { id: session.id, role: session.role });
+      }
+    } catch (err) {
+      console.error(err);
+    }
     localStorage.removeItem("botik_user");
     localStorage.removeItem("token");
     setUser(null);
@@ -124,9 +154,9 @@ export function AuthProvider({ children }) {
       register,
       logout,
       updateProfile,
-      changePassword, // ✅ expose it
-       forgotPassword,   // expose
-      resetPassword,    // expose
+      changePassword,
+      forgotPassword,
+      resetPassword,
     }),
     [user, loading]
   );

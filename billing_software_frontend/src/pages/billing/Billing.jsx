@@ -1743,6 +1743,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 
 /* ── Global CSS ─────────────────────────────────────────────────────────── */
 const GLOBAL_CSS = `
@@ -2105,9 +2106,17 @@ function emptyRow() {
 ══════════════════════════════════════════════════════════════════════════ */
 export default function Billing() {
 
-  const user    = JSON.parse(localStorage.getItem("user"));
+  // 🔥 Full user fetched fresh from the backend by the auth store
+  const { user, fetchUser } = useAuthStore();
   const adminId = user.role === "cashier" ? user.admin_id : user.id;
   const navigate = useNavigate();
+
+  // Make sure the full user (with admin_id for cashiers) is loaded from the backend
+  useEffect(() => {
+    if (user.role === "cashier" && !user.admin_id) {
+      fetchUser();
+    }
+  }, [user.role, user.admin_id, fetchUser]);
 
   /* ── State ── */
   const [rows, setRows]             = useState([emptyRow()]);
@@ -2480,12 +2489,11 @@ export default function Billing() {
     if (!selectedCompany) { showToast("Please select company!", "error"); return; }
     setGenerating(true);
     try {
-      const u = JSON.parse(localStorage.getItem("user"));
       const customer_id = await saveOrGetCustomer();
       const res = await api.post("/invoice/create_invoice", {
         company_id: selectedCompany, customer_id,
         customer_name: customer.name, customer_phone: customer.phone,
-        cashier_id: u.id, products: validRows,
+        cashier_id: user?.id, products: validRows,
         sub_total: subtotal, gst_total: gstTotal, total_amount: total,
         gst_type: billType === "gst_bill" ? "with_gst" : "without_gst",
         gst_no: billType === "gst_bill" ? customer.gst_no : "",

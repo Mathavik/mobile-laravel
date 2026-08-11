@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function CreditSettings() {
 
   const [days, setDays] = useState(30);
   const [loading, setLoading] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  // 🔥 Full user fetched fresh from the backend by the auth store
+  const { user, fetchUser } = useAuthStore();
+
+  /* ── Ensure full user (with company_id) is loaded from the backend ── */
+  useEffect(() => {
+    if (!user?.company_id) fetchUser();
+  }, [user?.company_id, fetchUser]);
 
   /* ── Fetch settings ── */
   useEffect(() => {
@@ -19,7 +26,7 @@ export default function CreditSettings() {
         setDays(res.data.data.default_credit_days);
       }
     });
-  }, []);
+  }, [user?.company_id]);
 
   /* ── Save ── */
   const handleSave = async () => {

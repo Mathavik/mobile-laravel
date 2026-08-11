@@ -68,6 +68,8 @@ class AuthController extends Controller
                         "id"         => $user->id,
                         "name"       => $user->name,
                         "email"      => $user->email,
+                        "phone"      => $user->phone,
+                        "address"    => $user->address,
                         "company_id" => $user->company_id,
                         "admin_id"   => $user->admin_id
                     ]
@@ -108,6 +110,8 @@ class AuthController extends Controller
         $admin_id = intval($request->input('admin_id', 0));
         $company_id = intval($request->input('company_id', 0));
         $requested_by = intval($request->input('requested_by', 0));
+        $phone = trim($request->input('phone', ''));
+        $address = trim($request->input('address', ''));
 
         if (!$name || !$email || !$password || !$role) {
             return response()->json([
@@ -168,6 +172,8 @@ class AuthController extends Controller
                 'role' => $role,
                 'admin_id' => $admin_id ?: null,
                 'company_id' => $company_id ?: null,
+                'phone' => $phone ?: null,
+                'address' => $address ?: null,
                 'status' => 'active',
             ]);
 
@@ -388,6 +394,154 @@ class AuthController extends Controller
                 "message" => "Invalid or expired OTP"
             ]);
         }
+    }
+
+    public function getUser(Request $request)
+    {
+        $id = intval($request->input('id') ?: $request->query('id', 0));
+        $role = $request->input('role', '');
+
+        if (!$id) {
+            return response()->json([
+                "status" => false,
+                "message" => "id required"
+            ]);
+        }
+
+        // Admin accounts that logged in via the companies table (id = company id)
+        if ($role === 'admin') {
+            $company = Company::where('id', $id)->where('is_deleted', 0)->first();
+            if ($company) {
+                return response()->json([
+                    "status" => true,
+                    "role"   => "admin",
+                    "data"   => [
+                        "id"         => $company->id,
+                        "name"       => $company->company_name,
+                        "email"      => $company->owner_email,
+                        "company_id" => $company->id,
+                        "admin_id"   => null
+                    ]
+                ]);
+            }
+            // else fall through to the users table (admin accounts created there)
+        }
+
+        // All other accounts live in the users table
+        $user = User::where('id', $id)->first();
+        if (!$user) {
+            return response()->json([
+                "status" => false,
+                "message" => "User not found"
+            ]);
+        }
+
+        return response()->json([
+            "status" => true,
+            "role"   => $user->role,
+            "data"   => [
+                "id"         => $user->id,
+                "name"       => $user->name,
+                "email"      => $user->email,
+                "phone"      => $user->phone,
+                "address"    => $user->address,
+                "company_id" => $user->company_id,
+                "admin_id"   => $user->admin_id
+            ]
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user_id = intval($request->input('user_id', 0));
+        $name    = trim($request->input('name', ''));
+        $phone   = trim($request->input('phone', ''));
+        $address = trim($request->input('address', ''));
+
+        if (!$user_id) {
+            return response()->json([
+                "status" => false,
+                "message" => "user_id required"
+            ]);
+        }
+
+        $user = User::where('id', $user_id)->first();
+        if (!$user) {
+            return response()->json([
+                "status" => false,
+                "message" => "User not found"
+            ]);
+        }
+
+        if ($phone && !preg_match('/^[0-9]{10}$/', $phone)) {
+            return response()->json([
+                "status" => false,
+                "message" => "Phone must be 10 digits"
+            ]);
+        }
+
+        $user->update([
+            'name'    => $name ?: $user->name,
+            'phone'   => $phone ?: $user->phone,
+            'address' => $address ?: $user->address
+        ]);
+
+        return response()->json([
+            "status" => true,
+            "role"   => $user->role,
+            "data"   => [
+                "id"         => $user->id,
+                "name"       => $user->name,
+                "email"      => $user->email,
+                "phone"      => $user->phone,
+                "address"    => $user->address,
+                "company_id" => $user->company_id,
+                "admin_id"   => $user->admin_id
+            ]
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user_id           = intval($request->input('user_id', 0));
+        $current_password  = (string) $request->input('current_password', '');
+        $new_password      = (string) $request->input('new_password', '');
+
+        if (!$user_id || !$current_password || !$new_password) {
+            return response()->json([
+                "status" => false,
+                "message" => "All fields required"
+            ]);
+        }
+
+        if (strlen($new_password) < 6) {
+            return response()->json([
+                "status" => false,
+                "message" => "New password must be at least 6 characters"
+            ]);
+        }
+
+        $user = User::where('id', $user_id)->first();
+        if (!$user) {
+            return response()->json([
+                "status" => false,
+                "message" => "User not found"
+            ]);
+        }
+
+        if (!Hash::check($current_password, $user->password)) {
+            return response()->json([
+                "status" => false,
+                "message" => "Current password is incorrect"
+            ]);
+        }
+
+        $user->update(['password' => Hash::make($new_password)]);
+
+        return response()->json([
+            "status" => true,
+            "message" => "Password changed successfully"
+        ]);
     }
 
     public function logout(Request $request)

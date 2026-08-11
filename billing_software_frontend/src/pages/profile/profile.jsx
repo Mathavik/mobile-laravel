@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import api, { API_BASE_URL } from "../../services/api";
+import { useAuthStore } from "../../store/useAuthStore";
 import { Phone, MapPin, BadgeCheck, Pencil, Save, Mail, Hash, Building2, X, Camera, User, FileText } from "lucide-react";
 
 /* ─── Inject global styles ───────────────────────────────────────────────── */
@@ -276,9 +277,16 @@ export default function Profile() {
   }, []);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    api.post("/company/get_company_by_id", { id: user.company_id })
-       .then(r => { if (r.data.status) setCompany(r.data.data); });
+    let active = true;
+    (async () => {
+      // Fetch the logged-in user fresh from the backend — no localStorage details
+      const user = await useAuthStore.getState().fetchUser();
+      if (!active) return;
+      if (!user || !user.company_id) return;
+      api.post("/company/get_company_by_id", { id: user.company_id })
+         .then(r => { if (active && r.data.status) setCompany(r.data.data); });
+    })();
+    return () => { active = false; };
   }, []);
 
   const showToast = (msg, ok = true) => { setToast({ msg, ok }); setTimeout(() => setToast(null), 3500); };
