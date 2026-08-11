@@ -867,7 +867,10 @@ export default function InvoicePreview() {
   useEffect(() => {
     api.get(`/invoice/get_invoice_by_id?id=${invoiceNo}`).then(res => {
       if (res.data.status) {
-        setInvoice(res.data.data);
+        setInvoice({
+          ...res.data.data,
+          products: Array.isArray(res.data.data.products) ? res.data.data.products : [],
+        });
         // setCompany(res.data.data);
         setCompany({
   company_name: res.data.data.company_name,
