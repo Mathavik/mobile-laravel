@@ -288,12 +288,12 @@ function Header() {
         {/* ── ANNOUNCEMENT STRIP ─────────────────────── */}
         <div className="relative overflow-hidden bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#7c3aed] text-white">
           <div className="absolute inset-0 opacity-20 [background-image:repeating-linear-gradient(45deg,#fff_0,#fff_1px,transparent_1px,transparent_12px)]" />
-          <div className="relative max-w-[1220px] mx-auto h-9 px-4 lg:px-0 flex items-center justify-center gap-6 text-[11px] sm:text-xs">
+          <div className="relative max-w-[1220px] mx-auto h-9 px-4 lg:px-0 flex items-center justify-center gap-3 sm:gap-6 text-[11px] sm:text-xs">
             <span className="hidden sm:flex items-center gap-1.5 text-blue-50">
               <Truck size={12} /> Free Delivery above ₹999
             </span>
-            <span className="flex items-center gap-1.5 font-semibold tracking-wide">
-              <Zap size={12} className="text-amber-300" /> MEGA 5G SALE — Up to 20% Off
+            <span className="flex items-center gap-1.5 font-semibold tracking-wide whitespace-nowrap truncate max-w-full">
+              <Zap size={12} className="text-amber-300 shrink-0" /> MEGA 5G SALE — Up to 20% Off
             </span>
             <span className="hidden sm:flex items-center gap-1.5 text-blue-50">
               <Phone size={12} /> +91 93899 03752
@@ -303,22 +303,22 @@ function Header() {
 
         {/* ── MAIN BAR ──────────────────────────────── */}
         <div className="relative z-40 bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-[0_2px_20px_rgba(15,23,42,0.06)]">
-          <div className="max-w-[1220px] mx-auto h-[72px] px-4 lg:px-0 flex items-center justify-between gap-3">
+          <div className="max-w-[1220px] mx-auto h-[72px] px-4 lg:px-0 flex items-center justify-between gap-2 sm:gap-3">
             {/* LEFT: menu + logo */}
-            <div className="flex items-center gap-3 md:gap-5 flex-1 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-5 flex-1 min-w-0">
               <button
                 onClick={() => setMenuOpen(true)}
-                className="lg:hidden p-2 -ml-2 rounded-xl hover:bg-slate-100 transition"
+                className="lg:hidden p-1.5 sm:p-2 -ml-1.5 sm:-ml-2 rounded-xl hover:bg-slate-100 transition"
               >
                 <Menu size={24} />
               </button>
 
               {/* LOGO */}
-              <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-                <span className="flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#7c3aed] text-white shadow-lg shadow-[#2563eb]/30 group-hover:scale-105 transition-transform">
+              <Link to="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0 group">
+                <span className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-[#2563eb] via-[#3b82f6] to-[#7c3aed] text-white shadow-lg shadow-[#2563eb]/30 group-hover:scale-105 transition-transform">
                   <Smartphone size={20} />
                 </span>
-                <span className="text-2xl font-extrabold tracking-tight text-[#0f172a]">
+                <span className="hidden min-[340px]:inline text-base min-[480px]:text-xl min-[640px]:text-2xl font-extrabold tracking-tight text-[#0f172a]">
                   Mobile<span className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] bg-clip-text text-transparent">Kart</span>
                 </span>
               </Link>
@@ -327,7 +327,7 @@ function Header() {
             {/* CENTER: search */}
             <div
               ref={searchRef}
-              className="relative hidden md:flex items-center w-[420px] lg:w-[520px] h-12 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] p-[1.5px] focus-within:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] transition-shadow"
+              className="relative hidden md:flex items-center w-[300px] lg:w-[420px] xl:w-[520px] h-12 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] p-[1.5px] focus-within:shadow-[0_0_0_4px_rgba(37,99,235,0.15)] transition-shadow"
             >
               <div className="flex items-center w-full h-full rounded-full bg-white px-4">
                 <Search size={18} className="text-slate-400 shrink-0" />
@@ -365,7 +365,7 @@ function Header() {
             </div>
 
             {/* RIGHT: icons */}
-            <div className="flex items-center justify-end gap-1.5 sm:gap-2 flex-1 min-w-0">
+            <div className="flex items-center justify-end gap-1 sm:gap-2 flex-1 min-w-0">
               {/* Mobile Search */}
               <button
                 type="button"
@@ -373,7 +373,7 @@ function Header() {
                   setShowMobileSearch((prev) => !prev);
                   if (!showMobileSearch) setSearchFocused(true);
                 }}
-                className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition"
+                className="md:hidden p-1.5 sm:p-2 rounded-xl hover:bg-slate-100 transition"
                 aria-label="Search"
               >
                 <Search size={22} />
@@ -383,7 +383,7 @@ function Header() {
               <UserDropdown />
 
               {/* Wishlist */}
-              <Link to="/wishlist" className="relative p-2 rounded-xl hover:bg-slate-100 group transition">
+              <Link to="/wishlist" className="relative p-1.5 sm:p-2 rounded-xl hover:bg-slate-100 group transition">
                 <Heart
                   size={21}
                   className={`${wishlistCount > 0 ? "text-red-600" : "text-slate-700 group-hover:text-[#2563eb]"} transition`}
@@ -394,7 +394,7 @@ function Header() {
               </Link>
 
               {/* Cart */}
-              <Link to="/cart" className="relative p-2 rounded-xl hover:bg-slate-100 group transition">
+              <Link to="/cart" className="relative p-1.5 sm:p-2 rounded-xl hover:bg-slate-100 group transition">
                 <ShoppingBag size={21} className="text-slate-700 group-hover:text-[#2563eb] transition" />
                 <span className="absolute top-0.5 right-0.5 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-1.5 py-0.5 text-[10px] leading-none text-white font-bold shadow">
                   {cartCount}
@@ -593,7 +593,7 @@ function Header() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed top-0 left-0 h-full w-[300px] bg-white z-[70] transition-transform duration-300 overflow-y-auto ${
+        className={`fixed top-0 left-0 h-full w-[85vw] max-w-[300px] bg-white z-[70] transition-transform duration-300 overflow-y-auto ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
