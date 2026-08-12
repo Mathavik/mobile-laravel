@@ -38,6 +38,11 @@ export default function Register() {
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
     const response = await register(name, email, phone, address, password);
     if (response.status) {
       setIsModalOpen(false);
@@ -62,6 +67,11 @@ export default function Register() {
 
     if (!/^[0-9]{10}$/.test(phone.replace(/[^0-9]/g, ""))) {
       setError("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address (ex: name@gmail.com)");
       return;
     }
 
@@ -159,7 +169,7 @@ export default function Register() {
                         </label>
                         <input
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, "").slice(0, 10))}
                           required
                           type="tel"
                           placeholder="Enter your 10-digit phone number"

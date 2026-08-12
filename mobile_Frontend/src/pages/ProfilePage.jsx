@@ -47,9 +47,12 @@ function ProfilePage() {
   }, [user]);
 
   const handleChange = (e) => {
+    const value = e.target.name === "phone"
+      ? e.target.value.replace(/[^0-9]/g, "").slice(0, 10)
+      : e.target.value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
     if (message.text) {
       setMessage({ type: "", text: "" });
