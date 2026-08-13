@@ -157,6 +157,7 @@ Route::prefix('invoice')->group(function () {
 // ── PRODUCT ROUTES ──
 Route::prefix('product')->group(function () {
     Route::post('add', [ProductController::class, 'add']);
+    Route::post('bulk_add', [ProductController::class, 'bulkAdd']);
     Route::post('delete', [ProductController::class, 'delete']);
     Route::get('get', [ProductController::class, 'get']);
     Route::get('get_by_id', [ProductController::class, 'getById']);

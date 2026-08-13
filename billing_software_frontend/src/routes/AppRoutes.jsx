@@ -15,6 +15,7 @@ import TaxList from "../pages/tax/TaxList";
 import TaxForm from "../pages/tax/TaxForm";
 import Invoice from "../pages/billing/Invoice";
 import EditProduct from "../pages/products/EditProduct";
+import BulkAddProduct from "../pages/products/BulkAddProduct";
 import NotFound from "../pages/NotFound";
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -106,6 +107,7 @@ export default function AppRoutes() {
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
             <Route path="/products" element={<ProductList />} />
             <Route path="/products/add" element={<ProductForm />} />
+            <Route path="/products/bulk-add" element={<BulkAddProduct />} />
             <Route path="/products/edit/:id" element={<EditProduct />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/company" element={<CompanyList />} />

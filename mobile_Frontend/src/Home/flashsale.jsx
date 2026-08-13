@@ -139,17 +139,17 @@ const FlashSale = () => {
             </div>
 
             {/* ── Countdown ── */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3">
+            <div className="flex items-center justify-center gap-1 min-[360px]:gap-1.5 min-[380px]:gap-2 sm:gap-3">
               <span className="hidden sm:flex flex-col items-center justify-center mr-1">
                 <Timer size={22} className="text-amber-300 mb-1" />
                 <span className="text-[10px] uppercase tracking-wider text-blue-100/80 font-bold">Ends in</span>
               </span>
               <CountdownCell value={days} label="Days" />
-              <span className="text-white/70 font-black text-2xl animate-pulse">:</span>
+              <span className="text-white/70 font-black text-lg min-[360px]:text-xl sm:text-2xl animate-pulse">:</span>
               <CountdownCell value={hours} label="Hrs" />
-              <span className="text-white/70 font-black text-2xl animate-pulse">:</span>
+              <span className="text-white/70 font-black text-lg min-[360px]:text-xl sm:text-2xl animate-pulse">:</span>
               <CountdownCell value={minutes} label="Min" />
-              <span className="text-white/70 font-black text-2xl animate-pulse">:</span>
+              <span className="text-white/70 font-black text-lg min-[360px]:text-xl sm:text-2xl animate-pulse">:</span>
               <CountdownCell value={seconds} label="Sec" pulse />
             </div>
           </div>
@@ -222,14 +222,14 @@ const FlashSale = () => {
 /* ── Countdown cell ─────────────────────────────────── */
 const CountdownCell = ({ value, label, pulse = false }) => (
   <div
-    className={`flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 shadow-inner ${
+    className={`flex flex-col items-center justify-center w-11 h-11 min-[360px]:w-12 min-[360px]:h-12 min-[380px]:w-14 min-[380px]:h-14 min-[440px]:w-16 min-[440px]:h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 shadow-inner ${
       pulse ? "animate-[flash-pulse_1s_ease-in-out_infinite]" : ""
     }`}
   >
-    <span className="text-2xl sm:text-3xl font-black text-white tabular-nums leading-none">
+    <span className="text-base min-[360px]:text-lg min-[380px]:text-xl min-[440px]:text-2xl sm:text-3xl font-black text-white tabular-nums leading-none">
       {pad(value)}
     </span>
-    <span className="mt-1 text-[9px] sm:text-[10px] uppercase tracking-widest text-blue-100/80 font-bold">
+    <span className="mt-1 text-[8px] min-[360px]:text-[9px] sm:text-[10px] uppercase tracking-widest text-blue-100/80 font-bold">
       {label}
     </span>
   </div>

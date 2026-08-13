@@ -123,9 +123,9 @@ function NewArrivals() {
   if (loading) {
     return (
       <section className="bg-white py-14">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <SectionHeader />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="h-80 bg-gray-100 animate-pulse rounded-2xl"></div>
             ))}
@@ -138,7 +138,7 @@ function NewArrivals() {
   if (error) {
     return (
       <section className="bg-white py-14">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <SectionHeader />
           <div className="text-center text-red-500 py-10">{error}</div>
         </div>

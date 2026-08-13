@@ -29,8 +29,8 @@ const workflowItems = [
 function Workflow() {
   return (
     <section className="w-full bg-[#f8fafc] py-12">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {workflowItems.map((item, index) => {
             const Icon = item.icon;
 

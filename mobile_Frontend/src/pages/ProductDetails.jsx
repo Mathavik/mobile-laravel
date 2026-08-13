@@ -695,7 +695,7 @@ export default function ProductDetails() {
           <div className="mt-4 text-sm text-gray-500">SKU: {product.product_code || "N/A"} • Barcode: {product.barcode || "N/A"}</div>
 
           {/* Action Buttons with Conditional Rendering */}
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-2 sm:gap-3">
             {isOutOfStock ? (
               <div className="w-full flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-5 py-4 rounded-2xl font-semibold text-center justify-center">
                 <AlertTriangle size={18} /> Product is Out of Stock
@@ -704,13 +704,13 @@ export default function ProductDetails() {
               <>
                 <button 
                   onClick={addToCart} 
-                  className="flex items-center gap-2 rounded-2xl bg-[#0f172a] px-6 py-3 text-white font-semibold hover:bg-[#1e293b] transition shadow-lg shadow-[#0f172a]/20"
+                  className="flex flex-1 min-w-0 justify-center items-center gap-2 rounded-2xl bg-[#0f172a] px-6 py-3 text-white font-semibold hover:bg-[#1e293b] transition shadow-lg shadow-[#0f172a]/20"
                 >
                   <ShoppingBag size={16} /> Add to Cart
                 </button>
                 <button 
                   onClick={handleBuyNow} 
-                  className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-6 py-3 text-white font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30"
+                  className="flex flex-1 min-w-0 justify-center items-center gap-2 rounded-2xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-6 py-3 text-white font-semibold hover:opacity-90 transition shadow-lg shadow-[#2563eb]/30"
                 >
                   Buy Now
                 </button>
@@ -718,7 +718,7 @@ export default function ProductDetails() {
             )}
             <button
               onClick={addToWishlist}
-              className={`flex items-center gap-2 rounded-2xl border px-5 py-3 font-semibold transition ${
+              className={`flex w-full sm:w-auto justify-center items-center gap-2 rounded-2xl border px-5 py-3 font-semibold transition ${
                 isWishlisted
                   ? "bg-gradient-to-r from-[#ef4444] to-[#f43f5e] text-white border-transparent shadow-lg shadow-[#ef4444]/30"
                   : "bg-white border-slate-200 text-[#0f172a] hover:border-[#ef4444] hover:text-[#ef4444]"

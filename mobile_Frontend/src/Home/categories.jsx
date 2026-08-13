@@ -34,9 +34,9 @@ function Categories() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="w-40 sm:w-44 shrink-0 flex flex-col items-center gap-3"
+                className="w-32 xs:w-36 sm:w-44 shrink-0 flex flex-col items-center gap-3"
               >
-                <div className="w-40 h-40 sm:w-44 sm:h-44 rounded-full bg-gray-200 animate-pulse" />
+                <div className="w-32 h-32 xs:w-36 xs:h-36 sm:w-44 sm:h-44 rounded-full bg-gray-200 animate-pulse" />
                 <div className="h-4 w-20 rounded bg-gray-200 animate-pulse" />
               </div>
             ))}
@@ -100,9 +100,9 @@ function Categories() {
               <button
                 key={`${category.id}-${index}`}
                 onClick={() => navigate(`/mobiles?category_id=${category.id}`)}
-                className="group flex flex-col items-center gap-3 text-center shrink-0 w-40 sm:w-44"
+                className="group flex flex-col items-center gap-3 text-center shrink-0 w-32 xs:w-36 sm:w-44"
               >
-                <span className="relative w-40 h-40 sm:w-44 sm:h-44 rounded-full overflow-hidden bg-white ring-4 ring-white shadow-lg shadow-[#2563eb]/10 group-hover:shadow-xl group-hover:shadow-[#2563eb]/20 group-hover:-translate-y-1 transition-all duration-300">
+                <span className="relative w-32 h-32 xs:w-36 xs:h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden bg-white ring-4 ring-white shadow-lg shadow-[#2563eb]/10 group-hover:shadow-xl group-hover:shadow-[#2563eb]/20 group-hover:-translate-y-1 transition-all duration-300">
                   <img
                     src={resolveMediaUrl(category.image_src || category.image) || FALLBACK_IMAGE}
                     alt={category.name || "Category"}

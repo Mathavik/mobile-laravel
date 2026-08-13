@@ -99,6 +99,142 @@ class ProductController extends Controller
         return $payload;
     }
 
+    private function normalizeRow(array $d, int $company_id): array
+    {
+        $mrpRaw = $d['mrp'] ?? null;
+        $mrp = ($mrpRaw !== null && $mrpRaw !== '') ? floatval($mrpRaw) : null;
+
+        return [
+            'product_name' => trim($d['product_name'] ?? ''),
+            'product_code' => trim($d['product_code'] ?? '') ?: null,
+            'category_id' => intval($d['category_id'] ?? 0) ?: null,
+            'subcategory_id' => intval($d['subcategory_id'] ?? 0) ?: null,
+            'brand_id' => intval($d['brand_id'] ?? 0) ?: null,
+            'price' => floatval($d['price'] ?? 0),
+            'stock' => intval($d['stock'] ?? 0),
+            'barcode' => trim($d['barcode'] ?? '') ?: null,
+            'unit' => trim($d['unit'] ?? '') ?: null,
+            'gst_percentage' => floatval($d['gst_percentage'] ?? 0),
+            'company_id' => $company_id,
+            'supplier_id' => intval($d['supplier_id'] ?? 0) ?: null,
+            'image' => trim($d['image'] ?? '') ?: null,
+            'image_gallery_json' => $this->normalizeGalleryJson($d['image_gallery_json'] ?? null),
+            'video_url' => trim($d['video_url'] ?? '') ?: null,
+            'short_description' => trim($d['short_description'] ?? '') ?: null,
+            'full_description' => trim($d['full_description'] ?? '') ?: null,
+            'fabric' => trim($d['fabric'] ?? '') ?: null,
+            'embroidery' => trim($d['embroidery'] ?? '') ?: null,
+            'color' => trim($d['color'] ?? '') ?: null,
+            'available_sizes' => trim($d['available_sizes'] ?? '') ?: null,
+            'occasion' => trim($d['occasion'] ?? '') ?: null,
+            'mrp' => $mrp,
+            'model_name' => trim($d['model_name'] ?? '') ?: null,
+            'ram' => trim($d['ram'] ?? '') ?: null,
+            'internal_storage' => trim($d['internal_storage'] ?? '') ?: null,
+            'display_size' => trim($d['display_size'] ?? '') ?: null,
+            'display_type' => trim($d['display_type'] ?? '') ?: null,
+            'processor' => trim($d['processor'] ?? '') ?: null,
+            'battery_capacity' => trim($d['battery_capacity'] ?? '') ?: null,
+            'rear_camera' => trim($d['rear_camera'] ?? '') ?: null,
+            'front_camera' => trim($d['front_camera'] ?? '') ?: null,
+            'operating_system' => trim($d['operating_system'] ?? '') ?: null,
+            'network_type' => trim($d['network_type'] ?? '') ?: null,
+            'sim_slots' => trim($d['sim_slots'] ?? '') ?: null,
+            'warranty' => trim($d['warranty'] ?? '') ?: null,
+            'condition' => trim($d['condition'] ?? '') ?: null,
+            'active_status' => trim($d['active_status'] ?? 'active') ?: 'active',
+            'view_count' => intval($d['view_count'] ?? 0),
+            'is_deleted' => intval($d['is_deleted'] ?? 0),
+        ];
+    }
+
+    /**
+     * Bulk add many products at once.
+     *
+     * Expects JSON: { "company_id": 1, "products": [ {...}, {...} ] }
+     * Each product object uses the same field names as the single "add" endpoint.
+     * Insertion is wrapped in a transaction; per-row errors are reported back
+     * (by row number) instead of aborting the whole batch.
+     */
+    public function bulkAdd(Request $request)
+    {
+        $company_id = intval($request->input('company_id', 0));
+        $products = $request->input('products', []);
+
+        if (!$company_id) {
+            return response()->json([
+                "status" => false,
+                "message" => "Company ID required"
+            ]);
+        }
+
+        if (!is_array($products) || count($products) === 0) {
+            return response()->json([
+                "status" => false,
+                "message" => "No products provided"
+            ]);
+        }
+
+        $existingCodes = DB::table('products')
+            ->where('company_id', $company_id)
+            ->whereNotNull('product_code')
+            ->where('product_code', '!=', '')
+            ->pluck('product_code')
+            ->map(fn ($code) => strtoupper(trim((string) $code)))
+            ->toArray();
+        $existingCodeSet = array_fill_keys($existingCodes, true);
+
+        $added = 0;
+        $errors = [];
+        $seenCodes = [];
+
+        DB::beginTransaction();
+        try {
+            foreach ($products as $index => $item) {
+                $row = $index + 1;
+                $raw = is_array($item) ? $item : [];
+
+                $product_name = trim($raw['product_name'] ?? '');
+                if ($product_name === '') {
+                    $errors[] = ["row" => $row, "message" => "Product name is required"];
+                    continue;
+                }
+
+                $product_code = strtoupper(trim($raw['product_code'] ?? ''));
+                if ($product_code !== '' && (isset($seenCodes[$product_code]) || isset($existingCodeSet[$product_code]))) {
+                    $errors[] = ["row" => $row, "message" => "Duplicate product code '{$product_code}'"];
+                    continue;
+                }
+
+                $data = $this->normalizeRow($raw, $company_id);
+                $keywordList = Product::normalizeKeywords($raw['keywords'] ?? '');
+                $data['keywords'] = $keywordList ? implode(', ', $keywordList) : null;
+                $data['status'] = $data['active_status'];
+
+                $product = Product::create($this->buildProductPayload($data));
+                Product::syncKeywords($product->id, $keywordList);
+
+                $seenCodes[$product_code] = true;
+                $added++;
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "message" => "Bulk add failed: " . $e->getMessage()
+            ]);
+        }
+
+        return response()->json([
+            "status" => true,
+            "message" => "{$added} of " . count($products) . " products added successfully",
+            "added" => $added,
+            "errors" => $errors,
+        ]);
+    }
+
     public function add(Request $request)
     {
         $product_name    = trim($request->input('product_name', ''));

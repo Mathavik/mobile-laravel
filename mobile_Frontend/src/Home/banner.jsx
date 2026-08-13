@@ -55,7 +55,7 @@ function Banner() {
                 Authorized Mobile Store · 100% Genuine
               </span>
 
-              <h1 className="mt-5 text-4xl sm:text-5xl lg:text-[56px] font-bold leading-[1.05] tracking-tight">
+              <h1 className="mt-5 text-3xl min-[380px]:text-4xl sm:text-5xl lg:text-[56px] font-bold leading-[1.05] tracking-tight">
                 Upgrade to
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#818cf8] to-[#38bdf8]">
@@ -73,18 +73,18 @@ function Banner() {
                 onSubmit={submitSearch}
                 className="mt-7 flex items-center gap-2 rounded-2xl bg-white p-1.5 shadow-2xl shadow-[#2563eb]/20 max-w-md"
               >
-                <div className="flex items-center gap-2 pl-3 flex-1">
+                <div className="flex items-center gap-2 pl-2.5 sm:pl-3 flex-1 min-w-0">
                   <Search size={18} className="text-slate-400 shrink-0" />
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search Galaxy S24, iPhone 15..."
-                    className="flex-1 bg-transparent outline-none text-sm text-slate-800 placeholder:text-slate-400"
+                    className="flex-1 min-w-0 bg-transparent outline-none text-sm text-slate-800 placeholder:text-slate-400"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="shrink-0 rounded-xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] hover:opacity-90 text-white text-sm font-semibold px-6 py-2.5 transition"
+                  className="shrink-0 rounded-xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] hover:opacity-90 text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-2.5 transition"
                 >
                   Search
                 </button>
@@ -107,7 +107,7 @@ function Banner() {
               )}
 
               {/* Trust stats */}
-              <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
+              <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-4 max-w-md">
                 {[
                   { icon: Zap, label: "5G Ready" },
                   { icon: ShieldCheck, label: "1 Year Warranty" },
@@ -115,16 +115,48 @@ function Banner() {
                 ].map(({ icon: Icon, label }) => (
                   <div
                     key={label}
-                    className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-3 py-3"
+                    className="flex flex-col min-[400px]:flex-row items-center min-[400px]:items-center gap-2 sm:gap-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-2.5 sm:px-3 py-3 text-center min-[400px]:text-left"
                   >
-                    <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-[#2563eb]/40 to-[#7c3aed]/40 text-[#60a5fa]">
-                      <Icon size={18} />
+                    <span className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-[#2563eb]/40 to-[#7c3aed]/40 text-[#60a5fa] shrink-0">
+                      <Icon size={16} className="sm:hidden" />
+                      <Icon size={18} className="hidden sm:block" />
                     </span>
-                    <span className="text-xs font-medium text-slate-200 leading-tight">
+                    <span className="text-[11px] xs:text-xs font-medium text-slate-200 leading-tight">
                       {label}
                     </span>
                   </div>
                 ))}
+              </div>
+
+              {/* Mobile-only phone teaser (hidden on lg+) */}
+              <div className="mt-8 lg:hidden">
+                <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 backdrop-blur-md px-5 py-4">
+                  <div className="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[#2563eb]/30 blur-3xl" />
+                  <div className="relative flex items-center gap-4">
+                    <div className="relative shrink-0 w-[76px] h-[140px] rounded-[20px] border border-white/20 bg-gradient-to-b from-[#0f1b33] to-[#1e1b4b] shadow-2xl overflow-hidden">
+                      <span className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-[#0a1122] rounded-b-lg z-10" />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-2">
+                        <span className="text-[8px] uppercase tracking-widest text-slate-400">Now</span>
+                        <Smartphone size={26} className="text-[#60a5fa]" />
+                        <span className="text-[8px] uppercase tracking-widest text-slate-400">5G</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] uppercase tracking-wider text-slate-400">Now Available</p>
+                      <p className="mt-0.5 text-base font-bold text-white leading-snug">Galaxy S24 Ultra</p>
+                      <div className="mt-1 flex items-center gap-2 flex-wrap">
+                        <span className="text-sm font-bold text-[#38bdf8]">₹1,29,999</span>
+                        <span className="text-[11px] text-emerald-400 line-through">₹1,44,999</span>
+                      </div>
+                      <Link
+                        to="/mobiles"
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white text-xs font-semibold px-4 py-2 shadow-xl shadow-[#2563eb]/30 hover:opacity-90 transition"
+                      >
+                        Shop Now <ArrowRight size={13} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
 

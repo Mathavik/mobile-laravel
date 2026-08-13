@@ -1030,6 +1030,7 @@ import { useNavigate } from "react-router-dom";
 import Barcode from "react-barcode";
 import api from "../../services/api";
 import KeywordTagInput from "../../components/KeywordTagInput";
+import BulkAddProduct from "./BulkAddProduct";
 
 /* ─── Toast Hook ─────────────────────────────────────────── */
 function useToast() {
@@ -1075,6 +1076,7 @@ export default function ProductForm() {
   const [existingCodes, setExistingCodes] = useState([]);
 const [companies,setCompanies] = useState([]);
 const [selectedCompany,setSelectedCompany] = useState("");
+const [bulkOpen, setBulkOpen] = useState(false);
 
 
 const [suppliers, setSuppliers] = useState([]);
@@ -1668,6 +1670,23 @@ if (
           cursor:pointer; transition:all 0.2s;
         }
         .pf-cancel:hover { background:#f8fafc; color:#475569; border-color:#cbd5e1; }
+
+        .pf-bulk-btn {
+          width:100%; padding:14px; border-radius:14px; border:none; cursor:pointer;
+          font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800;
+          background:linear-gradient(135deg,#6d28d9,#8b5cf6);
+          color:#fff; box-shadow:0 4px 18px rgba(139,92,246,0.35);
+          display:flex; align-items:center; justify-content:center; gap:8px;
+          transition:all 0.25s; margin-bottom:10px;
+        }
+        .pf-bulk-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 24px rgba(139,92,246,0.45); }
+        .pf-bulk-btn:active:not(:disabled) { transform:translateY(0); }
+
+        .pf-bulk-overlay {
+          position:fixed; inset:0; z-index:9990; overflow:auto;
+          background:rgba(15,23,42,0.55);
+        }
+        .pf-bulk-overlay .bk-page { min-height:100vh; box-sizing:border-box; }
 
         .pf-spinner {
           width:17px;height:17px;
@@ -2388,6 +2407,10 @@ if (
 
             <div className="pf-divider" />
 
+            <button className="pf-bulk-btn" onClick={() => setBulkOpen(true)}>
+              📦 Bulk Add (100+ Products)
+            </button>
+
             <button className="pf-submit" onClick={handleSubmit} disabled={loading || gstLoading}>
               {loading
                 ? <><div className="pf-spinner" /> Saving product…</>
@@ -2401,6 +2424,13 @@ if (
           </div>
         </div>
       </div>
+
+      {/* Bulk add modal (inline Excel-like grid) */}
+      {bulkOpen && (
+        <div className="pf-bulk-overlay">
+          <BulkAddProduct embedded onClose={() => setBulkOpen(false)} />
+        </div>
+      )}
     </>
   );
 }

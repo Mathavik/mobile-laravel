@@ -36,7 +36,7 @@ function Celebration() {
 
   return (
     <section className="bg-white py-14">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
           <div>
             <span className="text-xs font-semibold uppercase tracking-widest text-[#2563eb]">
@@ -63,7 +63,7 @@ function Celebration() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
 
           <div className="relative z-10 flex flex-col items-start justify-center h-full px-6 sm:px-12 max-w-xl">
-            <h2 className="text-white text-2xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-left mb-6 md:mb-8 drop-shadow-lg leading-tight">
+            <h2 className="text-white text-xl min-[400px]:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-left mb-6 md:mb-8 drop-shadow-lg leading-tight">
               {banner.banner_name || "Deals of the Day"}
             </h2>
           </div>

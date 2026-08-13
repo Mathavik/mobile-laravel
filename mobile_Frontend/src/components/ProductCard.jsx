@@ -38,7 +38,7 @@ export default function ProductCard({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onAddToWishlist(product, selectedSize);
+              onAddToWishlist(product, product?.size || "");
             }}
             className={`absolute top-3 right-3 z-30 w-10 h-10 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all duration-300 ${
               isWishlisted

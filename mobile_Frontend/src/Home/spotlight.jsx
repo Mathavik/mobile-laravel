@@ -92,9 +92,9 @@ const Spotlight = () => {
           Select a spotlight category from the admin panel.
         </p>
       ) : (
-        <div className="grid lg:grid-cols-5 gap-5 md:gap-6 items-stretch">
+        <div className="grid lg:grid-cols-5 gap-4 sm:gap-5 md:gap-6 items-stretch">
           {/* ── LEFT: 2 latest products ───────────────── */}
-          <div className="lg:col-span-2 grid sm:grid-cols-2 gap-4 md:gap-5">
+          <div className="lg:col-span-2 grid sm:grid-cols-2 gap-4 sm:gap-5">
             {data.products?.length ? (
               data.products.slice(0, 2).map((product, index) => (
                 <motion.div

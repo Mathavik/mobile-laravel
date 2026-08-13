@@ -238,6 +238,15 @@ const handleCompanyChange = async(e) => {
         box-shadow:0 4px 14px rgba(37,99,235,0.35);
       }
 
+      .pl-bulk-btn{
+        background:linear-gradient(135deg,#6d28d9,#8b5cf6);
+        box-shadow:0 4px 14px rgba(139,92,246,0.35);
+      }
+
+      .pl-bulk-btn:hover{
+        box-shadow:0 6px 20px rgba(139,92,246,0.45);
+      }
+
       .pl-toolbar{
         display:flex;
         gap:12px;
@@ -463,12 +472,21 @@ const handleCompanyChange = async(e) => {
             <p>Manage your product inventory</p>
           </div>
 
-          <button
-            className="pl-add-btn"
-            onClick={() => navigate("/products/add")}
-          >
-            + Add Product
-          </button>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <button
+              className="pl-add-btn pl-bulk-btn"
+              onClick={() => navigate("/products/bulk-add")}
+            >
+              📦 Bulk Add
+            </button>
+
+            <button
+              className="pl-add-btn"
+              onClick={() => navigate("/products/add")}
+            >
+              + Add Product
+            </button>
+          </div>
 
         </div>
 
