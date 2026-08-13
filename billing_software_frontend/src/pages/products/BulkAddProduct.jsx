@@ -66,6 +66,7 @@ export default function BulkAddProduct({ embedded, onClose }) {
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
   const [resultErrors, setResultErrors] = useState([]);
+  const [existingCodes, setExistingCodes] = useState([]);
 
   const uidRef = useRef(1);
   const nextUid = () => uidRef.current++;
@@ -91,18 +92,34 @@ export default function BulkAddProduct({ embedded, onClose }) {
     ram: "",
     internal_storage: "",
     display_size: "",
+    display_type: "",
+    processor: "",
+    battery_capacity: "",
+    rear_camera: "",
+    front_camera: "",
+    operating_system: "",
+    network_type: "",
+    sim_slots: "",
     warranty: "",
+    condition: "",
+    active_status: "",
+    view_count: "",
+    image: "",
+    video_url: "",
+    image_gallery_json: "",
     short_description: "",
+    full_description: "",
+    keywords: "",
   });
 
   const addRows = (count) => {
     setRows((prev) => [...prev, ...Array.from({ length: count }, () => makeRow())]);
   };
 
-  useEffect(() => {
-    if (rows.length === 0) addRows(5);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const generateBarcode = (uid) => {
+    const code = "PRD" + Math.floor(100000 + Math.random() * 900000);
+    changeCell(uid, "barcode", code);
+  };
 
   /* ── Load dependent data when company changes ──────────── */
   const loadCompanyData = async (companyId) => {
@@ -126,7 +143,21 @@ export default function BulkAddProduct({ embedded, onClose }) {
       .then((res) => setSuppliers(res.data.status ? res.data.data : []))
       .catch(() => setSuppliers([]));
 
-    await Promise.all([p1, p2, p3, p4]);
+    const p5 = api
+      .get(`/product/get?company_id=${companyId}`)
+      .then((res) => {
+        if (res.data.status) {
+          const codes = (res.data.data || [])
+            .map((p) => String(p.product_code || "").trim().toUpperCase())
+            .filter(Boolean);
+          setExistingCodes(codes);
+        } else {
+          setExistingCodes([]);
+        }
+      })
+      .catch(() => setExistingCodes([]));
+
+    await Promise.all([p1, p2, p3, p4, p5]);
   };
 
   /* ── Load companies ────────────────────────────────────── */
@@ -161,7 +192,6 @@ export default function BulkAddProduct({ embedded, onClose }) {
     setResultErrors([]);
 
     if (companyId) await loadCompanyData(companyId);
-    addRows(5);
   };
 
   /* ── Defaults helpers ──────────────────────────────────── */
@@ -212,7 +242,6 @@ export default function BulkAddProduct({ embedded, onClose }) {
     setRows([]);
     setInvalidRows([]);
     setResultErrors([]);
-    addRows(5);
   };
 
   /* ── Excel paste ───────────────────────────────────────── */
@@ -256,6 +285,22 @@ export default function BulkAddProduct({ embedded, onClose }) {
       r.display_size = cols[16] || "";
       r.warranty = cols[17] || "";
       r.short_description = cols[18] || "";
+      r.display_type = cols[19] || "";
+      r.processor = cols[20] || "";
+      r.battery_capacity = cols[21] || "";
+      r.rear_camera = cols[22] || "";
+      r.front_camera = cols[23] || "";
+      r.operating_system = cols[24] || "";
+      r.network_type = cols[25] || "";
+      r.sim_slots = cols[26] || "";
+      r.condition = cols[27] || "";
+      r.active_status = cols[28] || "";
+      r.view_count = cols[29] || "";
+      r.image = cols[30] || "";
+      r.video_url = cols[31] || "";
+      r.image_gallery_json = cols[32] || "";
+      r.full_description = cols[33] || "";
+      r.keywords = cols[34] || "";
       return r;
     });
 
@@ -273,12 +318,19 @@ export default function BulkAddProduct({ embedded, onClose }) {
     }
 
     const bad = [];
+    const seen = new Set();
     rows.forEach((r, idx) => {
       const errs = [];
       if (!r.product_name.trim()) errs.push("Product name required");
       if (!r.category_id) errs.push("Category required");
       if (r.price === "" || isNaN(Number(r.price)) || Number(r.price) < 0) errs.push("Valid price required");
       if (r.stock === "" || isNaN(Number(r.stock)) || Number(r.stock) < 0) errs.push("Valid stock required");
+      const code = String(r.product_code || "").trim().toUpperCase();
+      if (code) {
+        if (existingCodes.includes(code)) errs.push("Product code already exists");
+        if (seen.has(code)) errs.push("Duplicate product code in batch");
+        seen.add(code);
+      }
       if (errs.length) bad.push({ uid: r.uid, row: idx + 1, errs });
     });
 
@@ -304,7 +356,6 @@ export default function BulkAddProduct({ embedded, onClose }) {
         if (errs.length === 0) {
           show("success", "Bulk Added!", `${res.data.added || payload.length} products saved successfully.`);
           setRows([]);
-          addRows(5);
         } else {
           show("warn", "Partially Saved", `${res.data.added} added, ${errs.length} rows failed.`);
         }
@@ -524,7 +575,7 @@ export default function BulkAddProduct({ embedded, onClose }) {
         .bk-table{
           border-collapse:collapse;
           width:100%;
-          min-width:1800px;
+          min-width:3600px;
           font-size:13px;
         }
 
@@ -626,6 +677,39 @@ export default function BulkAddProduct({ embedded, onClose }) {
         }
 
         .bk-row-del:hover{ background:#ffe4e6; }
+
+        .bk-barcode-cell{
+          display:flex;
+          gap:6px;
+          align-items:center;
+          min-width:200px;
+        }
+
+        .bk-barcode-btn{
+          flex-shrink:0;
+          padding:9px 12px;
+          border:none;
+          border-radius:9px;
+          background:linear-gradient(135deg,#6366f1,#818cf8);
+          color:#fff;
+          font-family:'Plus Jakarta Sans',sans-serif;
+          font-size:11.5px;
+          font-weight:700;
+          cursor:pointer;
+          white-space:nowrap;
+          transition:all 0.15s;
+        }
+
+        .bk-barcode-btn:hover{ background:linear-gradient(135deg,#4f46e5,#6366f1); }
+
+        .bk-empty{
+          padding:3rem 1rem;
+          text-align:center;
+          color:#94a3b8;
+          font-size:13.5px;
+          font-weight:500;
+          line-height:1.7;
+        }
 
         .bk-error-panel{
           background:#fff1f2;
@@ -948,6 +1032,11 @@ export default function BulkAddProduct({ embedded, onClose }) {
 
         {/* GRID */}
         <div className="bk-grid-wrap">
+          {rows.length === 0 && (
+            <div className="bk-empty">
+              No rows yet. Click <b>+ Add Row</b> to add a product row, or use <b>📋 Paste from Excel</b>.
+            </div>
+          )}
           <table className="bk-table">
             <thead>
               <tr>
@@ -964,13 +1053,29 @@ export default function BulkAddProduct({ embedded, onClose }) {
                 <th>Stock <span className="bk-required-dot">*</span></th>
                 <th>GST %</th>
                 <th>Barcode</th>
+                <th>Image URL</th>
+                <th>Video URL</th>
+                <th>Gallery Images</th>
                 <th>Color</th>
                 <th>Model</th>
                 <th>RAM</th>
                 <th>Storage</th>
-                <th>Display</th>
+                <th>Display Size</th>
+                <th>Display Type</th>
+                <th>Processor</th>
+                <th>Battery</th>
+                <th>Rear Camera</th>
+                <th>Front Camera</th>
+                <th>OS</th>
+                <th>Network</th>
+                <th>SIM</th>
                 <th>Warranty</th>
+                <th>Condition</th>
+                <th>Active Status</th>
+                <th>View Count</th>
                 <th>Short Description</th>
+                <th>Full Description</th>
+                <th>Keywords</th>
                 <th style={{ position: "sticky", right: 0, zIndex: 21 }}>Action</th>
               </tr>
             </thead>
@@ -1108,11 +1213,48 @@ export default function BulkAddProduct({ embedded, onClose }) {
                   </td>
 
                   <td>
+                    <div className="bk-barcode-cell">
+                      <input
+                        className="bk-cell"
+                        placeholder="Barcode"
+                        value={row.barcode}
+                        onChange={(e) => changeCell(row.uid, "barcode", e.target.value)}
+                      />
+                      <button
+                        className="bk-barcode-btn"
+                        type="button"
+                        title="Auto-generate barcode"
+                        onClick={() => generateBarcode(row.uid)}
+                      >
+                        ⚡ Auto
+                      </button>
+                    </div>
+                  </td>
+
+                  <td>
                     <input
                       className="bk-cell"
-                      placeholder="Barcode"
-                      value={row.barcode}
-                      onChange={(e) => changeCell(row.uid, "barcode", e.target.value)}
+                      placeholder="https://example.com/image.jpg"
+                      value={row.image}
+                      onChange={(e) => changeCell(row.uid, "image", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="https://example.com/video.mp4"
+                      value={row.video_url}
+                      onChange={(e) => changeCell(row.uid, "video_url", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="Comma separated URLs"
+                      value={row.image_gallery_json}
+                      onChange={(e) => changeCell(row.uid, "image_gallery_json", e.target.value)}
                     />
                   </td>
 
@@ -1164,9 +1306,117 @@ export default function BulkAddProduct({ embedded, onClose }) {
                   <td>
                     <input
                       className="bk-cell"
+                      placeholder="e.g. AMOLED, 120Hz"
+                      value={row.display_type}
+                      onChange={(e) => changeCell(row.uid, "display_type", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. Snapdragon 695"
+                      value={row.processor}
+                      onChange={(e) => changeCell(row.uid, "processor", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. 5000 mAh"
+                      value={row.battery_capacity}
+                      onChange={(e) => changeCell(row.uid, "battery_capacity", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. 50 MP + 8 MP"
+                      value={row.rear_camera}
+                      onChange={(e) => changeCell(row.uid, "rear_camera", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. 16 MP"
+                      value={row.front_camera}
+                      onChange={(e) => changeCell(row.uid, "front_camera", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. Android 14"
+                      value={row.operating_system}
+                      onChange={(e) => changeCell(row.uid, "operating_system", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. 5G, 4G VoLTE"
+                      value={row.network_type}
+                      onChange={(e) => changeCell(row.uid, "network_type", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. Dual SIM"
+                      value={row.sim_slots}
+                      onChange={(e) => changeCell(row.uid, "sim_slots", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
                       placeholder="e.g. 1 Year"
                       value={row.warranty}
                       onChange={(e) => changeCell(row.uid, "warranty", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <select
+                      className="bk-cell bk-cell-cell"
+                      value={row.condition}
+                      onChange={(e) => changeCell(row.uid, "condition", e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="New">New</option>
+                      <option value="Refurbished">Refurbished</option>
+                      <option value="Used">Used</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <select
+                      className="bk-cell bk-cell-cell"
+                      value={row.active_status}
+                      onChange={(e) => changeCell(row.uid, "active_status", e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      value={row.view_count}
+                      onChange={(e) => changeCell(row.uid, "view_count", e.target.value)}
                     />
                   </td>
 
@@ -1177,6 +1427,25 @@ export default function BulkAddProduct({ embedded, onClose }) {
                       placeholder="Short description"
                       value={row.short_description}
                       onChange={(e) => changeCell(row.uid, "short_description", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <textarea
+                      className="bk-cell bk-cell-textarea"
+                      rows={1}
+                      placeholder="Full description"
+                      value={row.full_description}
+                      onChange={(e) => changeCell(row.uid, "full_description", e.target.value)}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="bk-cell"
+                      placeholder="e.g. galaxy a54, samsung 5g, android"
+                      value={row.keywords}
+                      onChange={(e) => changeCell(row.uid, "keywords", e.target.value)}
                     />
                   </td>
 
@@ -1226,10 +1495,26 @@ export default function BulkAddProduct({ embedded, onClose }) {
                 <li>Display</li>
                 <li>Warranty</li>
                 <li>Short Description</li>
+                <li>Display Type</li>
+                <li>Processor</li>
+                <li>Battery</li>
+                <li>Rear Camera</li>
+                <li>Front Camera</li>
+                <li>OS</li>
+                <li>Network</li>
+                <li>SIM</li>
+                <li>Condition</li>
+                <li>Active Status</li>
+                <li>View Count</li>
+                <li>Image URL</li>
+                <li>Video URL</li>
+                <li>Gallery Images</li>
+                <li>Full Description</li>
+                <li>Keywords</li>
               </ol>
               <textarea
                 className="bk-paste-area"
-                placeholder={"Example (tab-separated):\nSamsung Galaxy A15\tSAM001\tMobiles\tSmartphones\tSamsung\t\tPiece\t15000\t18000\t10\t18\t\tBlack\tA15\t8 GB\t128 GB\t6.5 inch\t1 Year\tBudget phone"}
+                placeholder={"Example (tab-separated):\nSamsung Galaxy A15\tSAM001\tMobiles\tSmartphones\tSamsung\t\tPiece\t15000\t18000\t10\t18\t\tBlack\tA15\t8 GB\t128 GB\t6.5 inch\t1 Year\tBudget phone\tAMOLED\tSnapdragon\t5000 mAh\t50 MP + 8 MP\t16 MP\tAndroid 14\t5G\tDual SIM\tNew\tactive\t0\thttps://example.com/image.jpg\thttps://example.com/video.mp4\turl1,url2\tFull product description\tgalaxy a54, samsung 5g"}
                 value={pasteText}
                 onChange={(e) => setPasteText(e.target.value)}
               />
