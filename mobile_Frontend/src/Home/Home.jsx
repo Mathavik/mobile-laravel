@@ -2,7 +2,7 @@ import React from "react";
 import Banner from "./banner";
 // import BannerSplit from "./bannerSplit";
 import Categories from "./categories";
-import TopBrands from "./topbrands";
+import FeaturedPhones from "./featuredPhones";
 import SpotlightSection from "./spotlight";
 import NewArrivals from "./newarrivals";
 import FlashSale from "./flashsale";
@@ -18,12 +18,8 @@ function Home() {
       <Reveal>
         <Categories />
       </Reveal>
-      <Reveal>
-        <TopBrands />
-      </Reveal>
-      {/* <Reveal>
-        <BannerSplit />
-      </Reveal> */}
+      
+      
       <Reveal>
         <NewArrivals />
       </Reveal>
@@ -38,8 +34,10 @@ function Home() {
         <Celebration />
       </Reveal>
       <Reveal>
+        <FeaturedPhones />
         <Workflow />
       </Reveal>
+      
     </>
   );
 }
