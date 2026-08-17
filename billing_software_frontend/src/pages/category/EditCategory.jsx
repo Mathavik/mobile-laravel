@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
+import VoiceInputButton from "../../components/VoiceInputButton";
 
 /* ─── Toast Hook ─────────────────────────────────────────── */
 function useToast() {
@@ -714,6 +715,13 @@ export default function EditCategory() {
                   maxLength={50}
                   onChange={handleChange}
                   onKeyDown={e => e.key === "Enter" && handleUpdate()}
+                />
+                <VoiceInputButton
+                  onTranscript={(text) => {
+                    setName(text);
+                    setCharCount(text.length);
+                  }}
+                  style={{ position: "absolute", right: 44, top: "50%", transform: "translateY(-50%)" }}
                 />
                 <div className="ec-input-prefix">#</div>
               </div>

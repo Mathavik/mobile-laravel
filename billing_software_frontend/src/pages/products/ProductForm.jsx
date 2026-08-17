@@ -1030,6 +1030,7 @@ import { useNavigate } from "react-router-dom";
 import Barcode from "react-barcode";
 import api from "../../services/api";
 import KeywordTagInput from "../../components/KeywordTagInput";
+import VoiceInputButton from "../../components/VoiceInputButton";
 import BulkAddProduct from "./BulkAddProduct";
 
 /* ─── Toast Hook ─────────────────────────────────────────── */
@@ -1747,6 +1748,7 @@ if (
       `}</style>
 
       <ToastPortal toasts={toasts} remove={remove} />
+      <VoiceInputButton />
 
       <div className="pf-page">
         <div className="pf-deco pf-deco-1" />

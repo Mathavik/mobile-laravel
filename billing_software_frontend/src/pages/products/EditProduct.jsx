@@ -692,6 +692,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
 import Barcode from "react-barcode";
 import KeywordTagInput from "../../components/KeywordTagInput";
+import VoiceInputButton from "../../components/VoiceInputButton";
 
 /* ─── Toast Hook ─────────────────────────────────────────── */
 function useToast() {
@@ -1374,6 +1375,7 @@ export default function EditProduct() {
       `}</style>
 
       <ToastPortal toasts={toasts} remove={remove} />
+      <VoiceInputButton />
 
       <div className="ep-page">
         <div className="ep-deco ep-deco-1" />
