@@ -146,6 +146,9 @@ class CheckoutController extends Controller
                 $balanceAmount = max(0, $grandTotal - $paidAmount);
             }
 
+            $orderCreatedAt = now();
+            $estimatedDelivery = $orderCreatedAt->copy()->addDays(3)->setTime(18, 0, 0);
+
             $orderId = DB::table('orders')->insertGetId([
                 'user_id' => $request->user_id,
                 'company_id' => $companyId,
@@ -161,10 +164,21 @@ class CheckoutController extends Controller
                 'discount' => $discount,
                 'grand_total' => $grandTotal,
                 'paid_amount' => $paidAmount,
-                'status' => $paymentStatus === 'paid' ? 'confirmed' : 'pending',
+                'status' => 'pending',
+                'estimated_delivery' => $estimatedDelivery,
                 'request_id' => $requestId,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $orderCreatedAt,
+                'updated_at' => $orderCreatedAt,
+            ]);
+
+            DB::table('order_status_history')->insert([
+                'order_id' => $orderId,
+                'status' => 'pending',
+                'note' => 'Order placed',
+                'location' => null,
+                'happened_at' => $orderCreatedAt,
+                'created_at' => $orderCreatedAt,
+                'updated_at' => $orderCreatedAt,
             ]);
 
             foreach ($request->items as $item) {

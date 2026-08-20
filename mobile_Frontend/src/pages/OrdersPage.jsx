@@ -18,7 +18,9 @@ import {
   MapPin,
   Phone,
   Mail,
-  CreditCard
+  CreditCard,
+  CalendarDays,
+  ShieldCheck
 } from "lucide-react";
 
 // Helper function to format date
@@ -163,6 +165,28 @@ function OrdersPage() {
     if (activeFilter === "all") return true;
     return (order.status || 'pending') === activeFilter;
   });
+
+  const getDeliveryProgress = (order) => {
+    const statusOrder = ['pending', 'confirmed', 'processing', 'packed', 'shipped', 'delivered'];
+    const status = order.status || 'pending';
+    const idx = statusOrder.indexOf(status);
+    if (idx === -1) return 0;
+    return Math.round(((idx) / (statusOrder.length - 1)) * 100);
+  };
+
+  const getDeliveryETA = (order) => {
+    if (order.status === 'delivered') return 'Delivered';
+    const est = order.estimated_delivery;
+    if (!est) return null;
+    const now = new Date();
+    const estDate = new Date(est);
+    const diffMs = estDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return 'Overdue';
+    if (diffDays === 0) return 'Arriving today';
+    if (diffDays === 1) return 'Arriving tomorrow';
+    return `Arriving in ${diffDays} days`;
+  };
 
   // Order status counts
   const statusCounts = orders.reduce((acc, order) => {
@@ -333,6 +357,42 @@ function OrdersPage() {
                           </div>
                         </div>
 
+                        {/* Mini delivery progress */}
+                        {order.status !== 'cancelled' && (
+                          <div className="mt-3 bg-gray-50 rounded-xl p-3 border border-gray-100">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <div className="flex items-center gap-1.5">
+                                <ShieldCheck size={13} className={order.status === 'delivered' ? 'text-emerald-500' : 'text-[#2563eb]'} />
+                                <span className={`text-xs font-semibold ${order.status === 'delivered' ? 'text-emerald-600' : 'text-[#1a1a1a]'}`}>
+                                  {getDeliveryETA(order) || 'Delivery updating'}
+                                </span>
+                              </div>
+                              {order.estimated_delivery && order.status !== 'delivered' && (
+                                <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                                  <CalendarDays size={10} />
+                                  {formatDateShort(order.estimated_delivery)}
+                                </span>
+                              )}
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all duration-500 ${
+                                  order.status === 'delivered'
+                                    ? 'bg-gradient-to-r from-emerald-400 to-emerald-500'
+                                    : 'bg-gradient-to-r from-[#2563eb] to-[#7c3aed]'
+                                }`}
+                                style={{ width: `${getDeliveryProgress(order)}%` }}
+                              />
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-[9px] text-gray-400">Ordered</span>
+                              <span className="text-[9px] text-gray-400">
+                                {order.status === 'delivered' ? 'Delivered' : 'Delivery'}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
                         {order.tracking_id && (
                           <div className="mt-2 flex items-center gap-2 bg-indigo-50/50 border border-indigo-100 rounded-lg px-3 py-1.5 inline-flex">
                             <Truck size={14} className="text-indigo-500" />
@@ -355,11 +415,19 @@ function OrdersPage() {
 
                       <div className="flex flex-wrap gap-2">
                         <button
+                          onClick={() => navigate(`/orders/${order.id}/track`)}
+                          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-emerald-600 bg-emerald-50 rounded-xl hover:bg-emerald-600 hover:text-white transition-all duration-200"
+                        >
+                          <Truck size={16} />
+                          Track
+                        </button>
+
+                        <button
                           onClick={() => viewOrderDetails(order)}
                           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#2563eb] bg-[#2563eb]/10 rounded-xl hover:bg-[#2563eb] hover:text-white transition-all duration-200"
                         >
                           <Eye size={16} />
-                          View Details
+                          Details
                         </button>
 
                         <button
@@ -557,6 +625,16 @@ function OrdersPage() {
 
               {/* Action Buttons */}
               <div className="mt-6 flex flex-wrap gap-3">
+                <button
+                  onClick={() => {
+                    setModalOpen(false);
+                    navigate(`/orders/${selectedOrder.id}/track`);
+                  }}
+                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition font-medium"
+                >
+                  <Truck size={16} />
+                  Track Order
+                </button>
                 {selectedOrder.tracking_id && (
                   <button
                     onClick={() => {

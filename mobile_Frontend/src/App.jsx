@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ProfilePage from "./pages/ProfilePage";
 import OrdersPage from "./pages/OrdersPage";
+import OrderTrackingPage from "./pages/OrderTrackingPage";
 import ScrollToTop from "./components/ScrollToTop";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import InvoicePage from "./pages/InvoicePage";
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/orders/:id/track" element={<OrderTrackingPage />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/invoice/:id" element={<InvoicePage />} />

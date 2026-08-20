@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\WishlistController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderTrackingController;
 use App\Http\Controllers\Api\HomePageBannerController;
 use App\Http\Controllers\Api\CelebrationBannerController;
 
@@ -259,6 +260,9 @@ Route::prefix('shop')->group(function () {
     Route::get('orders', [OrderController::class, 'index']);
     Route::get('orders/{id}', [OrderController::class, 'show']);
     Route::get('orders/{id}/invoice', [OrderController::class, 'invoice']);
+
+    Route::get('orders/{id}/tracking', [OrderTrackingController::class, 'track']);
+    Route::post('orders/{id}/tracking', [OrderTrackingController::class, 'updateStatus']);
 });
 
 // ── PURCHASE ROUTES ──
