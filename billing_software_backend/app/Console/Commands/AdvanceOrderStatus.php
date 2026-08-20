@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\DeliveryNotification;
+use App\Mail\ShippedNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AdvanceOrderStatus extends Command
 {
@@ -70,14 +73,17 @@ class AdvanceOrderStatus extends Command
                         }
                         if ($shouldAdvance) {
                             $trackingId = 'OD' . strtoupper(bin2hex(random_bytes(5)));
-                            $note = 'Handed over to ' . ($order->carrier ?: 'Delhivery');
+                            $carrier = $order->carrier ?: 'Delhivery';
+                            $note = 'Handed over to ' . $carrier;
 
                             DB::table('orders')->where('id', $order->id)->update([
                                 'tracking_id' => $order->tracking_id ?: $trackingId,
-                                'carrier' => $order->carrier ?: 'Delhivery',
+                                'carrier' => $carrier,
                                 'tracking_url' => 'https://www.delhivery.com/track/package/' . ($order->tracking_id ?: $trackingId),
                                 'shipped_at' => now(),
                             ]);
+
+                            $this->sendShippedEmail($order, $order->tracking_id ?: $trackingId, $carrier);
                         }
                         break;
 
@@ -92,6 +98,8 @@ class AdvanceOrderStatus extends Command
                             DB::table('orders')->where('id', $order->id)->update([
                                 'delivered_at' => now(),
                             ]);
+
+                            $this->sendDeliveredEmail($order);
                         }
                         break;
                 }
@@ -125,6 +133,42 @@ class AdvanceOrderStatus extends Command
         }
 
         return 0;
+    }
+
+    private function sendShippedEmail($order, $trackingId, $carrier): void
+    {
+        if (empty($order->email)) return;
+
+        try {
+            $orderArray = (array) $order;
+            $orderArray['tracking_id'] = $trackingId;
+            $orderArray['carrier'] = $carrier;
+
+            Mail::to($order->email)->send(new ShippedNotification($orderArray));
+            $this->info("  → Shipped email sent to {$order->email}");
+        } catch (\Exception $e) {
+            $this->error("  → Failed to send shipped email: {$e->getMessage()}");
+        }
+    }
+
+    private function sendDeliveredEmail($order): void
+    {
+        if (empty($order->email)) return;
+
+        try {
+            $items = DB::table('order_items as oi')
+                ->leftJoin('products as p', 'oi.product_id', '=', 'p.id')
+                ->where('oi.order_id', $order->id)
+                ->select('oi.*', 'p.product_name')
+                ->get()
+                ->map(fn($item) => (array) $item)
+                ->toArray();
+
+            Mail::to($order->email)->send(new DeliveryNotification((array) $order, $items));
+            $this->info("  → Delivery email sent to {$order->email}");
+        } catch (\Exception $e) {
+            $this->error("  → Failed to send delivery email: {$e->getMessage()}");
+        }
     }
 
     private function getNextStatus(string $current): ?string

@@ -229,7 +229,6 @@ class OrderTrackingController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
         return response()->json([
             'success' => true,
             'message' => 'Order status updated successfully',
